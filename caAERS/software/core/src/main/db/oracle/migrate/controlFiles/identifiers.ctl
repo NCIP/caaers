@@ -1,16 +1,16 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'identifiers.csv'
+	INFILE 'identifiers.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE identifiers
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE identifiers
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
-		VALUE						    CHAR,
-		TYPE						    CHAR,
-		SYSTEM_NAME					    CHAR,
+		VALUE						    CHAR(2000),
+		TYPE						    CHAR(2000),
+		SYSTEM_NAME					    CHAR(2000),
 		PARTICIPANT_ID 				    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
 		PRIMARY_INDICATOR				    INTEGER EXTERNAL(38) "case :PRIMARY_INDICATOR
@@ -18,7 +18,7 @@ LOAD DATA
 															when 'f'then to_number(0)
 															END",
 		STU_ID 					    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		ORGANIZATION_ID				    INTEGER EXTERNAL(10),
 		DISCRIMINATOR_COLUMN				    INTEGER EXTERNAL(10)
 	)

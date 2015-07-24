@@ -1,25 +1,25 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'ext_ae_reporting_prds.csv'
+	INFILE 'ext_ae_reporting_prds.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE ext_ae_reporting_prds
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE ext_ae_reporting_prds
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		DESCRIPTION					    CHAR,
-		CYCLE_NUMBER					    CHAR,
+		DESCRIPTION					    CHAR(2000),
+		CYCLE_NUMBER					    CHAR(2000),
 		WORKFLOW_ID					    INTEGER EXTERNAL(10),
-		REVIEW_STATUS				    CHAR,
-		TREATMENT_ASSIGNMENT_CODE			    CHAR,
-		OTHER_DESCRIPTION				    CHAR,
+		REVIEW_STATUS				    CHAR(2000),
+		TREATMENT_ASSIGNMENT_CODE			    CHAR(2000),
+		OTHER_DESCRIPTION				    CHAR(2000),
 		START_DATE					   DATE "YYYY-MM-DD" NULLIF START_DATE="",
 		END_DATE					   DATE "YYYY-MM-DD" NULLIF END_DATE="",
-		NAME						    CHAR,
-		EXTERNAL_ID					    CHAR,
-		GRID_ID					    CHAR,
+		NAME						    CHAR(2000),
+		EXTERNAL_ID					    CHAR(2000),
+		GRID_ID					    CHAR(2000),
 		CREATION_DATE				   DATE "YYYY-MM-DD" NULLIF CREATION_DATE="",
 		REPORTING_PERIOD_ID				    INTEGER EXTERNAL(10)
 	)

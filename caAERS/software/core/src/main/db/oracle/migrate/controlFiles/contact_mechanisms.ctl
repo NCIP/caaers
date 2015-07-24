@@ -1,14 +1,14 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'contact_mechanisms.csv'
+	INFILE 'contact_mechanisms.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE contact_mechanisms
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE contact_mechanisms
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		PERSON_ID				    INTEGER EXTERNAL(10),
-		TYPE					    CHAR,
-		VALUE						    CHAR
+		TYPE					    CHAR(2000),
+		VALUE						    CHAR(2000)
 	)
 

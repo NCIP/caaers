@@ -1,16 +1,16 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'report_format.csv'
+	INFILE 'report_format.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE report_format
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE report_format
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
-		REPORT_FORMAT_TYPE			    CHAR,
+		REPORT_FORMAT_TYPE			    CHAR(2000),
 		STUDY_ID					    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR
+		GRID_ID					    CHAR(2000)
 	)
 

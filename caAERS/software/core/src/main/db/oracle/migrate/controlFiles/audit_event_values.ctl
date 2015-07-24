@@ -1,17 +1,17 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'audit_event_values.csv'
+	INFILE 'audit_event_values.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE audit_event_values
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE
+    INTO TABLE audit_event_values
+	fields terminated by '\t'
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL,
 		AUDIT_EVENT_ID 			    INTEGER EXTERNAL,
-		ATTRIBUTE_NAME 			    CHAR,
-		PREVIOUS_VALUE 				    CHAR,
-		NEW_VALUE					    CHAR,
-		VERSION				    INTEGER EXTERNAL(10)
+		ATTRIBUTE_NAME 			    CHAR(2000),
+		PREVIOUS_VALUE 				    CHAR(4000),
+		NEW_VALUE					    CHAR(4000),
+		VERSION				    INTEGER EXTERNAL 
 	)
 

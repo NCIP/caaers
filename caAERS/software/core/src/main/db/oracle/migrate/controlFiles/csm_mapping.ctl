@@ -1,22 +1,22 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'csm_mapping.csv'
+	INFILE 'csm_mapping.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE csm_mapping
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE csm_mapping
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		MAPPING_ID				    INTEGER EXTERNAL(38),
 		APPLICATION_ID 			    INTEGER EXTERNAL(38),
-		OBJECT_NAME				    CHAR,
-		ATTRIBUTE_NAME 			    CHAR,
-		OBJECT_PACKAGE_NAME				    CHAR,
-		TABLE_NAME					    CHAR,
-		TABLE_NAME_GROUP				    CHAR,
-		TABLE_NAME_USER				    CHAR,
-		VIEW_NAME_GROUP				    CHAR,
-		VIEW_NAME_USER 				    CHAR,
+		OBJECT_NAME				    CHAR(2000),
+		ATTRIBUTE_NAME 			    CHAR(2000),
+		OBJECT_PACKAGE_NAME				    CHAR(2000),
+		TABLE_NAME					    CHAR(2000),
+		TABLE_NAME_GROUP				    CHAR(2000),
+		TABLE_NAME_USER				    CHAR(2000),
+		VIEW_NAME_GROUP				    CHAR(2000),
+		VIEW_NAME_USER 				    CHAR(2000),
 		ACTIVE_FLAG				    INTEGER EXTERNAL(1),
 		MAINTAINED_FLAG			    INTEGER EXTERNAL(1),
 		UPDATE_DATE					   DATE "YYYY-MM-DD" NULLIF UPDATE_DATE=""

@@ -1,34 +1,34 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'handles.csv'
+	INFILE 'handles.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE handles
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE handles
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
-		PREFIX 				    CHAR,
-		HANDLE 				    CHAR,
+		PREFIX 				    CHAR(2000),
+		HANDLE 				    CHAR(2000),
 		IDX					    INTEGER EXTERNAL,
-		TYPE						    CHAR(255),
-		DATA						    CHAR(345),
+		TYPE						    CHAR(2000)(255),
+		DATA						    CHAR(2000)(345),
 		TTL_TYPE					    INTEGER EXTERNAL,
 		TTL						    INTEGER EXTERNAL,
 		TIMESTAMP					    INTEGER EXTERNAL,
-		REFS						    CHAR,
-		ADMIN_READ					    CHAR "case :ADMIN_READ
+		REFS						    CHAR(2000),
+		ADMIN_READ					    CHAR(2000) "case :ADMIN_READ
 											when 't'then to_char('1')
 											when 'f'then to_char('0')
 											END",
-		ADMIN_WRITE					    CHAR "case :ADMIN_WRITE
+		ADMIN_WRITE					    CHAR(2000) "case :ADMIN_WRITE
 											when 't'then to_char('1')
 											when 'f'then to_char('0')
 											END",
-		PUB_READ					    CHAR "case :PUB_READ
+		PUB_READ					    CHAR(2000) "case :PUB_READ
 											when 't'then to_char('1')
 											when 'f'then to_char('0')
 											END",
-		PUB_WRITE					    CHAR "case :PUB_WRITE
+		PUB_WRITE					    CHAR(2000) "case :PUB_WRITE
 											when 't'then to_char('1')
 											when 'f'then to_char('0')
 											END"

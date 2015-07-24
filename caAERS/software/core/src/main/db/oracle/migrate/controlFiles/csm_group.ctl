@@ -1,15 +1,15 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'csm_group.csv'
+	INFILE 'csm_group.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE csm_group
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE csm_group
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		GROUP_ID				    INTEGER EXTERNAL(38),
-		GROUP_NAME				    CHAR,
-		GROUP_DESC					    CHAR,
+		GROUP_NAME				    CHAR(2000),
+		GROUP_DESC					    CHAR(2000),
 		UPDATE_DATE				   DATE "YYYY-MM-DD" NULLIF UPDATE_DATE="",
 		APPLICATION_ID 			    INTEGER EXTERNAL(38)
 	)

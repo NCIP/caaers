@@ -1,12 +1,12 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'nas.csv'
+	INFILE 'nas.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE nas
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE nas
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
-		NA					    CHAR
+		NA					    CHAR(2000)
 	)
 

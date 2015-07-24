@@ -1,13 +1,13 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'intervention_sites.csv'
+	INFILE 'intervention_sites.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE intervention_sites
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE intervention_sites
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
-		NAME						    CHAR
+		NAME						    CHAR(2000)
 	)
 

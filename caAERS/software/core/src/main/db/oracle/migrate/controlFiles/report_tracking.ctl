@@ -1,10 +1,10 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'report_tracking.csv'
+	INFILE 'report_tracking.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE report_tracking
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE report_tracking
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
@@ -18,7 +18,7 @@ LOAD DATA
 		SYSSUB_TRK_ID					    INTEGER EXTERNAL(10),
 		RESPONSE_TRK_ID				    INTEGER EXTERNAL(10),
 		EMAILSUBN_TRK_ID				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		REPORT_VERSION_ID				    INTEGER EXTERNAL(10),
 		ATTEMPT_NUMBER 				    INTEGER EXTERNAL(10)
 	)

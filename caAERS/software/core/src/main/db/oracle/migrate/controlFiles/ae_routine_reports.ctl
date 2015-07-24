@@ -1,10 +1,10 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'ae_routine_reports.csv'
+	INFILE 'ae_routine_reports.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE ae_routine_reports
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE ae_routine_reports
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
@@ -12,7 +12,7 @@ LOAD DATA
 		ASSIGNMENT_ID				    INTEGER EXTERNAL(10),
 		START_DATE				   DATE "YYYY-MM-DD" NULLIF START_DATE="",
 		END_DATE				   DATE "YYYY-MM-DD" NULLIF END_DATE="",
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		STATUS_CODE					    INTEGER EXTERNAL(10),
 		TREATMENT_ASSIGNMENT_ID			    INTEGER EXTERNAL(10)
 	)

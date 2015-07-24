@@ -1,18 +1,18 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'disease_histories.csv'
+	INFILE 'disease_histories.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE disease_histories
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE disease_histories
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		CODED_PRIMARY_DISEASE_SITE_ID			    INTEGER EXTERNAL(10),
 		STUDY_DISEASE_ID				    INTEGER EXTERNAL(10),
-		OTHER_PRIMARY_DISEASE				    CHAR,
-		OTHER_PRIMARY_DISEASE_SITE			    CHAR,
-		GRID_ID					    CHAR,
+		OTHER_PRIMARY_DISEASE				    CHAR(2000),
+		OTHER_PRIMARY_DISEASE_SITE			    CHAR(2000),
+		GRID_ID					    CHAR(2000),
 		VERSION				    INTEGER EXTERNAL(10),
 		REPORT_ID					    INTEGER EXTERNAL(10),
 		DIAGNOSIS_DAY					    INTEGER EXTERNAL(10),

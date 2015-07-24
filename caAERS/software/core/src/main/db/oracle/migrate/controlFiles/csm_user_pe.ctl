@@ -1,10 +1,10 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'csm_user_pe.csv'
+	INFILE 'csm_user_pe.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE csm_user_pe
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE csm_user_pe
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		USER_PROTECTION_ELEMENT_ID		    INTEGER EXTERNAL(38),

@@ -1,14 +1,14 @@
-OPTIONS (SKIP=1) 
+
 LOAD DATA
-	INFILE 'additional_information.csv'
+	INFILE 'additional_information.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE additional_information
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE additional_information
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		VERSION				    INTEGER EXTERNAL(10),
 		REPORT_ID				    INTEGER EXTERNAL(10),
 		AUTOPSY_REPORT 				    INTEGER EXTERNAL(1) "case :AUTOPSY_REPORT
@@ -51,7 +51,7 @@ LOAD DATA
 															when 't'then to_number(1)
 															when 'f'then to_number(0)
 															END",
-		OTHER_INFORMATION				    CHAR,
+		OTHER_INFORMATION				    CHAR(2000),
 		PROGRESS_NOTES 				    INTEGER EXTERNAL(1) "case :PROGRESS_NOTES
 															when 't'then to_number(1)
 															when 'f'then to_number(0)

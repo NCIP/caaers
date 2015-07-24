@@ -1,10 +1,10 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'terminologies.csv'
+	INFILE 'terminologies.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE terminologies
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE terminologies
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
@@ -12,7 +12,7 @@ LOAD DATA
 		CTC_ID 					    INTEGER EXTERNAL(10),
 		STUDY_ID				    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		MEDDRA_VERSION_ID				    INTEGER EXTERNAL(10)
 	)
 

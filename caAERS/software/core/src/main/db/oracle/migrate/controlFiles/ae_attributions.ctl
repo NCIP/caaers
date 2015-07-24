@@ -1,18 +1,18 @@
-OPTIONS (SKIP=1) 
+
 LOAD DATA
-	INFILE 'ae_attributions.csv'
+	INFILE 'ae_attributions.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE ae_attributions
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE ae_attributions
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		ADVERSE_EVENT_ID			    INTEGER EXTERNAL(10),
 		ATTRIBUTION_CODE				    INTEGER EXTERNAL(10),
-		CAUSE_TYPE				    CHAR,
+		CAUSE_TYPE				    CHAR(2000),
 		CAUSE_ID					    INTEGER EXTERNAL(10),
 		LIST_INDEX				    INTEGER EXTERNAL(10)
 	)

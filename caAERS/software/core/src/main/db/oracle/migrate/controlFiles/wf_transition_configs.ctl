@@ -1,16 +1,16 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'wf_transition_configs.csv'
+	INFILE 'wf_transition_configs.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE wf_transition_configs
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE wf_transition_configs
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		TRANSITION_NAME				    CHAR,
+		TRANSITION_NAME				    CHAR(2000),
 		TASK_CONFIG_ID 			    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR
+		GRID_ID					    CHAR(2000)
 	)
 

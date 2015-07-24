@@ -1,17 +1,17 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'spa_concomitant_medications.csv'
+	INFILE 'spa_concomitant_medications.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE spa_concomitant_medications
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE spa_concomitant_medications
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		ASSIGNMENT_ID				    INTEGER EXTERNAL(10),
-		AGENT_NAME					    CHAR,
+		AGENT_NAME					    CHAR(2000),
 		LIST_INDEX				    INTEGER EXTERNAL(10),
 		START_DATE_DAY 				    INTEGER EXTERNAL(10),
 		START_DATE_MONTH				    INTEGER EXTERNAL(10),

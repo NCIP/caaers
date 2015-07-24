@@ -1,13 +1,13 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'lab_versions.csv'
+	INFILE 'lab_versions.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE lab_versions
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE lab_versions
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
-		NAME					    CHAR
+		NAME					    CHAR(2000)
 	)
 

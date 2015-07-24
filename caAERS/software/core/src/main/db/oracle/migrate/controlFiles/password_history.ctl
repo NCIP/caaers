@@ -1,14 +1,14 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'password_history.csv'
+	INFILE 'password_history.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE password_history
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE password_history
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		USER_ID				    INTEGER EXTERNAL(10),
-		PASSWORD					    CHAR,
+		PASSWORD					    CHAR(2000),
 		LIST_INDEX				    INTEGER EXTERNAL(10)
 	)
 

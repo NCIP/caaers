@@ -1,19 +1,19 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'csm_protection_element.csv'
+	INFILE 'csm_protection_element.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE csm_protection_element
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE csm_protection_element
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		PROTECTION_ELEMENT_ID			    INTEGER EXTERNAL(38),
-		PROTECTION_ELEMENT_NAME		    CHAR,
-		PROTECTION_ELEMENT_DESCRIPTION 		    CHAR,
-		OBJECT_ID				    CHAR,
-		ATTRIBUTE					    CHAR,
-		ATTRIBUTE_VALUE				    CHAR,
-		PROTECTION_ELEMENT_TYPE			    CHAR,
+		PROTECTION_ELEMENT_NAME		    CHAR(2000),
+		PROTECTION_ELEMENT_DESCRIPTION 		    CHAR(2000),
+		OBJECT_ID				    CHAR(2000),
+		ATTRIBUTE					    CHAR(2000),
+		ATTRIBUTE_VALUE				    CHAR(2000),
+		PROTECTION_ELEMENT_TYPE			    CHAR(2000),
 		APPLICATION_ID 			    INTEGER EXTERNAL(38),
 		UPDATE_DATE				   DATE "YYYY-MM-DD" NULLIF UPDATE_DATE=""
 	)

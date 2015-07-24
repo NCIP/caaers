@@ -1,16 +1,16 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'role_privilege.csv'
+	INFILE 'role_privilege.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE role_privilege
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE role_privilege
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		ROLE_NAME				    CHAR,
-		OBJECT_ID				    CHAR,
-		PRIVILEGE				    CHAR
+		ROLE_NAME				    CHAR(2000),
+		OBJECT_ID				    CHAR(2000),
+		PRIVILEGE				    CHAR(2000)
 	)
 

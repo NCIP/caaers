@@ -1,15 +1,15 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'csm_protection_group.csv'
+	INFILE 'csm_protection_group.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE csm_protection_group
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE csm_protection_group
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		PROTECTION_GROUP_ID			    INTEGER EXTERNAL(38),
-		PROTECTION_GROUP_NAME			    CHAR,
-		PROTECTION_GROUP_DESCRIPTION			    CHAR,
+		PROTECTION_GROUP_NAME			    CHAR(2000),
+		PROTECTION_GROUP_DESCRIPTION			    CHAR(2000),
 		APPLICATION_ID 			    INTEGER EXTERNAL(38),
 		LARGE_ELEMENT_COUNT_FLAG		    INTEGER EXTERNAL(1),
 		UPDATE_DATE				   DATE "YYYY-MM-DD" NULLIF UPDATE_DATE="",

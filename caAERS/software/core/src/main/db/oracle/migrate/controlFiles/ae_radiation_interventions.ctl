@@ -1,23 +1,23 @@
-OPTIONS (SKIP=1) 
+
 LOAD DATA
-	INFILE 'ae_radiation_interventions.csv'
+	INFILE 'ae_radiation_interventions.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE ae_radiation_interventions
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE ae_radiation_interventions
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		VERSION				    INTEGER EXTERNAL(10),
 		REPORT_ID				    INTEGER EXTERNAL(10),
 		RADIATION_ADMINISTRATION_CODE			    INTEGER EXTERNAL(10),
-		DOSAGE 					    CHAR,
-		DOSAGE_UNIT					    CHAR,
+		DOSAGE 					    CHAR(2000),
+		DOSAGE_UNIT					    CHAR(2000),
 		LAST_TREATMENT_DATE				   DATE "YYYY-MM-DD" NULLIF LAST_TREATMENT_DATE="",
-		FRACTION_NUMBER				    CHAR,
-		DAYS_ELAPSED					    CHAR,
-		ADJUSTMENT					    CHAR,
+		FRACTION_NUMBER				    CHAR(2000),
+		DAYS_ELAPSED					    CHAR(2000),
+		ADJUSTMENT					    CHAR(2000),
 		LIST_INDEX					    INTEGER EXTERNAL(10),
 		STUDY_INTERVENTION_ID				    INTEGER EXTERNAL(10)
 	)

@@ -1,10 +1,10 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'meddra_hlgt_hlt.csv'
+	INFILE 'meddra_hlgt_hlt.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE meddra_hlgt_hlt
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE meddra_hlgt_hlt
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),

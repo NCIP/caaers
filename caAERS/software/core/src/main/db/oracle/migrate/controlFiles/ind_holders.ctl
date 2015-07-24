@@ -1,18 +1,18 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'ind_holders.csv'
+	INFILE 'ind_holders.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE ind_holders
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE ind_holders
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
-		DTYPE					    CHAR,
+		DTYPE					    CHAR(2000),
 		ORG_ID 					    INTEGER EXTERNAL(10),
 		INV_ID 					    INTEGER EXTERNAL(10),
 		DRUG_ID				    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR
+		GRID_ID					    CHAR(2000)
 	)
 

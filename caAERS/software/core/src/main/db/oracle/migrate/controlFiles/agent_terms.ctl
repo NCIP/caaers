@@ -1,20 +1,20 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'agent_terms.csv'
+	INFILE 'agent_terms.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE agent_terms
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE agent_terms
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
 		AGENT_ID					    INTEGER EXTERNAL(10),
 		TERM_ID				    INTEGER EXTERNAL(10),
-		TERM_TYPE					    CHAR,
+		TERM_TYPE					    CHAR(2000),
 		LOW_LEVEL_TERM_ID				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
-		OTHER_TOXICITY 				    CHAR,
+		GRID_ID					    CHAR(2000),
+		OTHER_TOXICITY 				    CHAR(2000),
 		EXPECTEDNESS_FREQUENCY 			    FLOAT EXTERNAL(126),
 		GRADE1FREQUENCY				    FLOAT EXTERNAL(126),
 		GRADE2FREQUENCY				    FLOAT EXTERNAL(126),

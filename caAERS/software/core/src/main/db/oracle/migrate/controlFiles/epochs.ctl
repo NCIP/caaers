@@ -1,19 +1,19 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'epochs.csv'
+	INFILE 'epochs.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE epochs
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE epochs
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		NAME					    CHAR,
-		DESCRIPTION					    CHAR,
+		NAME					    CHAR(2000),
+		DESCRIPTION					    CHAR(2000),
 		STUDY_ID					    INTEGER EXTERNAL(10),
 		ORDER_NO				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		RETIRED_INDICATOR				    INTEGER EXTERNAL(1) "case :RETIRED_INDICATOR
 															when 't'then to_number(1)
 															when 'f'then to_number(0)

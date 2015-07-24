@@ -1,18 +1,18 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'reconciliation_reports.csv'
+	INFILE 'reconciliation_reports.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE reconciliation_reports
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE reconciliation_reports
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		REPORTING_PERIOD_ID				    INTEGER EXTERNAL(10),
 		CREATED_DATE				   DATE "YYYY-MM-DD" NULLIF CREATED_DATE="",
 		UPDATED_DATE					   DATE "YYYY-MM-DD" NULLIF UPDATED_DATE="",
-		REVIEWED_BY				    CHAR
+		REVIEWED_BY				    CHAR(2000)
 	)
 

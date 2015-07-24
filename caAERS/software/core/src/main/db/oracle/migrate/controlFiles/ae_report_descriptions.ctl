@@ -1,17 +1,17 @@
-OPTIONS (SKIP=1) 
+
 LOAD DATA
-	INFILE 'ae_report_descriptions.csv'
+	INFILE 'ae_report_descriptions.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE ae_report_descriptions
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE ae_report_descriptions
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		REPORT_ID				    INTEGER EXTERNAL(10),
-		EVENT_DESCRIPTION				    CHAR,
+		EVENT_DESCRIPTION				    CHAR(2000),
 		PRESENT_STATUS_CODE				    INTEGER EXTERNAL(10),
 		RECOVERY_DATE					   DATE "YYYY-MM-DD" NULLIF RECOVERY_DATE="",
 		RETREATED					    INTEGER EXTERNAL(1) "case :RETREATED
@@ -27,15 +27,15 @@ LOAD DATA
 															when 't'then to_number(1)
 															when 'f'then to_number(0)
 															END",
-		REDUCED_DOSE					    CHAR,
+		REDUCED_DOSE					    CHAR(2000),
 		REDUCED_DATE					   DATE "YYYY-MM-DD" NULLIF REDUCED_DATE="",
 		DAYS_NOT_GIVEN 				    INTEGER EXTERNAL(10),
 		AUTOPSY_PERFORMED				    INTEGER EXTERNAL(1) "case :AUTOPSY_PERFORMED
 															when 't'then to_number(1)
 															when 'f'then to_number(0)
 															END",
-		CAUSE_OF_DEATH 				    CHAR,
-		PRIMARY_TREATMENT				    CHAR,
+		CAUSE_OF_DEATH 				    CHAR(2000),
+		PRIMARY_TREATMENT				    CHAR(2000),
 		TREATMENT_TIME_HOUR				    INTEGER EXTERNAL(10),
 		TREATMENT_TIME_MINUTE				    INTEGER EXTERNAL(10),
 		TREATMENT_TIME_ZONE				    INTEGER EXTERNAL(10),

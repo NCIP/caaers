@@ -1,10 +1,10 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'ta_expected_ae_intervention.csv'
+	INFILE 'ta_expected_ae_intervention.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE ta_expected_ae_intervention
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE ta_expected_ae_intervention
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		TA_EXPECTED_ID 				    INTEGER EXTERNAL(10),

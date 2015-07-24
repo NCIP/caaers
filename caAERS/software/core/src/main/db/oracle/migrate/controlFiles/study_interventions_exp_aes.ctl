@@ -1,16 +1,16 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'study_interventions_exp_aes.csv'
+	INFILE 'study_interventions_exp_aes.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE study_interventions_exp_aes
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE study_interventions_exp_aes
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		VERSION				    INTEGER EXTERNAL(10),
-		TERM_TYPE					    CHAR,
+		TERM_TYPE					    CHAR(2000),
 		TERM_ID					    INTEGER EXTERNAL(10),
 		LOW_LEVEL_TERM_ID				    INTEGER EXTERNAL(10),
 		EXPECTEDNESS_FREQUENCY 			    FLOAT EXTERNAL(126),

@@ -1,16 +1,16 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'investigational_new_drugs.csv'
+	INFILE 'investigational_new_drugs.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE investigational_new_drugs
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE investigational_new_drugs
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		IND_NUMBER					    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
-		STATUS 					    CHAR
+		GRID_ID					    CHAR(2000),
+		STATUS 					    CHAR(2000)
 	)
 

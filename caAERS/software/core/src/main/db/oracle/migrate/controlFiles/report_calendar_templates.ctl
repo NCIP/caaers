@@ -1,20 +1,20 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'report_calendar_templates.csv'
+	INFILE 'report_calendar_templates.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE report_calendar_templates
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE report_calendar_templates
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
-		NAME					    CHAR,
-		DESCRIPTION					    CHAR,
+		NAME					    CHAR(2000),
+		DESCRIPTION					    CHAR(2000),
 		DURATION				    INTEGER EXTERNAL(10),
 		ORG_ID 					    INTEGER EXTERNAL(10),
 		TIME_SCALE_UNIT_CODE			    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		AMENDABLE					    INTEGER EXTERNAL(1) "case :AMENDABLE
 															when 't'then to_number(1)
 															when 'f'then to_number(0)
@@ -23,7 +23,7 @@ LOAD DATA
 															when 't'then to_number(1)
 															when 'f'then to_number(0)
 															END",
-		LABEL						    CHAR,
+		LABEL						    CHAR(2000),
 		REPORT_FORMAT_TYPE			    INTEGER EXTERNAL(10),
 		PHYSICIAN_SIGNOFF			    INTEGER EXTERNAL(1) "case :PHYSICIAN_SIGNOFF
 															when 't'then to_number(1)
@@ -36,8 +36,8 @@ LOAD DATA
 															when 't'then to_number(1)
 															when 'f'then to_number(0)
 															END",
-		HEADER 					    CHAR,
-		FOOTER 					    CHAR,
+		HEADER 					    CHAR(2000),
+		FOOTER 					    CHAR(2000),
 		ENABLED				    INTEGER EXTERNAL(1) "case :ENABLED
 															when 't'then to_number(1)
 															when 'f'then to_number(0)

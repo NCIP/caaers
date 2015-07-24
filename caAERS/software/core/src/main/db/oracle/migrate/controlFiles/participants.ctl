@@ -1,25 +1,25 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'participants.csv'
+	INFILE 'participants.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE participants
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE participants
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
-		INSTITUITIONAL_PATIENT_NUMBER			    CHAR,
-		INSTITUTION					    CHAR,
-		STUDY_PARTICIPANT_NAME 			    CHAR,
-		FIRST_NAME					    CHAR,
-		LAST_NAME					    CHAR,
-		GENDER 					    CHAR,
-		ETHNICITY					    CHAR,
-		RACE						    CHAR,
+		INSTITUITIONAL_PATIENT_NUMBER			    CHAR(2000),
+		INSTITUTION					    CHAR(2000),
+		STUDY_PARTICIPANT_NAME 			    CHAR(2000),
+		FIRST_NAME					    CHAR(2000),
+		LAST_NAME					    CHAR(2000),
+		GENDER 					    CHAR(2000),
+		ETHNICITY					    CHAR(2000),
+		RACE						    CHAR(2000),
 		VERSION				    INTEGER EXTERNAL(10),
-		MIDDLE_NAME					    CHAR,
-		MAIDEN_NAME					    CHAR,
-		GRID_ID					    CHAR,
+		MIDDLE_NAME					    CHAR(2000),
+		MAIDEN_NAME					    CHAR(2000),
+		GRID_ID					    CHAR(2000),
 		LOAD_STATUS					    INTEGER EXTERNAL(10),
 		BIRTH_YEAR					    INTEGER EXTERNAL(10),
 		BIRTH_MONTH					    INTEGER EXTERNAL(10),

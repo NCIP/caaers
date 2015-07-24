@@ -1,14 +1,14 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'ta_devices.csv'
+	INFILE 'ta_devices.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE ta_devices
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE ta_devices
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		VERSION				    INTEGER EXTERNAL(10),
 		STUDY_DEVICE_ID				    INTEGER EXTERNAL(10)
 	)

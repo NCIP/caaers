@@ -1,16 +1,16 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'study_agent_inds.csv'
+	INFILE 'study_agent_inds.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE study_agent_inds
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE study_agent_inds
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		STUDY_AGENT_ID 			    INTEGER EXTERNAL(10),
 		IND_ID 					    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR
+		GRID_ID					    CHAR(2000)
 	)
 

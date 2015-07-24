@@ -1,17 +1,17 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'arms.csv'
+	INFILE 'arms.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE arms
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE arms
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		NAME					    CHAR,
-		DESCRIPTION					    CHAR,
+		NAME					    CHAR(2000),
+		DESCRIPTION					    CHAR(2000),
 		EPOCH_ID				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR
+		GRID_ID					    CHAR(2000)
 	)
 

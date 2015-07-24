@@ -1,19 +1,19 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'wf_transition_owners.csv'
+	INFILE 'wf_transition_owners.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE wf_transition_owners
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE wf_transition_owners
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		NAME						    CHAR,
+		NAME						    CHAR(2000),
 		USER_ROLE_ID					    INTEGER EXTERNAL(10),
 		TRANSITION_CONFIG_ID			    INTEGER EXTERNAL(10),
-		DTYPE					    CHAR,
-		GRID_ID					    CHAR,
+		DTYPE					    CHAR(2000),
+		GRID_ID					    CHAR(2000),
 		INVESTIGATOR_ID				    INTEGER EXTERNAL(10),
 		RESEARCHSTAFF_ID				    INTEGER EXTERNAL(10)
 	)

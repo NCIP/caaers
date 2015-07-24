@@ -1,26 +1,26 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'csm_user.csv'
+	INFILE 'csm_user.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE csm_user
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE csm_user
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		USER_ID				    INTEGER EXTERNAL(38),
-		LOGIN_NAME				    CHAR,
-		FIRST_NAME				    CHAR,
-		LAST_NAME				    CHAR,
-		ORGANIZATION					    CHAR,
-		DEPARTMENT					    CHAR,
-		TITLE						    CHAR,
-		PHONE_NUMBER					    CHAR,
-		PASSWORD					    CHAR,
-		EMAIL_ID					    CHAR,
+		LOGIN_NAME				    CHAR(2000),
+		FIRST_NAME				    CHAR(2000),
+		LAST_NAME				    CHAR(2000),
+		ORGANIZATION					    CHAR(2000),
+		DEPARTMENT					    CHAR(2000),
+		TITLE						    CHAR(2000),
+		PHONE_NUMBER					    CHAR(2000),
+		PASSWORD					    CHAR(2000),
+		EMAIL_ID					    CHAR(2000),
 		START_DATE					   DATE "YYYY-MM-DD" NULLIF START_DATE="",
 		END_DATE					   DATE "YYYY-MM-DD" NULLIF END_DATE="",
 		UPDATE_DATE				   DATE "YYYY-MM-DD" NULLIF UPDATE_DATE="",
 		MIGRATED_FLAG				    INTEGER EXTERNAL(1),
-		PREMGRT_LOGIN_NAME				    CHAR
+		PREMGRT_LOGIN_NAME				    CHAR(2000)
 	)
 

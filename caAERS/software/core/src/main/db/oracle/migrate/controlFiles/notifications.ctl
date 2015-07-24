@@ -1,20 +1,20 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'notifications.csv'
+	INFILE 'notifications.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE notifications
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE notifications
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
-		CONTENT					    CHAR,
-		SUBJECT					    CHAR,
-		NAME						    CHAR,
+		CONTENT					    CHAR(2000),
+		SUBJECT					    CHAR(2000),
+		NAME						    CHAR(2000),
 		VERSION				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
-		ROLES						    CHAR,
-		EMAILS 					    CHAR,
+		GRID_ID					    CHAR(2000),
+		ROLES						    CHAR(2000),
+		EMAILS 					    CHAR(2000),
 		STUDY_ID					    INTEGER EXTERNAL(10)
 	)
 

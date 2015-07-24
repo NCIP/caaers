@@ -1,6 +1,6 @@
 class updateAETreatmentAssignment extends edu.northwestern.bioinformatics.bering.Migration {
     void up() {
-        addColumn("ae_reporting_periods", "treatment_assignment_desc", "string")
+        addColumn("ae_reporting_periods", "treatment_assignment_desc", "string", limit:4000)
     }
 
     void down(){

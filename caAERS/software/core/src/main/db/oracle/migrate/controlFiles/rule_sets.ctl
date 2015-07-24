@@ -1,10 +1,10 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'rule_sets.csv'
+	INFILE 'rule_sets.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE rule_sets
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE rule_sets
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
@@ -13,10 +13,10 @@ LOAD DATA
 		STAGED_VERSION 			    INTEGER EXTERNAL(10),
 		DEPLOYED_VERSION			    INTEGER EXTERNAL(10),
 		ORGANIZATION_ID				    INTEGER EXTERNAL(10),
-		RULE_TYPE_NAME 			    CHAR,
-		RULE_LEVEL_NAME				    CHAR,
-		STATUS 				    CHAR,
-		RULE_BINDURI				    CHAR,
-		GRID_ID					    CHAR
+		RULE_TYPE_NAME 			    CHAR(2000),
+		RULE_LEVEL_NAME				    CHAR(2000),
+		STATUS 				    CHAR(2000),
+		RULE_BINDURI				    CHAR(2000),
+		GRID_ID					    CHAR(2000)
 	)
 

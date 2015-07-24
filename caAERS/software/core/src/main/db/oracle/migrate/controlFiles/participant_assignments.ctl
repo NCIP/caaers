@@ -1,10 +1,10 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'participant_assignments.csv'
+	INFILE 'participant_assignments.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE participant_assignments
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE participant_assignments
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
@@ -12,10 +12,10 @@ LOAD DATA
 		PARTICIPANT_ID 			    INTEGER EXTERNAL(10),
 		DATE_OF_ENROLLMENT			   DATE "YYYY-MM-DD" NULLIF DATE_OF_ENROLLMENT="",
 		VERSION				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		LOAD_STATUS					    INTEGER EXTERNAL(10),
-		STUDY_SUBJECT_IDENTIFIER			    CHAR,
+		STUDY_SUBJECT_IDENTIFIER			    CHAR(2000),
 		FIRST_COURSE_DATE				   DATE "YYYY-MM-DD" NULLIF FIRST_COURSE_DATE="",
-		BASELINE_PERFORMANCE				    CHAR
+		BASELINE_PERFORMANCE				    CHAR(2000)
 	)
 

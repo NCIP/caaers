@@ -3,7 +3,7 @@ class CreateIntegrationLogMessageTable extends edu.northwestern.bioinformatics.b
        	createTable("integration_log_message") { t ->
             t.addColumn("combo_message_id", "string", nullable: false)
             t.addVersionColumn()
-            t.addColumn("message", "string", nullable: false)
+            t.addColumn("message", "string", nullable: false, limit:4000)
             t.addColumn("stage", "string", nullable: false)
             t.addColumn("log_id", "integer", nullable: false)
         }

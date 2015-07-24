@@ -1,26 +1,26 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'site_research_staffs.csv'
+	INFILE 'site_research_staffs.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE site_research_staffs
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE site_research_staffs
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		SITE_ID				    INTEGER EXTERNAL(10),
 		RESEARCHSTAFF_ID			    INTEGER EXTERNAL(10),
-		EMAIL_ADDRESS					    CHAR,
-		PHONE_NUMBER					    CHAR,
-		FAX_NUMBER					    CHAR,
-		GRID_ID					    CHAR,
-		STREET 					    CHAR,
-		CITY						    CHAR,
-		STATE						    CHAR,
-		ZIP						    CHAR,
+		EMAIL_ADDRESS					    CHAR(2000),
+		PHONE_NUMBER					    CHAR(2000),
+		FAX_NUMBER					    CHAR(2000),
+		GRID_ID					    CHAR(2000),
+		STREET 					    CHAR(2000),
+		CITY						    CHAR(2000),
+		STATE						    CHAR(2000),
+		ZIP						    CHAR(2000),
 		CODE						    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		COUNTRY					    CHAR,
+		COUNTRY					    CHAR(2000),
 		ASSOCIATE_ALL_STUDIES				    INTEGER EXTERNAL(1)  "case :ASSOCIATE_ALL_STUDIES
 															when 't'then to_number(1)
 															when 'f'then to_number(0)

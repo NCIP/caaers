@@ -1,10 +1,10 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'csm_user_group_role_pg.csv'
+	INFILE 'csm_user_group_role_pg.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE csm_user_group_role_pg
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE csm_user_group_role_pg
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		USER_GROUP_ROLE_PG_ID			    INTEGER EXTERNAL(38),

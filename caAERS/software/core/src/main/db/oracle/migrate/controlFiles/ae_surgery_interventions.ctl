@@ -1,18 +1,18 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'ae_surgery_interventions.csv'
+	INFILE 'ae_surgery_interventions.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE ae_surgery_interventions
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE ae_surgery_interventions
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		VERSION				    INTEGER EXTERNAL(10),
 		REPORT_ID				    INTEGER EXTERNAL(10),
-		TREATMENT_ARM					    CHAR,
-		DESCRIPTION					    CHAR,
+		TREATMENT_ARM					    CHAR(2000),
+		DESCRIPTION					    CHAR(2000),
 		INTERVENTION_DATE				   DATE "YYYY-MM-DD" NULLIF INTERVENTION_DATE="",
 		LIST_INDEX					    INTEGER EXTERNAL(10),
 		INTERVENTION_SITE_ID				    INTEGER EXTERNAL(10),

@@ -1,10 +1,10 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'csm_pg_pe.csv'
+	INFILE 'csm_pg_pe.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE csm_pg_pe
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE csm_pg_pe
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		PG_PE_ID				    INTEGER EXTERNAL(38),

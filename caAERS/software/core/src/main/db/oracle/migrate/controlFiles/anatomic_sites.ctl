@@ -1,16 +1,16 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'anatomic_sites.csv'
+	INFILE 'anatomic_sites.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE anatomic_sites
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE anatomic_sites
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
-		NAME					    CHAR,
-		CATEGORY				    CHAR,
-		GRID_ID					    CHAR,
+		NAME					    CHAR(2000),
+		CATEGORY				    CHAR(2000),
+		GRID_ID					    CHAR(2000),
 		VERSION				    INTEGER EXTERNAL(10)
 	)
 

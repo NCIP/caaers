@@ -1,17 +1,17 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'ae_terms.csv'
+	INFILE 'ae_terms.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE ae_terms
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE ae_terms
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		ADVERSE_EVENT_ID			    INTEGER EXTERNAL(10),
 		TERM_ID					    INTEGER EXTERNAL(10),
-		TERM_TYPE					    CHAR,
+		TERM_TYPE					    CHAR(2000),
 		VERSION				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR
+		GRID_ID					    CHAR(2000)
 	)
 

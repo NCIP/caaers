@@ -3,7 +3,7 @@ class CreateReportTracking extends edu.northwestern.bioinformatics.bering.Migrat
         createTable("report_tracking_status") { t ->
             t.addVersionColumn()
             t.addColumn("status", "boolean", nullable:false)
-            t.addColumn("status_message", "string")
+            t.addColumn("status_message", "string", limit:4000)
 			t.addColumn("recorded_time", "date", nullable:false)
 			t.addColumn('grid_id' , 'string' , nullable:true)
         }

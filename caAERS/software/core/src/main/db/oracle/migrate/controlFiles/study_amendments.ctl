@@ -1,19 +1,19 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'study_amendments.csv'
+	INFILE 'study_amendments.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE study_amendments
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE study_amendments
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		AMENDMENT_VERSION				    INTEGER EXTERNAL(10),
 		AMENDMENT_DATE 				   DATE "YYYY-MM-DD" NULLIF AMENDMENT_DATE="",
-		COMMENTS					    CHAR,
+		COMMENTS					    CHAR(2000),
 		IRB_APPROVAL_DATE			   DATE "YYYY-MM-DD" NULLIF IRB_APPROVAL_DATE="",
 		STU_ID 				    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR
+		GRID_ID					    CHAR(2000)
 	)
 

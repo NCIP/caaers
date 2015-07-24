@@ -3,7 +3,7 @@ class RegularCharFieldsForNotifications extends edu.northwestern.bioinformatics.
         ['planned', 'scheduled'].each { t ->
             // this implementation copies existing values on PostgreSQL only.  There are no deployed
             // oracle systems at present.
-            addColumn("${t}_notifications", 'body_text', 'string')
+            addColumn("${t}_notifications", 'body_text', 'string', limit:4000)
 
             if (databaseMatches('postgres')) {
                 // note that this will not fully copy the body if there is more than

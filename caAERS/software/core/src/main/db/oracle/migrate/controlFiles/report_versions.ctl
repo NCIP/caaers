@@ -1,10 +1,10 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'report_versions.csv'
+	INFILE 'report_versions.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE report_versions
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE report_versions
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
@@ -17,15 +17,15 @@ LOAD DATA
 															when 't'then to_number(1)
 															when 'f'then to_number(0)
 															END",
-		EMAIL						    CHAR,
+		EMAIL						    CHAR(2000),
 		REPORT_ID					    INTEGER EXTERNAL(10),
 		LIST_INDEX					    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
-		REPORT_VERSION_ID				    CHAR,
-		ASSIGNED_IDENTIFER				    CHAR,
-		SUBMISSION_MESSAGE				    CHAR,
-		SUBMISSION_URL 				    CHAR,		
+		GRID_ID					    CHAR(2000),
+		REPORT_VERSION_ID				    CHAR(2000),
+		ASSIGNED_IDENTIFER				    CHAR(2000),
+		SUBMISSION_MESSAGE				    CHAR(4000),
+		SUBMISSION_URL 				    CHAR(2000),		
 		AMENDED_ON					    TIMESTAMP(6) "YYYY-MM-DD HH24:MI:SS.FF6" NULLIF AMENDED_ON="",
 		AMENDMENT_NUMBER				    INTEGER EXTERNAL(10)
 	)

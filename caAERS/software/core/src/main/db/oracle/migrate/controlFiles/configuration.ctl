@@ -1,14 +1,14 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'configuration.csv'
+	INFILE 'configuration.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE configuration
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE configuration
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
-		KEY					    CHAR,
-		VALUE						    CHAR,
+		KEY					    CHAR(2000),
+		VALUE						    CHAR(2000),
 		VERSION				    INTEGER EXTERNAL(10)
 	)
 

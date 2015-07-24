@@ -1,17 +1,17 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'investigator_index.csv'
+	INFILE 'investigator_index.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE investigator_index
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE investigator_index
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		LOGIN_ID					    CHAR,
+		LOGIN_ID					    CHAR(2000),
 		INVESTIGATOR_ID			    INTEGER EXTERNAL,
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		ROLE					    INTEGER EXTERNAL(10)
 	)
 

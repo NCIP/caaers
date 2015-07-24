@@ -1,21 +1,21 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'expected_aes.csv'
+	INFILE 'expected_aes.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE expected_aes
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE expected_aes
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
 		STUDY_ID					    INTEGER EXTERNAL(10),
 		TERM_ID					    INTEGER EXTERNAL(10),
-		TERM_TYPE					    CHAR,
-		GRID_ID					    CHAR,
+		TERM_TYPE					    CHAR(2000),
+		GRID_ID					    CHAR(2000),
 		LOW_LEVEL_TERM_ID				    INTEGER EXTERNAL(10),
-		VERBATIM					    CHAR,
-		OTHER_TOXICITY 				    CHAR,
+		VERBATIM					    CHAR(2000),
+		OTHER_TOXICITY 				    CHAR(2000),
 		LAST_SYNCHED_DATE				    TIMESTAMP(6) "YYYY-MM-DD HH24:MI:SS.FF6" NULLIF LAST_SYNCHED_DATE=""
 	)
 

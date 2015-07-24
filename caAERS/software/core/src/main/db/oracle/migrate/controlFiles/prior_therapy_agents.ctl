@@ -1,15 +1,15 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'prior_therapy_agents.csv'
+	INFILE 'prior_therapy_agents.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE prior_therapy_agents
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE prior_therapy_agents
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		AE_PRIOR_THERAPY_ID			    INTEGER EXTERNAL(10),
 		LIST_INDEX				    INTEGER EXTERNAL(10),
 		CHEMO_AGENT_ID 				    INTEGER EXTERNAL(10),

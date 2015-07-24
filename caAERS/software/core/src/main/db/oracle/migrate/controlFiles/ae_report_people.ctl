@@ -1,29 +1,29 @@
-OPTIONS (SKIP=1) 
+
 LOAD DATA
-	INFILE 'ae_report_people.csv'
+	INFILE 'ae_report_people.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE ae_report_people
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE ae_report_people
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
 		VERSION				    INTEGER EXTERNAL(10),
-		FIRST_NAME					    CHAR,
-		MIDDLE_NAME					    CHAR,
-		LAST_NAME					    CHAR,
+		FIRST_NAME					    CHAR(2000),
+		MIDDLE_NAME					    CHAR(2000),
+		LAST_NAME					    CHAR(2000),
 		REPORT_ID					    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
-		ROLE					    CHAR,
+		GRID_ID					    CHAR(2000),
+		ROLE					    CHAR(2000),
 		REPORT_VERSION_ID				    INTEGER EXTERNAL(10),
-		TITLE						    CHAR,
-		STREET 					    CHAR,
-		CITY						    CHAR,
-		STATE						    CHAR,
-		ZIP						    CHAR,
+		TITLE						    CHAR(2000),
+		STREET 					    CHAR(2000),
+		CITY						    CHAR(2000),
+		STATE						    CHAR(2000),
+		ZIP						    CHAR(2000),
 		CODE						    INTEGER EXTERNAL(10),
 		INVESTIGATOR_ID				    INTEGER EXTERNAL(10),
 		RESEARCHSTAFF_ID				    INTEGER EXTERNAL(10),
-		COUNTRY					    CHAR
+		COUNTRY					    CHAR(2000)
 	)
 

@@ -1,13 +1,13 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'ae_cause_types.csv'
+	INFILE 'ae_cause_types.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE ae_cause_types
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE ae_cause_types
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
-		CODE					    CHAR,
-		NAME					    CHAR
+		CODE					    CHAR(2000),
+		NAME					    CHAR(2000)
 	)
 

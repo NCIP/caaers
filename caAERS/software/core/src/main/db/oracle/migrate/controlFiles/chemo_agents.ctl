@@ -1,14 +1,14 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'chemo_agents.csv'
+	INFILE 'chemo_agents.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE chemo_agents
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE chemo_agents
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
-		NAME						    CHAR,
-		GENERIC_NAME					    CHAR
+		NAME						    CHAR(2000),
+		GENERIC_NAME					    CHAR(2000)
 	)
 

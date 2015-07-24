@@ -1,17 +1,17 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'spa_metastatic_disease_sites.csv'
+	INFILE 'spa_metastatic_disease_sites.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE spa_metastatic_disease_sites
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE spa_metastatic_disease_sites
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
-		OTHER_SITE					    CHAR,
+		OTHER_SITE					    CHAR(2000),
 		CODED_SITE_ID					    INTEGER EXTERNAL(10),
 		SPA_DISEASE_HISTORY_ID 			    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		VERSION				    INTEGER EXTERNAL(10)
 	)
 

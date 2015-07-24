@@ -1,15 +1,15 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'csm_role.csv'
+	INFILE 'csm_role.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE csm_role
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE csm_role
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ROLE_ID				    INTEGER EXTERNAL(38),
-		ROLE_NAME				    CHAR,
-		ROLE_DESCRIPTION				    CHAR,
+		ROLE_NAME				    CHAR(2000),
+		ROLE_DESCRIPTION				    CHAR(2000),
 		APPLICATION_ID 			    INTEGER EXTERNAL(38),
 		ACTIVE_FLAG				    INTEGER EXTERNAL(1),
 		UPDATE_DATE				   DATE "YYYY-MM-DD" NULLIF UPDATE_DATE=""

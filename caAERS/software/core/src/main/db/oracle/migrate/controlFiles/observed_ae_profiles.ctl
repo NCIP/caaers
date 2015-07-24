@@ -1,14 +1,14 @@
-OPTIONS (SKIP=1)
+
 LOAD DATA
-	INFILE 'observed_ae_profiles.csv'
+	INFILE 'observed_ae_profiles.txt'
 	DISCARDMAX 9999
-	APPEND INTO TABLE observed_ae_profiles
-	fields terminated by ','
-	optionally enclosed by '"' AND '"'
+	TRUNCATE INTO TABLE observed_ae_profiles
+	fields terminated by '\t'
+	
 	trailing NULLCOLS
 	(
 		ID					    INTEGER EXTERNAL(10),
-		GRID_ID					    CHAR,
+		GRID_ID					    CHAR(2000),
 		VERSION				    INTEGER EXTERNAL(10),
 		EXPECTED_FREQUENCY			    FLOAT EXTERNAL(126),
 		OBSERVED_FREQUENCY				    FLOAT EXTERNAL(126),
@@ -16,8 +16,8 @@ LOAD DATA
 		STANDARD_DEVIATION				    FLOAT EXTERNAL(126),
 		P_VALUE					    FLOAT EXTERNAL(126),
 		OBSERVED_SIGNIFICANCE				    FLOAT EXTERNAL(126),
-		NOTIFICATION_STATUS				    CHAR,
-		GRADE						    CHAR,
+		NOTIFICATION_STATUS				    CHAR(2000),
+		GRADE						    CHAR(2000),
 		TREATMENT_ASSIGNMENT_ID		    INTEGER EXTERNAL(10),
 		TERM_ID					    INTEGER EXTERNAL(10),
 		MEDDRA_LLT_ID					    INTEGER EXTERNAL(10),
