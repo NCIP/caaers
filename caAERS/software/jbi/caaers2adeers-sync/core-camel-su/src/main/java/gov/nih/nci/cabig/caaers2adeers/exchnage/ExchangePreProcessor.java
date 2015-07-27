@@ -30,6 +30,7 @@ public class ExchangePreProcessor implements Processor {
     public static final String CAAERS_WS_PASSWORD = "c2a_caaers_ws_password";
     public static final String ADEERS_WS_USERNAME = "c2a_adeers_ws_username";
     public static final String ADEERS_WS_PASSWORD = "c2a_adeers_ws_password";
+    public static final String ENTRED_ON = "c2a_entered_on";
 
     
     private String caaersWSUser;
@@ -51,6 +52,7 @@ public class ExchangePreProcessor implements Processor {
         properties.put(CAAERS_WS_PASSWORD, caaersWSPassword);
         properties.put(ADEERS_WS_USERNAME, adeersWSUser);
         properties.put(ADEERS_WS_PASSWORD, adeersWSPassword);
+        properties.put(ENTRED_ON, System.currentTimeMillis());
         properties.put(CORRELATION_ID, HeaderGeneratorProcessor.makeCorrelationId());
 
         try {

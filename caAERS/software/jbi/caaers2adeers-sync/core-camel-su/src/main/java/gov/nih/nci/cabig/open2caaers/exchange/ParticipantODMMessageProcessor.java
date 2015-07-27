@@ -26,6 +26,7 @@ public class ParticipantODMMessageProcessor implements Processor {
 	public static final String ENTITY_NAME = "c2a_entity";
     public static final String CAAERS_WS_USERNAME = "c2a_caaers_ws_username";
     public static final String CAAERS_WS_PASSWORD = "c2a_caaers_ws_password";
+    public static final String ENTRED_ON = "c2a_entered_on";
 
     //user name and password to use while invoking caAERS
 	private String caaersWSUser;
@@ -67,6 +68,7 @@ public class ParticipantODMMessageProcessor implements Processor {
 		log.debug("adding correlationId.");
 		Object correlationId = HeaderGeneratorProcessor.makeCorrelationId();
 		properties.put(CORRELATION_ID, correlationId);
+        properties.put(ENTRED_ON, System.currentTimeMillis());
 
 		if (log.isDebugEnabled())
 			log.debug("Exchange properties :" + String.valueOf(properties));
