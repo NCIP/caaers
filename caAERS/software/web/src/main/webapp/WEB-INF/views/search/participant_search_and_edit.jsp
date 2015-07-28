@@ -70,8 +70,12 @@ var nameFormatter = function(elCell, oRecord, oColumn, oData) {
     var _id = oRecord.getData("id");
     var _fname = oRecord.getData("firstName");
     var _lname = oRecord.getData("lastName");
+    if(!_fname) (_fname = '');
+    if(!_lname) (_lname = '');
     elCell.innerHTML = _fname + "&nbsp;" + _lname;
 };
+
+
 
 var actionsFormatter = function(elCell, oRecord, oColumn, oData) {
     var _id = oRecord.getData("id");
