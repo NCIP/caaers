@@ -62,7 +62,9 @@ public class ExpeditedAdverseEventReportDao extends
     	log.debug("Saving ExpeditedAdverseEventReport..");
         getHibernateTemplate().saveOrUpdate(report);
         for (AdverseEvent ae : report.getAdverseEvents()) {
-            getHibernateTemplate().saveOrUpdate(ae);
+        	if(ae != null) {
+        		getHibernateTemplate().saveOrUpdate(ae);
+        	}
         }
         try {
             if (report.getReporter() != null && report.getReporter().isSavable()) {

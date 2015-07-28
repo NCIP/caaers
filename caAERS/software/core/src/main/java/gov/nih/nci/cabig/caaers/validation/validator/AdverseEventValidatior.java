@@ -100,7 +100,7 @@ public class AdverseEventValidatior {
         for (AdverseEvent ae : reportingPeriod.getAdverseEvents()) {
             if (ae.getGradedDate() != null && ae.getStartDate() != null && ae.getGradedDate().before(ae.getStartDate())) {
                 addValidationError(errors,"CAE_021", messageSource.getMessage("CAE_021",
-                        new String[] {}, "The Awareness date must be later than Start date", Locale.getDefault()) ) ;
+                        new String[] {ae.getGradedDate().toString(), ae.getStartDate().toString()}, "The Awareness date must be later than Start date", Locale.getDefault()) ) ;
                 break;
             }
 
