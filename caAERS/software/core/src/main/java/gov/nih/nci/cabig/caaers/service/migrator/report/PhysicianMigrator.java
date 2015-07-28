@@ -18,16 +18,6 @@ import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
  */
 public class PhysicianMigrator implements Migrator<ExpeditedAdverseEventReport> {
 
-
-    public boolean isValid(ReportPerson reportPerson){
-        if(reportPerson == null) return false;
-        if(StringUtils.isEmpty(reportPerson.getEmailAddress()) &&
-                StringUtils.isEmpty(reportPerson.getFirstName()) &&
-                StringUtils.isEmpty(reportPerson.getLastName())) return false;
-
-        return true;
-    }
-
     /**
      * A Physician could be
      * 1) an Investigator
@@ -41,15 +31,6 @@ public class PhysicianMigrator implements Migrator<ExpeditedAdverseEventReport> 
     	aeReportDest.setPhysician(new Physician());
         ReportPerson srcReportPerson = aeReportSrc.getPhysician();
         ReportPerson destReportPerson = aeReportDest.getPhysician();
-       
-        // the physician can be null
-        if(srcReportPerson == null || (StringUtils.isEmpty(srcReportPerson.getFirstName()) &&
-                StringUtils.isEmpty(srcReportPerson.getLastName()))) return;
-        
-        if (!isValid(srcReportPerson)) {
-            outcome.addError("ER-PM-1", "Physician is missing in the source");
-            return;
-        }
 
         StudySite site = aeReportDest.getAssignment().getStudySite();
         if (site == null) {

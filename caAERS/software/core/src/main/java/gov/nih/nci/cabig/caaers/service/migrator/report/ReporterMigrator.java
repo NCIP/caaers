@@ -19,15 +19,6 @@ import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 public class ReporterMigrator implements Migrator<ExpeditedAdverseEventReport> {
 	
 
-    public boolean isValid(ReportPerson reportPerson){
-        if(reportPerson == null) return false;
-        if(StringUtils.isEmpty(reportPerson.getEmailAddress()) &&
-                StringUtils.isEmpty(reportPerson.getFirstName()) &&
-                StringUtils.isEmpty(reportPerson.getLastName())) return false;
-
-        return true;
-    }
-
     /**
      * A reporter could be
      * 1) Research Staff
@@ -44,13 +35,8 @@ public class ReporterMigrator implements Migrator<ExpeditedAdverseEventReport> {
         ReportPerson destReportPerson = aeReportDest.getReporter();
         
         // the reporter can be null
-        if(srcReportPerson == null || (StringUtils.isEmpty(srcReportPerson.getFirstName()) &&
-                StringUtils.isEmpty(srcReportPerson.getLastName()))) return;
+        if(srcReportPerson == null) return;
 
-        if (!isValid(srcReportPerson)) {
-            outcome.addError("ER-RM-1", "Reporter is missing in the source");
-            return;
-        }
 
         StudySite site = aeReportDest.getAssignment().getStudySite();
         if (site == null) {

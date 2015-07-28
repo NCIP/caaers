@@ -239,16 +239,17 @@ public abstract class PersonContact extends Person {
     public void copy(Person person){
     	if(person == null) return;
 
-    	this.setFirstName(person.getFirstName());
-    	this.setLastName(person.getLastName());
-    	this.setMiddleName(person.getMiddleName());
-    	this.setTitle(person.getTitle());
-    	this.setFax(person.getFaxNumber());
-    	this.setFaxNumber(person.getFaxNumber());
-    	this.setPhoneNumber(person.getPhoneNumber());
-    	this.setEmailAddress(person.getEmailAddress());
+    	if(person.getFirstName() != null) this.setFirstName(person.getFirstName());
+    	if(person.getLastName() != null) this.setLastName(person.getLastName());
+    	if(person.getMiddleName() != null) this.setMiddleName(person.getMiddleName());
+    	if(person.getTitle() != null) this.setTitle(person.getTitle());
+    	if(person.getFaxNumber() != null) this.setFax(person.getFaxNumber());
+    	if(person.getFaxNumber() != null) this.setFaxNumber(person.getFaxNumber());
+    	if(person.getPhoneNumber() != null) this.setPhoneNumber(person.getPhoneNumber());
+    	if(person.getEmailAddress() != null) this.setEmailAddress(person.getEmailAddress());
     	if(person instanceof PersonContact) {
-    		this.setAlternateEmailAddress(((PersonContact) person).getAlternateEmailAddress());
+    		final String email = ((PersonContact) person).getAlternateEmailAddress();
+    		if(email != null) this.setAlternateEmailAddress(email);
     	}
         if(person.isUser()) setCaaersUser(person.getCaaersUser());
 
@@ -262,15 +263,15 @@ public abstract class PersonContact extends Person {
     public void copy(SiteResearchStaff siteResearchStaff){
     	if(siteResearchStaff == null) return;
 
-    	this.setFirstName(siteResearchStaff.getFirstName());
-    	this.setLastName(siteResearchStaff.getLastName());
-    	this.setMiddleName(siteResearchStaff.getMiddleName());
-    	this.setTitle(siteResearchStaff.getTitle());
-    	this.setFax(siteResearchStaff.getFaxNumber());
-    	this.setFaxNumber(siteResearchStaff.getFaxNumber());
-    	this.setPhoneNumber(siteResearchStaff.getPhoneNumber());
-    	this.setEmailAddress(siteResearchStaff.getEmailAddress());
-        this.setAddress(siteResearchStaff.getAddress());
+    	if(siteResearchStaff.getFirstName() != null) this.setFirstName(siteResearchStaff.getFirstName());
+    	if(siteResearchStaff.getLastName() != null) this.setLastName(siteResearchStaff.getLastName());
+    	if(siteResearchStaff.getMiddleName() != null) this.setMiddleName(siteResearchStaff.getMiddleName());
+    	if(siteResearchStaff.getTitle() != null) this.setTitle(siteResearchStaff.getTitle());
+    	if(siteResearchStaff.getFaxNumber() != null) this.setFax(siteResearchStaff.getFaxNumber());
+    	if(siteResearchStaff.getFaxNumber() != null) this.setFaxNumber(siteResearchStaff.getFaxNumber());
+    	if(siteResearchStaff.getPhoneNumber() != null) this.setPhoneNumber(siteResearchStaff.getPhoneNumber());
+    	if(siteResearchStaff.getEmailAddress() != null) this.setEmailAddress(siteResearchStaff.getEmailAddress());
+    	if(siteResearchStaff.getAddress() != null) this.setAddress(siteResearchStaff.getAddress());
         if(siteResearchStaff.getResearchStaff() != null && siteResearchStaff.getResearchStaff().isUser()) setCaaersUser(siteResearchStaff.getResearchStaff().getCaaersUser());
     }
 
