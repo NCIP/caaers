@@ -321,7 +321,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
 	        getAdverseEventsInternal().add(adverseEvent);
 	        adverseEvent.setReport(this);
     	} else {
-    		log.warn("Trying to add a null adverse event to a report. Stacktrace; ", new NullPointerException("DirkTest5"));
+    		log.warn("Trying to add a null adverse event to a report. Stacktrace; ", new NullPointerException());
     	}
     }
 
@@ -333,7 +333,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	if (adverseEvent != null) {
     		getAdverseEventsInternal().add(adverseEvent);
     	} else {
-    		log.warn("Trying to add a null adverse event to a report. Stacktrace; ", new NullPointerException("DirkTest5"));
+    		log.warn("Trying to add a null adverse event to a report. Stacktrace; ", new NullPointerException());
     	}
     }
 

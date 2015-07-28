@@ -327,7 +327,6 @@ public class SafetyReportServiceImpl {
         if(errors.hasErrors()) return aeDestReport;
         
         if(dbReport != null) {
-        	System.err.println("DIRKDEBUG;" + aeDestReport.toString());
 	        DomainObjectImportOutcome<ExpeditedAdverseEventReport> outCome = new DomainObjectImportOutcome<ExpeditedAdverseEventReport>();
 	        aeReportSynchronizer.migrate(aeDestReport, dbReport, outCome);
 	        
@@ -461,11 +460,8 @@ public class SafetyReportServiceImpl {
     	        
         //create, amend or withdraw reports
         for(Report srcReport : aeDestReport.getReports()) {
-        	System.err.println("DIRKDEBUG;; Infering action for report : " + srcReport.toString());
                 List<Report> reportsToAmend = dbReport.findReportsToAmmend(srcReport.getReportDefinition());
-                System.err.println("DIRKDEBUG;; Infered number of amendements: " + reportsToAmend.size());
                 for(Report  report: reportsToAmend){
-                	System.err.println("DIRKDEBUG;; amending report : " + report.toString());
                 	amendReport(report, dbReport);
                     //reportsAffected.add(createReport(srcReport, dbReport));
                 	if(caaersServiceResponse != null){
@@ -790,7 +786,6 @@ public class SafetyReportServiceImpl {
 		   
 
            //2. Do some basic validations (if needed)
-        	logger.debug("DirkDebug; SafteyReport 1; " + aeSrcReport.getTreatmentInformation().getTreatmentAssignmentDescription()); 
            //3. Determine the flow, create vs update
            String externalId = aeSrcReport.getExternalId();
            ExpeditedAdverseEventReport dbAeReport = externalId != null ? expeditedAdverseEventReportDao.getByExternalId(externalId) : null;
@@ -803,8 +798,6 @@ public class SafetyReportServiceImpl {
                reportsAffected.addAll(updateSafetyReport(aeSrcReport, dbAeReport, errors));
            }
            
-           logger.debug("DirkDebug; SafteyReport 2; " + reportsAffected.get(0).getAeReport().getTreatmentInformation().getTreatmentAssignmentDescription()); 
-
            if(errors.hasErrors())  {
                expeditedAdverseEventReportDao.clearSession();
                return errors;
