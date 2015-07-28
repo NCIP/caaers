@@ -53,7 +53,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 <c:set var="_title">
     <jsp:attribute name="value">
         <c:if test="${unidentifiedMode}">Unidentified</c:if>
-        <c:if test="${!unidentifiedMode}">${command.participant.lastName}, ${command.participant.firstName}</c:if>
+        <c:if test="${!unidentifiedMode}">${command.participant.fullName}</c:if>
     </jsp:attribute>
 </c:set>
 
