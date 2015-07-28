@@ -342,7 +342,7 @@
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
             <ref local="c2aCorrelationIdInterceptor" />
-            <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
         </cxfbc:outInterceptors>
     </cxfbc:provider>
     
