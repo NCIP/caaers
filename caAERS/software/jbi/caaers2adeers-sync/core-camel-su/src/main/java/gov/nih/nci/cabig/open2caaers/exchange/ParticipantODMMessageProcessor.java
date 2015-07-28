@@ -26,6 +26,7 @@ public class ParticipantODMMessageProcessor implements Processor {
 	public static final String ENTITY_NAME = "c2a_entity";
     public static final String CAAERS_WS_USERNAME = "c2a_caaers_ws_username";
     public static final String CAAERS_WS_PASSWORD = "c2a_caaers_ws_password";
+    public static final String ENTRED_ON = "c2a_entered_on";
 
     //user name and password to use while invoking caAERS
 	private String caaersWSUser;
@@ -67,6 +68,7 @@ public class ParticipantODMMessageProcessor implements Processor {
 		log.debug("adding correlationId.");
 		Object correlationId = HeaderGeneratorProcessor.makeCorrelationId();
 		properties.put(CORRELATION_ID, correlationId);
+        properties.put(ENTRED_ON, System.currentTimeMillis());
 
 		if (log.isDebugEnabled())
 			log.debug("Exchange properties :" + String.valueOf(properties));
@@ -77,10 +79,10 @@ public class ParticipantODMMessageProcessor implements Processor {
 	private void checkAuthentication(Exchange exchange) {
 
 		// get the authorization header
-		String authorizationString = (String) exchange.getIn().getHeader(
-				"Authorization");
+		String authorizationString = (String) exchange.getIn().getHeader("Authorization");
 		if (StringUtils.isBlank(authorizationString)) {
-			log.debug("Could not find username/password in the request header");
+			log.error(String.format("------------------------\n%s\n, Body : %s\n------------------",
+                    "Missing Authorization header", String.valueOf(exchange.getIn().getBody())) );
 			throw new RuntimeExpressionException("No Authentication found");
 		}
 
@@ -92,13 +94,23 @@ public class ParticipantODMMessageProcessor implements Processor {
 			byte[] decodedAuth = decoder.decode(authInfoSplit[1].getBytes());
 
 			String usernamePassword = new String(decodedAuth, "UTF-8");
-			if ((!usernamePassword.split(":")[0].equals(this.caaersWSUser))
-					|| !usernamePassword.split(":")[1]
-							.equals(this.caaersWSPassword)) {
-				throw new RuntimeExpressionException("Invalid Authentication");
-			}
+            String[] credentials = StringUtils.split(usernamePassword, ':');
+            String username = credentials != null && credentials.length > 0 ? credentials[0] : null;
+            String password =  credentials != null && credentials.length > 1 ? credentials[1] : null;
+            if(!StringUtils.equals(username, this.caaersWSUser)) {
+                log.error(String.format("------------------------\n%s\nUsername : %s,\n Body : %s\n------------------",
+                        "Invalid username ",String.valueOf(username),  String.valueOf(exchange.getIn().getBody())) );
+                throw new RuntimeExpressionException("Invalid Authentication");
+            }
+
+            if(!StringUtils.equals(password, this.caaersWSPassword)) {
+                log.error(String.format("------------------------\n%s\nPassword : %s,\n Body : %s\n------------------",
+                        "Invalid password ",String.valueOf(password),  String.valueOf(exchange.getIn().getBody())) );
+                throw new RuntimeExpressionException("Invalid Authentication");
+            }
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+            log.error(String.format("------------------------\n%s\n, Body : %s\n------------------",
+                    "Unable to validate Authorization information", String.valueOf(exchange.getIn().getBody())), e );
 			throw new RuntimeExpressionException("Invalid Authentication");
 		}
 

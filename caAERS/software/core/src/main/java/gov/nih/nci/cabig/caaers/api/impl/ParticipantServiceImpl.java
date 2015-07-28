@@ -302,8 +302,7 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 		
 		Participant dbParticipant = validateInputsAndFetchParticipant(studySubjectIdentifier, studyIdentifier, xmlParticipant, caaersServiceResponse);
 		if( dbParticipant != null) {
-			String message = messageSource.getMessage("WS_PMS_004", new String[] { studySubjectIdentifier, studyIdentifier.getValue() }, "", Locale
-					.getDefault());
+			String message = messageSource.getMessage("WS_PMS_004", new String[] { studySubjectIdentifier, studyIdentifier.getValue() }, "", Locale.getDefault());
 			logger.error(message);
 			populateError(caaersServiceResponse, "WS_PMS_004", message);
 			return caaersServiceResponse;
@@ -602,12 +601,11 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 			
 			List<Participant> dbParticipants = participantDao.searchParticipant(pq);			
 			if (dbParticipants != null && dbParticipants.size() == 1) {
-				logger.info("Participant registered to this study in caAERS");
+				if(logger.isInfoEnabled()) logger.info("Participant already registered to this study : (studyId " + study.getId() + ")");
 				dbParticipant = dbParticipants.get(0);
 			} else {
-				String message = messageSource.getMessage("WS_PMS_003", new String[] { studySubjectIdentifier, studyIdentifier.getValue() }, "", Locale
-						.getDefault());
-				logger.error(message);
+				String message = messageSource.getMessage("WS_PMS_003", new String[] { studySubjectIdentifier, studyIdentifier.getValue() }, "", Locale.getDefault());
+				if(logger.isInfoEnabled()) logger.info(message);
 				populateError(caaersServiceResponse, "WS_PMS_003", message);				
 			}
 			

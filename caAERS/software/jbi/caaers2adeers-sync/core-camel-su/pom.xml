@@ -220,6 +220,11 @@
           <artifactId>oraclepki</artifactId>
           <version>12.1.0.2.0</version>
       </dependency>
+      <dependency>
+          <groupId>commons-dbcp</groupId>
+          <artifactId>commons-dbcp</artifactId>
+          <version>1.2.2</version>
+      </dependency>
 
 
       <!-- JMS -->

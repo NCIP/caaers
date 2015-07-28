@@ -36,7 +36,7 @@
         <entry key="hibernate.connection.password" value="s[csm.datasource.password]"></entry>
         <entry key="hibernate.connection.release_mode" value="after_transaction"></entry>
         <entry key="hibernate.c3p0.min_size" value="2"></entry>
-        <entry key="hibernate.c3p0.max_size" value="5"></entry>
+        <entry key="hibernate.c3p0.max_size" value="20"></entry>
         <entry key="hibernate.c3p0.timeout" value="300"></entry>
         <entry key="hibernate.c3p0.max_statements" value="50"></entry>
         <entry key="hibernate.c3p0.idle_test_period" value="3000"></entry>

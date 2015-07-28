@@ -79,31 +79,43 @@ public class Tracker implements Processor{
             String entity = (String) properties.get(ExchangePreProcessor.ENTITY_NAME);
             String operation = (String) properties.get(ExchangePreProcessor.OPERATION_NAME);
             String coorelationId = (String) properties.get(ExchangePreProcessor.CORRELATION_ID);
+            Long begin = (Long) properties.get(ExchangePreProcessor.ENTRED_ON);
+            long end = 0;
+            String timeTookNotes = "";
+
             if(coorelationId == null || stage == null || entity == null || operation == null){
                 throw new RuntimeException("Cannot log in database. Required fields are missing");
             }
+            if(begin != null && begin > 0) {
+                end = System.currentTimeMillis() - begin;
+                if(end > 1000) {
+                    timeTookNotes = "Took " + (end/1000) + " seconds.";
+                } else {
+                    timeTookNotes = "Took " + end + " milliseconds.";
+                }
+            }
 
-            log.debug("creating new instance of IntegrationLog with [" + coorelationId+", " + stage+", " + entity+", " + operation+", " + notes + "]");
+            String status = "";
 
-            IntegrationLog integrationLog = new IntegrationLog(coorelationId, stage, entity, operation, notes);
 			try {
-				String status = XPathBuilder.xpath("//status/text()").evaluate(exchange, String.class);
-				if (!StringUtils.isBlank(status)) {
-					if (status.length() >= 100) {
-						integrationLog.setNotes("BLANK-NOTES");
-					} else
-						integrationLog.setNotes(status);
-				}
+                status = StringUtils.substring(XPathBuilder.xpath("//status/text()").evaluate(exchange, String.class), 0, 100);
 			} catch (Exception ignore) {
-				log.error("Ignoring invalid XML message", ignore);
-			}            
-            log.debug("Upating the instance of IntegrationLog with [" + coorelationId+", " + stage+", " + entity+", " + operation+", " + notes + "]");
+				log.debug("Ignoring invalid status text from response XML", ignore);
+			}
+
+            String actualNotes = timeTookNotes + " " + notes + " " + status;
+            IntegrationLog integrationLog = new IntegrationLog(coorelationId, stage, entity, operation, actualNotes);
+            log.debug("creating new instance of IntegrationLog with [" + coorelationId+", " + stage+", " + entity+", " + operation+", " + actualNotes + "]");
 
             IntegrationLogDao integrationLogDao = (IntegrationLogDao)exchange.getContext().getRegistry().lookup("integrationLogDao");
             captureLogDetails(exchange, integrationLog);
             captureLogMessage(exchange, integrationLog);
 
             integrationLogDao.save(integrationLog);
+            if(log.isInfoEnabled() && StringUtils.isNotEmpty(timeTookNotes)){
+                log.info(coorelationId + " - " + entity+"#" + operation+ " |" + stage + "|" + timeTookNotes);
+            }
+
         } catch(Exception ex) {
             log.error("Error while tracking exchange", ex);
         }

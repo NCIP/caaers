@@ -2105,9 +2105,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
     
     public AdverseEvent doesAnotherAeWithSameTermExist(AdverseEvent sae){
-    	for(AdverseEvent ae : getAdverseEvents()){
-    		if(sae.getAdverseEventCtcTerm() != null && sae.getAdverseEventCtcTerm().getCtcTerm() != null){
-    			if(ae.getAdverseEventCtcTerm() != null && ae.getAdverseEventCtcTerm().getCtcTerm() != null) {
+    	if(sae!= null && sae.getAdverseEventCtcTerm() != null && sae.getAdverseEventCtcTerm().getCtcTerm() != null){
+    		for(AdverseEvent ae : getAdverseEvents()){
+    			if(ae != null && ae.getAdverseEventCtcTerm() != null && ae.getAdverseEventCtcTerm().getCtcTerm() != null) {
     				if(sae.getAdverseEventCtcTerm().getCtcTerm().equals(ae.getAdverseEventCtcTerm().getCtcTerm())){
     					if(!sae.getId().equals(ae.getId())){
     						return ae;

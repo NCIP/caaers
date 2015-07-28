@@ -30,6 +30,7 @@ public class RaveIntegrationHeaderProcessor implements Processor {
 	public static final String ENTITY_NAME = ExchangePreProcessor.ENTITY_NAME;
     public static final String INVALID_MESSAGE = ExchangePreProcessor.INVALID_MESSAGE;
 
+
 	public static final String SAFETY_REPORT_ID_OPERATION_NAME = "generateSafetyReportId";
 	public static final String SAE_EVALUATION_OPERATION_NAME = "saveAndEvaluateAEs";
 	public static final String SAE_INITIATION_OPERATION_NAME = "evaluateAndInitiateAEs";
@@ -46,6 +47,7 @@ public class RaveIntegrationHeaderProcessor implements Processor {
 
         exchange.setProperty(SYNC_HEADER , "sync");
         exchange.setProperty(CORRELATION_ID, HeaderGeneratorProcessor.makeCorrelationId());
+        exchange.setProperty(ExchangePreProcessor.ENTRED_ON, System.currentTimeMillis());
 
         try {
 
