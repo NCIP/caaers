@@ -1084,5 +1084,11 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
         result = 31 * result + (externalId != null ? externalId.hashCode() : 0);
         return result;
     }
+
+	@Override
+	public String toString() {
+		return "AdverseEventReportingPeriod [cycleNumber=" + cycleNumber
+				+ ", reviewStatus=" + reviewStatus + ", externalId=" + externalId + "]";
+	}
     
 }

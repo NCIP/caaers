@@ -1318,7 +1318,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     
     
     /**
-     * Gets the graded date.
+     * Gets the graded date, aka the awareness date.
      *
      * @return the graded date
      */

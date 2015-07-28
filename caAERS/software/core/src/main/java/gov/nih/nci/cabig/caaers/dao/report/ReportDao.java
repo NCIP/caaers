@@ -160,6 +160,7 @@ public class ReportDao extends GridIdentifiableDao<Report> implements MutableDom
     	ReportQuery query = new ReportQuery();
     	query.filterByStudyAndSubjectAndSubmissionStatusAndSearchIdentifier(study, participant, 
     			reportStatus, searchIdentifier);
+    	//FIXME: Max Results results in bad results, esspecilay for pagination.
     	return (List<Report>) super.search(query, null, maxResults);
     }
 }

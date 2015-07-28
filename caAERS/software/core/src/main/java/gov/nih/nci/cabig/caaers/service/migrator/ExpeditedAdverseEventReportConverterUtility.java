@@ -988,6 +988,7 @@ public class ExpeditedAdverseEventReportConverterUtility {
 		address.setZip(xmlReporterType.getZip());
 		
 		reporter.setAddress(address);
+		
 		if(xmlReporterType.getContactMechanism() != null){
 			reporter.setEmailAddress(getEmail(xmlReporterType.getContactMechanism()));
 			reporter.setPhoneNumber(getPhone(xmlReporterType.getContactMechanism()));

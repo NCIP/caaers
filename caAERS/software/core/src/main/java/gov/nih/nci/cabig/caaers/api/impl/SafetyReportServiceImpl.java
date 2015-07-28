@@ -458,8 +458,8 @@ public class SafetyReportServiceImpl {
     		 }
     	 }
     	        
-            //create, amend or withdraw reports
-        for(Report srcReport : aeDestReport.getReports()){
+        //create, amend or withdraw reports
+        for(Report srcReport : aeDestReport.getReports()) {
                 List<Report> reportsToAmend = dbReport.findReportsToAmmend(srcReport.getReportDefinition());
                 for(Report  report: reportsToAmend){
                 	amendReport(report, dbReport);
@@ -555,6 +555,8 @@ public class SafetyReportServiceImpl {
     	if(response.getRecommendedActions().size() > 1) {
     		boolean withdraw = false;
     		boolean create = false;
+    		boolean amend = false;
+    		RecommendedActions amendAction = null;
 			for(RecommendedActions action : response.getRecommendedActions()) {
 				if(!withdraw && "Withdraw".equalsIgnoreCase(action.getAction())) {
 					withdraw = true;
@@ -564,6 +566,10 @@ public class SafetyReportServiceImpl {
 					create = true;
 					createAction = action;
 				}
+				if(!amend && "Amend".equalsIgnoreCase(action.getAction())) {
+					amend = true;
+					amendAction = action;
+				}
 			}
 			
 			replace = create && withdraw;
@@ -571,8 +577,12 @@ public class SafetyReportServiceImpl {
 			response.setRecommendedActions(new ArrayList<RecommendedActions>());
 			if(withdraw) {
 				response.getRecommendedActions().add(withdrawAction);
+			} else if (amend) {
+				response.getRecommendedActions().add(amendAction);
 			} else if (create) {
 				response.getRecommendedActions().add(createAction);
+			} else {
+				response.setRecommendedActions(recActions);
 			}
 		}
 		
@@ -776,7 +786,6 @@ public class SafetyReportServiceImpl {
 		   
 
            //2. Do some basic validations (if needed)
-        	logger.debug("DirkDebug; SafteyReport 1; " + aeSrcReport.getTreatmentInformation().getTreatmentAssignmentDescription()); 
            //3. Determine the flow, create vs update
            String externalId = aeSrcReport.getExternalId();
            ExpeditedAdverseEventReport dbAeReport = externalId != null ? expeditedAdverseEventReportDao.getByExternalId(externalId) : null;
@@ -789,8 +798,6 @@ public class SafetyReportServiceImpl {
                reportsAffected.addAll(updateSafetyReport(aeSrcReport, dbAeReport, errors));
            }
            
-           logger.debug("DirkDebug; SafteyReport 2; " + reportsAffected.get(0).getAeReport().getTreatmentInformation().getTreatmentAssignmentDescription()); 
-
            if(errors.hasErrors())  {
                expeditedAdverseEventReportDao.clearSession();
                return errors;
