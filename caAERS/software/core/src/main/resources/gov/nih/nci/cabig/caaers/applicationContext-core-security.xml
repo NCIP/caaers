@@ -44,7 +44,7 @@
 
 
     <bean id="csmSessionFactory " class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-        <property name="dataSource" ref="csmDataSource"/>
+        <property name="dataSource" ref="datasource"/>
         <property name="mappingResources">
             <list>
                 <value>gov/nih/nci/security/authorization/domainobjects/InstanceLevelMappingElement.hbm.xml</value>
