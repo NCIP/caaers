@@ -178,6 +178,16 @@ public abstract class AbstractQuery {
     	 addToJoinsList(new JoinType(objectQuery, JOIN.INNER_JOIN));
 
     }
+     
+     /**
+      * Joins an object to the query join conditions at the beginning of the list
+      *
+      * @param objectQuery
+      */
+      public void joinAtTheBeginningOfList(String objectQuery) {
+     	 addToJoinsListAtTheBeginning(new JoinType(objectQuery, JOIN.INNER_JOIN));
+
+     }
 
     /**
      * Joins an object to the query select * from Study s left join s.identifiers as id where
@@ -205,6 +215,10 @@ public abstract class AbstractQuery {
     
     public void addToJoinsList(JoinType join) {
         joins.addJoin(join);
+    }
+    
+    public void addToJoinsListAtTheBeginning(JoinType join) {
+        joins.addJoinAtTheBeginning(join);
     }
     
     public void setParameterList(String name , List values){
