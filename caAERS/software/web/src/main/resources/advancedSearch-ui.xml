@@ -1170,7 +1170,7 @@
 				<operator name="gt" display-uri="Greater Than or Equal To"/>
                 <operator name="l" display-uri="Less Than"/>
                 <operator name="lt" display-uri="Less Than or Equal To"/>
-				<filter-method>`</filter-method>
+				<filter-method>filterByCourseNumber</filter-method>
 			</ui-attribute>	
 						
 			<view-column>
@@ -1451,7 +1451,7 @@
 			</ui-attribute>
 			<ui-attribute>
 				<name>reportIdentifer</name>
-				<label>ID</label>
+				<label>Id</label>
 				<data-type>String</data-type>
 				<field-type>text-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
