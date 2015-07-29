@@ -102,7 +102,7 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
-            <ref local="c2aCorrelationIdInterceptor" />
+           
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
 
@@ -127,7 +127,7 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
-            <ref local="c2aCorrelationIdInterceptor" />
+           
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
     </cxfbc:provider>
@@ -173,7 +173,7 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
-            <ref local="c2aCorrelationIdInterceptor" />
+           
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
     </cxfbc:provider>
@@ -196,7 +196,7 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
-            <ref local="c2aCorrelationIdInterceptor" />
+           
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
     </cxfbc:provider>
@@ -221,7 +221,7 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
-            <ref local="c2aCorrelationIdInterceptor" />
+           
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
     </cxfbc:provider>
@@ -245,7 +245,7 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
-            <ref local="c2aCorrelationIdInterceptor" />
+           
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
     </cxfbc:provider>
@@ -270,7 +270,7 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
-            <ref local="c2aCorrelationIdInterceptor" />
+           
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
 
@@ -294,7 +294,7 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
-            <ref local="c2aCorrelationIdInterceptor" />
+           
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
 
@@ -318,7 +318,7 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
-            <ref local="c2aCorrelationIdInterceptor" />
+           
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
     </cxfbc:provider>
@@ -341,7 +341,7 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
-            <ref local="c2aCorrelationIdInterceptor" />
+           
             <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
         </cxfbc:outInterceptors>
     </cxfbc:provider>
@@ -373,7 +373,7 @@
                       </map>
                   </constructor-arg>
               </bean>
-              <ref local="c2aCorrelationIdInterceptor" />
+             
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors> 
 
@@ -407,7 +407,7 @@
                     </map>
                 </constructor-arg>
             </bean>
-            <ref bean="c2aCorrelationIdInterceptor" />
+
            <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor" /> -->
         </cxfbc:outInterceptors> 
     </cxfbc:provider>
@@ -439,7 +439,7 @@
                     </map>
                 </constructor-arg>
             </bean>
-            <ref local="c2aCorrelationIdInterceptor" />
+            
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
 
