@@ -969,7 +969,8 @@ public class ExpeditedAdverseEventReportConverterUtility {
 	
 	protected Reporter convertReporter(ReporterType xmlReporterType){
 		Reporter reporter = new Reporter();
-		if(xmlReporterType == null) {
+
+        if(xmlReporterType == null) {
 			return reporter;
 		}
 		reporter.setFirstName(xmlReporterType.getFirstName());

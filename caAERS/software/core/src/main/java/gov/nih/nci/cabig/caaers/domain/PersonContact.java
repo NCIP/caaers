@@ -74,7 +74,7 @@ public abstract class PersonContact extends Person {
      */
     @Transient
     public boolean isSavable() {
-        return getFirstName() != null && getLastName() != null;
+        return true;
     }
 
     // //// BOUND PROPERTIES
@@ -143,6 +143,7 @@ public abstract class PersonContact extends Person {
 	@Transient
 	public void setPhoneNumber(String phoneNumber){
 		contactMechanisms.put(PHONE, phoneNumber);
+		super.setPhoneNumber(phoneNumber);
 	}
 	
 	/* (non-Javadoc)
@@ -161,6 +162,7 @@ public abstract class PersonContact extends Person {
 	@Transient
 	public void setFax(String fax){
 		contactMechanisms.put(FAX, fax);
+		super.setFaxNumber(fax);
 	}
 	
 	/**
@@ -179,6 +181,7 @@ public abstract class PersonContact extends Person {
 	@Transient
 	public void setEmailAddress(String emailAddress){
 		contactMechanisms.put(EMAIL, emailAddress);
+		super.setEmailAddress(emailAddress);
 	}
 	
 	/* (non-Javadoc)
