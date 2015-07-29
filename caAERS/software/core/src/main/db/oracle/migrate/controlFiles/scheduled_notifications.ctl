@@ -19,6 +19,6 @@ LOAD DATA
 		RPSH_ID					    INTEGER EXTERNAL(10),
 		GRID_ID					    CHAR(2000),
 		SUBJECT					    CHAR(2000),
-		BODY						    CHAR(2000)
+		BODY						    CHAR(4000)
 	)
 
