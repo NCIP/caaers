@@ -80,7 +80,6 @@ public class ReporterTest extends AbstractTestCase {
     	reporter.copy(staff);
     	
     	assertEquals("a", reporter.getFirstName());
-    	assertNull(reporter.getLastName());
     	assertNull(reporter.getPhoneNumber());
     	assertEquals("k", reporter.getEmailAddress());
         assertEquals("x", reporter.getCaaersUser().getLoginName());

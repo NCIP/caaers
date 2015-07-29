@@ -8,13 +8,10 @@ package gov.nih.nci.cabig.caaers.accesscontrol.filter.query;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.index.AbstractIndexDao;
+import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudySitesQuery;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import junit.framework.TestCase;
 
 /**
  * QuerySecurityFilterer Tester.
@@ -45,7 +42,7 @@ public class QuerySecurityFiltererTest extends AbstractTestCase {
         assertEquals("SELECT distinct srs from SiteResearchStaff srs left join fetch srs.researchStaff rs left join fetch srs.organization org  order by srs.id",
                 q.getQueryString());
         filterer.applyFilter(q);
-        assertEquals("SELECT distinct srs from  rsIdx left join fetch srs.researchStaff rs left join fetch srs.organization org join rsIdx.researchStaff srs  WHERE rsIdx.loginId = :loginId AND bitand(rsIdx.role, 0) > 0  order by srs.id", q.getQueryString());
+        assertEquals("SELECT distinct srs from  rsIdx join rsIdx.researchStaff srs left join fetch srs.researchStaff rs left join fetch srs.organization org  WHERE rsIdx.loginId = :loginId AND bitand(rsIdx.role, 0) > 0  order by srs.id", q.getQueryString());
     }
     
 
@@ -60,7 +57,23 @@ public class QuerySecurityFiltererTest extends AbstractTestCase {
         assertEquals("SELECT distinct ss FROM StudySite ss join ss.study AS study left join study.identifiers as identifier join ss.organization AS o  WHERE ss.retiredIndicator = :retiredIndicator AND o.id = :orgId", q.getQueryString());
         
         filterer.applyFilter(q);
-        assertEquals("SELECT distinct ss FROM StudyIndex stuIdx join ss.study AS study left join study.identifiers as identifier join ss.organization AS o join stuIdx.study.studySite ss  WHERE ss.retiredIndicator = :retiredIndicator AND o.id = :orgId AND stuIdx.loginId = :loginId AND bitand(stuIdx.role, 0) > 0", q.getQueryString());
+        assertEquals("SELECT distinct ss FROM StudyIndex stuIdx join stuIdx.study.studySite ss join ss.study AS study left join study.identifiers as identifier join ss.organization AS o  WHERE ss.retiredIndicator = :retiredIndicator AND o.id = :orgId AND stuIdx.loginId = :loginId AND bitand(stuIdx.role, 0) > 0", q.getQueryString());
+    }
+    
+    
+    public void testApplyFilterForParticipantQuery(){
+        ParticipantQuery q = new ParticipantQuery();
+        q.filterByStudySubjectIdentifier("param0");
+        q.filterByStudyId(3);
+        filterer.setEntityName("Participant");
+        filterer.setIndexAlias("pIndx");
+        filterer.setEntityAssociation("participant");
+        filterer.setIndexName("ParticipantIndex");
+        System.out.println(q.getQueryString());
+        assertEquals("SELECT distinct p from Participant p join p.assignments assignment  WHERE lower(assignment.studySubjectIdentifier) = :param0 AND s.id = :param1  order by p.id", q.getQueryString());
+        
+        filterer.applyFilter(q);
+        assertEquals("SELECT distinct p from ParticipantIndex pIndx join pIndx.participant p join p.assignments assignment  WHERE lower(assignment.studySubjectIdentifier) = :param0 AND s.id = :param1 AND pIndx.loginId = :loginId AND bitand(pIndx.role, 0) > 0  order by p.id", q.getQueryString());
     }
 
     public void tearDown() throws Exception {

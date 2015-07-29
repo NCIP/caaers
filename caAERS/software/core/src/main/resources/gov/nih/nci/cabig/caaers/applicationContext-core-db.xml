@@ -38,34 +38,6 @@
         p:username="s[datasource.username]"
         p:password="s[datasource.password]"/>
         
-         
-       <bean id="csmDataSource" class="gov.nih.nci.cabig.caaers.tools.spring.DeferredLoadingFactoryBean">
-        <property name="beanNames">
-            <list>
-                <value>csmLocalPoolDataSource</value>
-            </list>
-        </property>
-    </bean>
-
-    <bean id="csmLocalPoolDataSource" lazy-init="true" class="org.apache.commons.dbcp.BasicDataSource"
-        p:driverClassName="s[datasource.driver]"
-        p:maxActive="75"
-        p:minIdle="10"
-        p:initialSize="10"
-        p:maxWait="10000"
-        p:removeAbandoned="true"
-        p:removeAbandonedTimeout="120"
-        p:logAbandoned="true"
-        p:testWhileIdle="true"
-        p:testOnBorrow="true"
-        p:testOnReturn="false"
-        p:timeBetweenEvictionRunsMillis="5000"
-        p:minEvictableIdleTimeMillis="20000"
-        p:validationQuery="select release from bering_version where release = 1"
-        p:url="s[csm.datasource.url]"
-        p:username="s[csm.datasource.username]"
-        p:password="s[csm.datasource.password]" />     
-         
 
     <bean id="beringMigrator" class="edu.northwestern.bioinformatics.bering.servlet.DeployedMigrator">
         <property name="dataSource" ref="dataSource" />

@@ -312,7 +312,9 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
             	r.getReviewCommentsInternal().size();
             }
             for(AdverseEvent ae : expeditedCommand.getAeReport().getAdverseEvents()){
-            	ae.getOtherCauseAttributions().size();
+            	if(ae != null && ae.getOtherCauseAttributions() != null) {
+            		ae.getOtherCauseAttributions().size();
+            	}
         	}
         }else{
             aeReport.setReportingPeriod(reportingPeriodDao.getById(aeReport.getReportingPeriod().getId()));

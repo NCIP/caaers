@@ -775,10 +775,11 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Report [").append("id : ").append(getId()).append(", createdOn :").append(
-                        String.valueOf(getCreatedOn())).append(", submittedOn :").append(
-                        String.valueOf(getSubmittedOn())).append(", dueOn :").append(
-                        String.valueOf(getDueOn()));
+        sb.append("Report [").append("id : ").append(getId()).append(", name :")
+        				.append(getName()).append(", case :").append(getCaseNumber())
+        				.append(", createdOn :").append(String.valueOf(getCreatedOn()))
+        				.append(", submittedOn :").append(String.valueOf(getSubmittedOn()))
+                        .append(", dueOn :").append(String.valueOf(getDueOn()));
         sb.append("\r\n notifications :");
         if (notifications != null) {
             for (ScheduledNotification sn : notifications) {
