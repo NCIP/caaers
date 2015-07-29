@@ -159,4 +159,10 @@ public abstract class ReportPerson extends PersonContact {
         super.copy(siteInvestigator);
         setInvestigator(siteInvestigator.getInvestigator());
     }
+
+	@Override
+	public String toString() {
+		return "ReportPerson [firstName=" + firstName + ", lastName="
+				+ lastName + ", emailAddress=" + emailAddress + "]";
+	}
 }
