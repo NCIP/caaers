@@ -22,7 +22,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 
 
 <tags:tabForm tab="${tab}" flow="${flow}"
-              title="${participant.lastName}, ${participant.firstName}"
+              title="${participant.fullName}"
               willSave="false">
 
 <jsp:attribute name="repeatingFields">

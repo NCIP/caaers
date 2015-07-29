@@ -79,7 +79,7 @@
         <property name="url" value="s[caaers.datasource.url]"/>
         <property name="username" value="s[caaers.datasource.username]"/>
         <property name="password" value="s[caaers.datasource.password]"/>
-        <property name="maxActive" value="35" />
+        <property name="maxActive" value="75" />
         <property name="minIdle" value="5" />
         <property name="initialSize" value="5" />
         <property name="maxWait" value="10000" />
@@ -89,8 +89,8 @@
         <property name="testWhileIdle" value="true" />
         <property name="testOnBorrow" value="true" />
         <property name="testOnReturn" value="false" />
-        <property name="timeBetweenEvictionRunsMillis" value="5000" />
-        <property name="minEvictableIdleTimeMillis" value="15000" />
+        <property name="timeBetweenEvictionRunsMillis" value="15000" />
+        <property name="minEvictableIdleTimeMillis" value="60000" />
         <property name="validationQuery" value="select release from bering_version where release = 1" />
 
     </bean>

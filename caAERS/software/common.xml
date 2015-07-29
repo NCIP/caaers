@@ -111,14 +111,13 @@
 	</condition>
 	
 	<!--Check for JDK version, we need to make sure that JDK 1.5 we use -->
-	<condition property="isJDK1.5">
+	<condition property="isJDK1.7">
 		<or>
-			<equals arg1="${ant.java.version}" arg2="1.5" />
-			<equals arg1="${ant.java.version}" arg2="1.6" />
 			<equals arg1="${ant.java.version}" arg2="1.7" />
+			<equals arg1="${ant.java.version}" arg2="1.8" />
 		</or>
 	</condition>
-	<fail message="JDK 1.5 is currently required to build this project!" unless="isJDK1.5" />
+	<fail message="JDK 1.7 or above is required to build this project!" unless="isJDK1.7" />
 	
 	<!-- This path contains the bootstrap jar of caaers -->
 	<path id="aspect.path">

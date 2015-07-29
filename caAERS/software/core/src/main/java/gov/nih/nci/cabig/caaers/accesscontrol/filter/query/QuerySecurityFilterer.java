@@ -101,7 +101,9 @@ public class QuerySecurityFilterer {
         query.modifyQueryString(newQuery);
 
         //issue joins with index and extra conditions.
-       query.join(getIndexAlias() + "." + getEntityAssociation() + " " +  entityAlias);
+        
+        // the index alias join should be joined at the beginning
+       query.joinAtTheBeginningOfList(getIndexAlias() + "." + getEntityAssociation() + " " +  entityAlias);
        query.andWhere(getIndexAlias() + ".loginId = :loginId");
        query.andWhere("bitand(" + getIndexAlias() + ".role, " + getRole()+") > 0");
        query.setParameter("loginId", getLoginId());

@@ -969,7 +969,8 @@ public class ExpeditedAdverseEventReportConverterUtility {
 	
 	protected Reporter convertReporter(ReporterType xmlReporterType){
 		Reporter reporter = new Reporter();
-		if(xmlReporterType == null) {
+
+        if(xmlReporterType == null) {
 			return reporter;
 		}
 		reporter.setFirstName(xmlReporterType.getFirstName());
@@ -988,6 +989,7 @@ public class ExpeditedAdverseEventReportConverterUtility {
 		address.setZip(xmlReporterType.getZip());
 		
 		reporter.setAddress(address);
+		
 		if(xmlReporterType.getContactMechanism() != null){
 			reporter.setEmailAddress(getEmail(xmlReporterType.getContactMechanism()));
 			reporter.setPhoneNumber(getPhone(xmlReporterType.getContactMechanism()));

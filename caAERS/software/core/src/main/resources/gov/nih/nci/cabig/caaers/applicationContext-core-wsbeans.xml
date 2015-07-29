@@ -52,7 +52,7 @@
         -->
     </bean>
         
-    <bean id="evaluateAndInitiateReportConverter" class="gov.nih.nci.cabig.caaers.service.migrator.EvaluateAndInitiateReportConverter" />
+    <bean id="evaluateAndInitiateReportConverter" class="gov.nih.nci.cabig.caaers.service.migrator.EvaluateAndInitiateReportConverter" autowire="byType" />
     
     <bean id="safetyServiceImpl" class="gov.nih.nci.cabig.caaers.api.impl.SafetyReportServiceImpl">
     	<property name="baseEaeConverter" ref="baseEaeConverter"/>

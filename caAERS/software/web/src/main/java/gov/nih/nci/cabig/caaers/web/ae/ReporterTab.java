@@ -261,7 +261,7 @@ public class ReporterTab extends AeTab {
     	if(!(cmd instanceof EditExpeditedAdverseEventCommand)) return;
     	
     	EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) cmd;
-    	processReports(request, (EditExpeditedAdverseEventCommand)command);
+    	processReports(request, command);
     }
 
 

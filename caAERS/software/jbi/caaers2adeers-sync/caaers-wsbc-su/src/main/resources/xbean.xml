@@ -83,6 +83,7 @@
         </constructor-arg>
     </bean>
 
+    <bean id="c2aCorrelationIdInterceptor" class="gov.nih.nci.cabig.caaers2adeers.CorrelationHeaderInterceptor" />
    <!-- ================== Agents Webservice Provider ==================================-->
     <cxfbc:provider interfaceName="caaers:AgentManagementServiceInterface"  service="caaers:AgentManagementWebService"
                     endpoint="AgentManagementWebServiceImplPort"
@@ -101,6 +102,7 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
+           
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
 
@@ -125,6 +127,7 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
+           
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
     </cxfbc:provider>
@@ -170,6 +173,7 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
+           
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
     </cxfbc:provider>
@@ -192,6 +196,7 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
+           
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
     </cxfbc:provider>
@@ -216,6 +221,7 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
+           
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
     </cxfbc:provider>
@@ -239,6 +245,7 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
+           
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
     </cxfbc:provider>
@@ -263,6 +270,7 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
+           
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
 
@@ -286,6 +294,7 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
+           
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
 
@@ -309,6 +318,7 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
+           
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
     </cxfbc:provider>
@@ -331,7 +341,8 @@
         </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
-            <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
+           
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
         </cxfbc:outInterceptors>
     </cxfbc:provider>
     
@@ -362,6 +373,7 @@
                       </map>
                   </constructor-arg>
               </bean>
+             
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors> 
 
@@ -395,6 +407,7 @@
                     </map>
                 </constructor-arg>
             </bean>
+
            <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor" /> -->
         </cxfbc:outInterceptors> 
     </cxfbc:provider>
@@ -426,6 +439,7 @@
                     </map>
                 </constructor-arg>
             </bean>
+            
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
 
