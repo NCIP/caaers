@@ -837,6 +837,12 @@
                 <dependent-object-index>0</dependent-object-index>
                 <view-column-index>12</view-column-index>
             </view-column>
+            <view-column>
+                <column-attribute>displayCaseNumber</column-attribute>
+                <column-title>Report ID</column-title>
+                <dependent-object-index>0</dependent-object-index>
+                <view-column-index>13</view-column-index>
+            </view-column>
 		</dependent-object>
 		
 		<dependent-object>
@@ -1164,7 +1170,7 @@
 				<operator name="gt" display-uri="Greater Than or Equal To"/>
                 <operator name="l" display-uri="Less Than"/>
                 <operator name="lt" display-uri="Less Than or Equal To"/>
-				<filter-method>filterByCourseNumber</filter-method>
+				<filter-method>`</filter-method>
 			</ui-attribute>	
 						
 			<view-column>
@@ -1259,7 +1265,7 @@
 			<table-alias>REPORT_ALIAS</table-alias>
 			<hidden>false</hidden>
 			<view-column>
-				<column-title>Caaers Report Id</column-title>
+				<column-title>Id</column-title>
 				<column-attribute>id</column-attribute>
 				<table-title>crid</table-title>
 				<dependent-object-index>0</dependent-object-index>
@@ -1267,7 +1273,7 @@
 				<selected>true</selected>
 			</view-column>
 			<view-column>
-				<column-title>Case Number</column-title>
+				<column-title>Report ID</column-title>
 				<column-attribute>caseNumber</column-attribute>
 				<table-title>case_number</table-title>
 				<dependent-object-index>0</dependent-object-index>
@@ -1445,7 +1451,7 @@
 			</ui-attribute>
 			<ui-attribute>
 				<name>reportIdentifer</name>
-				<label>Report ID</label>
+				<label>ID</label>
 				<data-type>String</data-type>
 				<field-type>text-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
