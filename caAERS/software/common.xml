@@ -111,13 +111,14 @@
 	</condition>
 	
 	<!--Check for JDK version, we need to make sure that JDK 1.5 we use -->
-	<condition property="isJDK1.7">
-		<or>
-			<equals arg1="${ant.java.version}" arg2="1.7" />
-			<equals arg1="${ant.java.version}" arg2="1.8" />
-		</or>
-	</condition>
-	<fail message="JDK 1.7 or above is required to build this project!" unless="isJDK1.7" />
+	<!--<condition property="isJDK1.7">-->
+		<!--<or>-->
+			<!--<equals arg1="${ant.java.version}" arg2="1.7" />-->
+			<!--<equals arg1="${ant.java.version}" arg2="1.8" />-->
+		<!--</or>-->
+	<!--</condition>-->
+    <!--<echo message="${ant.java.version}" />-->
+	<!--<fail message="JDK 1.7 or above is required to build this project!" unless="isJDK1.7" />-->
 	
 	<!-- This path contains the bootstrap jar of caaers -->
 	<path id="aspect.path">
@@ -302,8 +303,8 @@
     <target name="compile" depends="resolve" description="--> compile the project">
     	<echo message="Executing in ${ant.project.name} :: ${resolve.confs}" />
     	<copy-resources src="${main.src.resources}" dest="${classes.dir}" filter="true"/>
-    	<javac srcdir="${generated.src.dir}" destdir="${classes.dir}" classpathref="main.classpath" debug="true" source="1.7" target="1.7" includeantruntime="false"/>
-        <javac srcdir="${main.src}" destdir="${classes.dir}" classpathref="main.classpath" debug="true" source="1.7" target="1.7" includeantruntime="false"/>
+    	<javac srcdir="${generated.src.dir}" destdir="${classes.dir}" classpathref="main.classpath" debug="true" source="1.8" target="1.8" includeantruntime="false"/>
+        <javac srcdir="${main.src}" destdir="${classes.dir}" classpathref="main.classpath" debug="true" source="1.8" target="1.8" includeantruntime="false"/>
     </target>
     
 	<!-- ========================================================== 
@@ -318,7 +319,7 @@
     	</copy>
     	<copy-resources src="${test.src.resources}" dest="${test.classes.dir}" filter="true"/>
         <javac srcdir="${test.src}" destdir="${test.classes.dir}" classpathref="test.classpath"    includeantruntime="false"
-        	   debug="true" source="1.7"  target="1.7" />
+        	   debug="true" source="1.8"  target="1.8" />
     	<property name="no.compile-test" value="true" />
     </target>
     
@@ -727,7 +728,7 @@
 	            description="Passes the source files in core through the ajc">
          <echo message="main.classpath" />
          <echo message="${main.classpath}" />
-	        <iajc srcdir="${main.src};${generated.src.dir}" destdir="${classes.dir}" includes="**/*.java" source="1.7"  >
+	        <iajc srcdir="${main.src};${generated.src.dir}" destdir="${classes.dir}" includes="**/*.java" source="1.8"  >
 	            <aspectpath refid="aspect.path" />
 	        	<classpath>
 	                <path refid="main.classpath"/>
@@ -744,7 +745,7 @@
      ================================================================================== -->
     <target name="aspectj-compile-test" depends="load-ivy,load-ajc, resolve-test"
             description="Passes the test files in core through the ajc">
-        <iajc srcdir="${test.src}" destdir="${test.classes.dir}" includes="**/*.java" source="1.7">
+        <iajc srcdir="${test.src}" destdir="${test.classes.dir}" includes="**/*.java" source="1.8">
         	<aspectpath refid="aspect.path" />
             <classpath>
                 <path refid="test.classpath"/>
