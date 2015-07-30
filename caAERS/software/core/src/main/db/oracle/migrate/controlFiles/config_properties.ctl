@@ -1,0 +1,19 @@
+
+LOAD DATA
+	INFILE 'config_properties.txt'
+	DISCARDMAX 9999
+	TRUNCATE INTO TABLE config_properties
+	fields terminated by '\t'
+	
+	trailing NULLCOLS
+	(
+		ID					    INTEGER EXTERNAL(10),
+		VERSION				    INTEGER EXTERNAL(10),
+		CODE					    CHAR(2000),
+		NAME					    CHAR(2000),
+		DESCRIPTION					    CHAR(2000),
+		GRID_ID					    CHAR(2000),
+		CONFIG_TYPE					    INTEGER EXTERNAL(10),
+		LAST_SYNCHED_DATE				    TIMESTAMP(6) "YYYY-MM-DD HH24:MI:SS.FF6" NULLIF LAST_SYNCHED_DATE=""
+	)
+

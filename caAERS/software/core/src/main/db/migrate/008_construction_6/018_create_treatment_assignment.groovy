@@ -4,8 +4,8 @@ class CreateStudyTherapy extends edu.northwestern.bioinformatics.bering.Migratio
 	            	t.addColumn('code','string', nullable:false)
    	           	 	t.addColumn('study_id','integer', nullable:false)
    	           	 	t.addColumn('dose_level_order','integer', nullable:true)
-   	           	 	t.addColumn('description','string', nullable:true)
-	            	t.addColumn('comments','string', nullable:true)
+   	           	 	t.addColumn('description','string', nullable:true, limit:4000)
+	            	t.addColumn('comments','string', nullable:true, limit: 4000)
 	            	
 	            	t.addVersionColumn()
 	            	t.addColumn('grid_id' , 'string' , nullable:true)

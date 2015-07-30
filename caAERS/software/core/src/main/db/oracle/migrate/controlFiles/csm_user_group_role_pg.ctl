@@ -1,0 +1,17 @@
+
+LOAD DATA
+	INFILE 'csm_user_group_role_pg.txt'
+	DISCARDMAX 9999
+	TRUNCATE INTO TABLE csm_user_group_role_pg
+	fields terminated by '\t'
+	
+	trailing NULLCOLS
+	(
+		USER_GROUP_ROLE_PG_ID			    INTEGER EXTERNAL(38),
+		USER_ID					    INTEGER EXTERNAL(38),
+		GROUP_ID					    INTEGER EXTERNAL(38),
+		ROLE_ID				    INTEGER EXTERNAL(38),
+		PROTECTION_GROUP_ID			    INTEGER EXTERNAL(38),
+		UPDATE_DATE				   DATE "YYYY-MM-DD" NULLIF UPDATE_DATE=""
+	)
+

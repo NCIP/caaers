@@ -1,0 +1,19 @@
+
+LOAD DATA
+	INFILE 'solicited_events.txt'
+	DISCARDMAX 9999
+	TRUNCATE INTO TABLE solicited_events
+	fields terminated by '\t'
+	
+	trailing NULLCOLS
+	(
+		ID					    INTEGER EXTERNAL(10),
+		VERSION				    INTEGER EXTERNAL(10),
+		ARM_ID 				    INTEGER EXTERNAL(10),
+		CTC_TERM_ID					    INTEGER EXTERNAL(10),
+		LOWLEVEL_TERM_ID				    INTEGER EXTERNAL(10),
+		GRID_ID					    CHAR(2000),
+		OTHER_TERM_ID					    INTEGER EXTERNAL(10),
+		VERBATIM					    CHAR(2000)
+	)
+

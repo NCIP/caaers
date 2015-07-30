@@ -5,7 +5,7 @@ class ContextualGradingTable extends edu.northwestern.bioinformatics.bering.Migr
             t.addColumn("id", "integer", nullable: false, primaryKey: true)
             t.addColumn("term_id", "integer", nullable: false)
             t.addColumn("grade_code", "integer", nullable: false)
-            t.addColumn("grade_text", "string", nullable: false)
+            t.addColumn("grade_text", "string", nullable: false, limit:4000)
         }
 
         execute('ALTER TABLE ctc_grades ADD CONSTRAINT fk_ctc_grade_term FOREIGN KEY (term_id) REFERENCES ctc_terms')

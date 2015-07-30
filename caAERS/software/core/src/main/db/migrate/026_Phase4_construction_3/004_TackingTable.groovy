@@ -4,7 +4,7 @@ class CreateTrackingTable extends edu.northwestern.bioinformatics.bering.Migrati
             t.addColumn('logged_on' , 'timestamp' , nullable:false);
             t.addColumn('corelation_id', 'string', nullable:false)
             t.addColumn('stage_id','integer', nullable:false)
-            t.addColumn('description','string', nullable:true)
+            t.addColumn('description','string', nullable:true, limit: 4000)
             t.addVersionColumn()
             t.addColumn('grid_id' , 'string' , nullable:true);
             t.addColumn('entity','string', nullable:true)
@@ -22,7 +22,7 @@ class CreateTrackingTable extends edu.northwestern.bioinformatics.bering.Migrati
         createTable('integration_log_details') { t ->
             t.addColumn('log_id', 'integer', nullable:false)
             t.addColumn('business_id','string', nullable:true)
-            t.addColumn('description','string', nullable:true)
+            t.addColumn('description','string', nullable:true, limit:4000)
             t.addVersionColumn()
             t.addColumn('grid_id' , 'string' , nullable:true);
         }
