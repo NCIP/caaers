@@ -7,6 +7,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.query.ReportQuery;
 import gov.nih.nci.cabig.caaers.domain.attribution.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -141,9 +142,30 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 
     /* Adverse Event created date in the system(caAERS)*/
     private Date createdDate;
+    
+    
 
+    @Transient
+    public String getDisplayCaseNumber() {
+    	/*
+    	 * report(ExpeditAdverseEventReport) id is nothing but Report -> aeReport(table name ae_reports) -> id (i.e in database report_schedules.report_id)
+    	 * so if we want to display caseNumber of report, adverseEvent -> report -> id should match with report -> aeReport -> id
+    	 * There is another way, we have adverseEvent -> report -> id, so we can able to find a Report by this ID ( which is nothing but aeReport -> Id(report_id in database))
+    	 * */
+    	if(this.report != null) {
+	    	for(Report report:this.report.getReports()) {
+	    		if(this.report.getId() == report.getAeReport().getId()){
+	    			return report.getCaseNumber();
+	    		}
+	    	}
+    	}
+    	
+    	return "";
+	}
 
-    public String getExternalId() {
+	
+
+	public String getExternalId() {
 		return externalId;
 	}
 

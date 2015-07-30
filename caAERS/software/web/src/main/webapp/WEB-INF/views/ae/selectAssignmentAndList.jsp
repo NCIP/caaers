@@ -254,7 +254,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
             </div>
          	<div class="row">
 	            <div class="label">
-	            Search identifier</div>
+	            Report ID</div>
 	            <div class="value">
 	                <form:input type="text" path="searchIdentifier"/>
 	            </div>

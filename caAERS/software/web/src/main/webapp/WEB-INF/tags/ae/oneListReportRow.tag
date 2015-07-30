@@ -60,6 +60,8 @@
 				${report.reportDefinition.label }
 			</c:if>
 		</td>
+		<!--  place here -->
+		<td> ${report.caseNumber}</td>
 		<c:if test="${report.reportDefinition.amendable == true}">
 		            		<td align="center" width="10%"><div class="label">${report.lastVersion.amendmentNumber}</div></td>
 		            	</c:if>
