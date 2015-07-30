@@ -1,0 +1,16 @@
+
+LOAD DATA
+	INFILE 'csm_group.txt'
+	DISCARDMAX 9999
+	TRUNCATE INTO TABLE csm_group
+	fields terminated by '\t'
+	
+	trailing NULLCOLS
+	(
+		GROUP_ID				    INTEGER EXTERNAL(38),
+		GROUP_NAME				    CHAR(2000),
+		GROUP_DESC					    CHAR(2000),
+		UPDATE_DATE				   DATE "YYYY-MM-DD" NULLIF UPDATE_DATE="",
+		APPLICATION_ID 			    INTEGER EXTERNAL(38)
+	)
+

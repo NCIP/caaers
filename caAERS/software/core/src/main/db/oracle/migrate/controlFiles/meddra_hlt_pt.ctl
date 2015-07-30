@@ -1,0 +1,16 @@
+
+LOAD DATA
+	INFILE 'meddra_hlt_pt.txt'
+	DISCARDMAX 9999
+	TRUNCATE INTO TABLE meddra_hlt_pt
+	fields terminated by '\t'
+	
+	trailing NULLCOLS
+	(
+		ID					    INTEGER EXTERNAL(10),
+		MEDDRA_HLT_ID					    INTEGER EXTERNAL(10),
+		MEDDRA_PT_ID					    INTEGER EXTERNAL(10),
+		VERSION				    INTEGER EXTERNAL(10),
+		VERSION_ID					    INTEGER EXTERNAL(10)
+	)
+

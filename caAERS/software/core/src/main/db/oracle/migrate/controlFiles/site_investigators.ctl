@@ -1,0 +1,27 @@
+
+LOAD DATA
+	INFILE 'site_investigators.txt'
+	DISCARDMAX 9999
+	TRUNCATE INTO TABLE site_investigators
+	fields terminated by '\t'
+	
+	trailing NULLCOLS
+	(
+		ID					    INTEGER EXTERNAL(10),
+		SITE_ID				    INTEGER EXTERNAL(10),
+		INVESTIGATOR_ID			    INTEGER EXTERNAL(10),
+		GRID_ID					    CHAR(2000),
+		VERSION				    INTEGER EXTERNAL(10),
+		EMAIL_ADDRESS					    CHAR(2000),
+		START_DATE					    TIMESTAMP(6) "YYYY-MM-DD HH24:MI:SS.FF6" NULLIF START_DATE="",
+		END_DATE					    TIMESTAMP(6) "YYYY-MM-DD HH24:MI:SS.FF6" NULLIF END_DATE="",
+		CODE						    INTEGER EXTERNAL(10),
+		PHONE_NUMBER					    CHAR(2000),
+		FAX_NUMBER					    CHAR(2000),
+		STREET 					    CHAR(2000),
+		CITY						    CHAR(2000),
+		STATE						    CHAR(2000),
+		ZIP						    CHAR(2000),
+		COUNTRY					    CHAR(2000)
+	)
+

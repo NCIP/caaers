@@ -79,18 +79,18 @@
         <property name="url" value="s[caaers.datasource.url]"/>
         <property name="username" value="s[caaers.datasource.username]"/>
         <property name="password" value="s[caaers.datasource.password]"/>
-        <property name="maxActive" value="35" />
-        <property name="minIdle" value="5" />
-        <property name="initialSize" value="5" />
-        <property name="maxWait" value="10000" />
+        <property name="maxActive" value="s[caaers.cp.maxActive:75]" />
+        <property name="minIdle" value="s[caaers.cp.minIdle:15]" />
+        <property name="initialSize" value="s[caaers.cp.initialSize:5]" />
+        <property name="maxWait" value="s[caaers.cp.maxWait:10000]" />
         <property name="removeAbandoned" value="true" />
         <property name="removeAbandonedTimeout" value="30" />
         <property name="logAbandoned" value="true" />
         <property name="testWhileIdle" value="true" />
         <property name="testOnBorrow" value="true" />
         <property name="testOnReturn" value="false" />
-        <property name="timeBetweenEvictionRunsMillis" value="5000" />
-        <property name="minEvictableIdleTimeMillis" value="15000" />
+        <property name="timeBetweenEvictionRunsMillis" value="s[caaers.cp.timeBetweenEvictionRunsMillis:60000]" />
+        <property name="minEvictableIdleTimeMillis" value="s[caaers.cp.minEvictableIdleTimeMillis:120000]" />
         <property name="validationQuery" value="select release from bering_version where release = 1" />
 
     </bean>

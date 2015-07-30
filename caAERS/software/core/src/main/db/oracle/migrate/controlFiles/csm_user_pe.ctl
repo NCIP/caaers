@@ -1,0 +1,14 @@
+
+LOAD DATA
+	INFILE 'csm_user_pe.txt'
+	DISCARDMAX 9999
+	TRUNCATE INTO TABLE csm_user_pe
+	fields terminated by '\t'
+	
+	trailing NULLCOLS
+	(
+		USER_PROTECTION_ELEMENT_ID		    INTEGER EXTERNAL(38),
+		PROTECTION_ELEMENT_ID			    INTEGER EXTERNAL(38),
+		USER_ID				    INTEGER EXTERNAL(38)
+	)
+

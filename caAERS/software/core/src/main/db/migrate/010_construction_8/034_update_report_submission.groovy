@@ -2,11 +2,11 @@ class AddAssignedIdentifierToReport extends edu.northwestern.bioinformatics.beri
 	void up() {
 		addColumn("report_schedules", "submission_message", "string")
 		addColumn("report_schedules", "submission_url", "string")
-	
+
 		addColumn("report_versions", "assigned_identifer", "string")
-		addColumn("report_versions", "submission_message", "string")
+		addColumn("report_versions", "submission_message", "string", limit:4000)
 		addColumn("report_versions", "submission_url", "string")
-				
+
 	}
 
 	void down() {

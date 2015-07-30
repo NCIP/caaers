@@ -5,9 +5,9 @@ class CreateSearch extends edu.northwestern.bioinformatics.bering.Migration {
             t.addVersionColumn()
             t.addColumn("login_id", "string", nullable: false)
             t.addColumn("name", "string", nullable: false)
-            t.addColumn("description", "string")
+            t.addColumn("description", "string", limit: 4000)
 		t.addColumn("created_date", "date", nullable:false)
-            t.addColumn("criteria_xml", "string", nullable: false)
+            t.addColumn("criteria_xml", "string", nullable: false, limit:4000)
 		t.addColumn("grid_id", "string", nullable: true)
         }
     }

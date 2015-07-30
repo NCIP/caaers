@@ -3,7 +3,7 @@ class UpdateTreatments extends edu.northwestern.bioinformatics.bering.Migration 
     	 dropColumn("treatments","treatment_assignment_code");
          addColumn("treatments","treatment_assignment_id", 'integer');
          addColumn("treatments","total_courses","integer");
-	 addColumn("treatments","treatment_description",'string');
+	 addColumn("treatments","treatment_description",'string', limit:4000);
          execute("ALTER TABLE treatments ADD CONSTRAINT fk_trmt_trmt_assgnmt FOREIGN KEY (treatment_assignment_id) REFERENCES treatment_assignment (id)");
     }
       

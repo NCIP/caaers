@@ -1,0 +1,15 @@
+
+LOAD DATA
+	INFILE 'csm_privilege.txt'
+	DISCARDMAX 9999
+	TRUNCATE INTO TABLE csm_privilege
+	fields terminated by '\t'
+	
+	trailing NULLCOLS
+	(
+		PRIVILEGE_ID				    INTEGER EXTERNAL(38),
+		PRIVILEGE_NAME 			    CHAR(2000),
+		PRIVILEGE_DESCRIPTION				    CHAR(2000),
+		UPDATE_DATE				   DATE "YYYY-MM-DD" NULLIF UPDATE_DATE=""
+	)
+

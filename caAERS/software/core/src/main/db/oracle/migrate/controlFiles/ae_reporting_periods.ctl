@@ -1,0 +1,30 @@
+
+LOAD DATA
+	INFILE 'ae_reporting_periods.txt'
+	DISCARDMAX 9999
+	TRUNCATE INTO TABLE ae_reporting_periods
+	fields terminated by '\t'
+	
+	trailing NULLCOLS
+	(
+		ID					    INTEGER EXTERNAL(10),
+		VERSION				    INTEGER EXTERNAL(10),
+		ASSIGNMENT_ID				    INTEGER EXTERNAL(10),
+		START_DATE					   DATE "YYYY-MM-DD" NULLIF START_DATE="",
+		END_DATE					   DATE "YYYY-MM-DD" NULLIF END_DATE="",
+		DESCRIPTION					    CHAR(2000),
+		CYCLE_NUMBER            INTEGER EXTERNAL(10),
+		GRID_ID					    CHAR(2000),
+		TREATMENT_ASSIGNMENT_ID			    INTEGER EXTERNAL(10),
+		EPOCH_ID					    INTEGER EXTERNAL(10),
+		WORKFLOW_ID					    INTEGER EXTERNAL(10),
+		REVIEW_STATUS_CODE				    INTEGER EXTERNAL(10),
+		TREATMENT_ASSIGNMENT_DESC			    CHAR(4000),
+		RETIRED_INDICATOR				    INTEGER EXTERNAL(1) "case :RETIRED_INDICATOR
+															when 't'then to_number(1)
+															when 'f'then to_number(0)
+															END",
+		EXTERNAL_ID					    CHAR(2000),
+		OLD_AE_MAPPING 				    CHAR(2000)
+	)
+

@@ -1,0 +1,29 @@
+
+LOAD DATA
+	INFILE 'ae_report_people.txt'
+	DISCARDMAX 9999
+	TRUNCATE INTO TABLE ae_report_people
+	fields terminated by '\t'
+	
+	trailing NULLCOLS
+	(
+		ID					    INTEGER EXTERNAL(10),
+		VERSION				    INTEGER EXTERNAL(10),
+		FIRST_NAME					    CHAR(2000),
+		MIDDLE_NAME					    CHAR(2000),
+		LAST_NAME					    CHAR(2000),
+		REPORT_ID					    INTEGER EXTERNAL(10),
+		GRID_ID					    CHAR(2000),
+		ROLE					    CHAR(2000),
+		REPORT_VERSION_ID				    INTEGER EXTERNAL(10),
+		TITLE						    CHAR(2000),
+		STREET 					    CHAR(2000),
+		CITY						    CHAR(2000),
+		STATE						    CHAR(2000),
+		ZIP						    CHAR(2000),
+		CODE						    INTEGER EXTERNAL(10),
+		INVESTIGATOR_ID				    INTEGER EXTERNAL(10),
+		RESEARCHSTAFF_ID				    INTEGER EXTERNAL(10),
+		COUNTRY					    CHAR(2000)
+	)
+
