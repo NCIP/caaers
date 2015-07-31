@@ -17,8 +17,44 @@
 		<property name="sessionFactories">
 			<list>
 				<ref bean="sessionFactory" />
+				<ref bean="auditSessionFactory" />
+				<ref bean="csmSessionFactory" />
 			</list>
 		</property>
 	</bean>
+
+    <bean id="mbeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean">
+        <property name="locateExistingServerIfPossible" value="true" />
+    </bean>
+    <bean id="mbeanExporter" class="org.springframework.jmx.export.MBeanExporter">
+        <property name="assembler">
+            <bean class="org.springframework.jmx.export.assembler.MethodNameBasedMBeanInfoAssembler">
+                <property name="managedMethods">
+                    <list>
+                        <value>getNumActive</value>
+                        <value>getMaxActive</value>
+                        <value>getNumIdle</value>
+                        <value>getMaxIdle</value>
+                        <value>getMinIdle</value>
+                        <value>getMaxWait</value>
+                        <value>getInitialSize</value>
+                        <value>getMaxOpenPreparedStatements</value>
+                        <value>getTestOnBorrow</value>
+                        <value>getTestOnReturn</value>
+                        <value>getTimeBetweenEvictionRunsMillis</value>
+                        <value>getNumTestsPerEvictionRun</value>
+                        <value>getMinEvictableIdleTimeMillis</value>
+                        <value>getTestWhileIdle</value>
+                    </list>
+                </property>
+            </bean>
+        </property>
+        <property name="beans">
+            <map>
+                <entry key="dataSource:name=DataSource" value-ref="dataSource"/>
+            </map>
+        </property>
+        <property name="server" ref="mbeanServer" />
+    </bean>
 
 </beans>
