@@ -210,6 +210,7 @@ public class StudySite extends StudyOrganization {
 	
 	@Transient
 	public SiteInvestigator findSiteInvestigatorByName(String fName,String lName) {
+		if(fName == null || lName == null) return null;
 		for (StudyInvestigator investigator: this.getActiveStudyInvestigators()) {
 			if ( investigator.getSiteInvestigator() != null) {
 				if ( fName.equals(investigator.getSiteInvestigator().getFirstName()) && lName.equals(investigator.getSiteInvestigator().getLastName())) {

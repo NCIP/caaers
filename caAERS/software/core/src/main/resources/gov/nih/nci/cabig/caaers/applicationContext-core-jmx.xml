@@ -35,8 +35,16 @@
                         <value>getMaxActive</value>
                         <value>getNumIdle</value>
                         <value>getMaxIdle</value>
+                        <value>getMinIdle</value>
                         <value>getMaxWait</value>
                         <value>getInitialSize</value>
+                        <value>getMaxOpenPreparedStatements</value>
+                        <value>getTestOnBorrow</value>
+                        <value>getTestOnReturn</value>
+                        <value>getTimeBetweenEvictionRunsMillis</value>
+                        <value>getNumTestsPerEvictionRun</value>
+                        <value>getMinEvictableIdleTimeMillis</value>
+                        <value>getTestWhileIdle</value>
                     </list>
                 </property>
             </bean>
