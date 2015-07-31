@@ -37,7 +37,6 @@ import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
-import gov.nih.nci.cabig.caaers.integration.schema.aereport.BaseAdverseEventReport;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.AEsOutputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEventResult;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEvents;
@@ -1096,7 +1095,8 @@ public class SAEEvaluationServiceImpl {
 		ValidationErrors errors = new ValidationErrors();
         Date startDate = rPeriod.getStartDate();
 		Date endDate = rPeriod.getEndDate();
-
+		
+		
 		// Check if the start date is equal to or before the end date.
 		if (firstCourseDate != null && startDate != null && (firstCourseDate.getTime() - startDate.getTime() > 0)) {
 			errors.addValidationError("WS_AEMS_014", "Start date of this course/cycle cannot be earlier than the Start date of first course/cycle");
@@ -1124,6 +1124,12 @@ public class SAEEvaluationServiceImpl {
 			Date eDate = aerp.getEndDate();
 
 			if (!aerp.getId().equals(rPeriod.getId())) {
+				
+				// CAAERS-7323 - If TAC or otherTreatmentAssignmentDescription of the passed in Reporting Period is different than the Reporting Period in loop, 
+				// skip the validation for overlapping reporting period dates
+				if(rPeriod.hasNoCommonTacOrOtherTreatmentAssignmentDescription((aerp))){
+					continue;
+				}
 
 				// we should make sure that no existing Reporting Period, start
 				// date falls, in-between these dates.
@@ -1199,7 +1205,7 @@ public class SAEEvaluationServiceImpl {
         return -1;
 
     }
-
+    
 	public EvaluationService getEvaluationService() {
 		return evaluationService;
 	}
