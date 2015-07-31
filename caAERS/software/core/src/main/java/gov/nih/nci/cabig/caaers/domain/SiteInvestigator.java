@@ -357,6 +357,5 @@ public class SiteInvestigator extends AbstractMutableDomainObject implements Com
     @Transient
     public String getTitle() {
     	return investigator.getTitle();
-    }
-    
+    }    
 }
