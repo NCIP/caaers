@@ -450,4 +450,62 @@ public class AdverseEventReportingPeriodTest extends AbstractTestCase {
          assertNull(ae3);
 
     }
+    
+    public void testHasNoCommonTacOrOtherTreatmentAssignmentDescriptionNullCheck() {
+    	AdverseEventReportingPeriod reportingPeriodWithTac = Fixtures.createReportingPeriod();
+    	reportingPeriodWithTac.setTreatmentAssignment(new TreatmentAssignment());
+    	reportingPeriodWithTac.getTreatmentAssignment().setCode("TAC");
+    	
+    	AdverseEventReportingPeriod reportingPeriodWithNoTacOrOtherDescription = Fixtures.createReportingPeriod();
+    	reportingPeriodWithNoTacOrOtherDescription.setTreatmentAssignment(new TreatmentAssignment());
+    	
+    	assertTrue(reportingPeriodWithTac.
+    			hasNoCommonTacOrOtherTreatmentAssignmentDescription(reportingPeriodWithNoTacOrOtherDescription));
+    	
+    	AdverseEventReportingPeriod reportingPeriodWithOtherTreamtmentAssignmentDescription = Fixtures.createReportingPeriod();
+    	reportingPeriodWithTac.setTreatmentAssignmentDescription("treatment description");
+    	assertTrue(reportingPeriodWithTac.
+    			hasNoCommonTacOrOtherTreatmentAssignmentDescription(reportingPeriodWithOtherTreamtmentAssignmentDescription));
+    	    	
+    	
+    }
+    
+    public void testHasNoCommonTacOrOtherTreatmentAssignmentDescription1() {
+    	assertFalse(reportingPeriod1.hasNoCommonTacOrOtherTreatmentAssignmentDescription(reportingPeriod1));
+    	
+    	AdverseEventReportingPeriod reportingPeriodWithTac = Fixtures.createReportingPeriod();
+    	reportingPeriodWithTac.setTreatmentAssignment(new TreatmentAssignment());
+    	reportingPeriodWithTac.getTreatmentAssignment().setCode("TAC-1");
+    	
+    	AdverseEventReportingPeriod reportingPeriodWithOtherDescription = Fixtures.createReportingPeriod();
+    	reportingPeriodWithOtherDescription.setTreatmentAssignmentDescription("treatment assignment descirption 1");
+    	assertTrue(reportingPeriodWithTac.hasNoCommonTacOrOtherTreatmentAssignmentDescription(reportingPeriodWithOtherDescription));
+    }
+    
+    public void testHasNoCommonTacOrOtherTreatmentAssignmentDescriptionHavingSameTAC() {
+    	
+    	AdverseEventReportingPeriod reportingPeriodWithTac1 = Fixtures.createReportingPeriod();
+    	reportingPeriodWithTac1.setTreatmentAssignment(new TreatmentAssignment());
+    	reportingPeriodWithTac1.getTreatmentAssignment().setCode("TAC-1");
+    	
+    	AdverseEventReportingPeriod reportingPeriodWithTac2 = Fixtures.createReportingPeriod();
+    	reportingPeriodWithTac2.setTreatmentAssignment(new TreatmentAssignment());
+    	reportingPeriodWithTac2.getTreatmentAssignment().setCode("TAC-2");
+    	assertTrue(reportingPeriodWithTac1.hasNoCommonTacOrOtherTreatmentAssignmentDescription(reportingPeriodWithTac2));
+    	
+    	reportingPeriodWithTac2.getTreatmentAssignment().setCode("TAC-1");
+    	assertFalse(reportingPeriodWithTac1.hasNoCommonTacOrOtherTreatmentAssignmentDescription(reportingPeriodWithTac2));
+    }
+    
+public void testHasNoCommonTacOrOtherTreatmentAssignmentDescriptionHavingSameOtherDescription() {
+    	
+    	AdverseEventReportingPeriod reportingPeriodWithOtherDescription1 = Fixtures.createReportingPeriod();
+    	final String OTHER_TREATMENT_ASSIGNMENT_DESCRIPTION = "treatment assignment descirption";
+    	reportingPeriodWithOtherDescription1.setTreatmentAssignmentDescription(OTHER_TREATMENT_ASSIGNMENT_DESCRIPTION);
+    	
+    	AdverseEventReportingPeriod reportingPeriodWithOtherDescription2 = Fixtures.createReportingPeriod();
+    	reportingPeriodWithOtherDescription2.setTreatmentAssignmentDescription(OTHER_TREATMENT_ASSIGNMENT_DESCRIPTION);
+    	
+    	assertFalse(reportingPeriodWithOtherDescription1.hasNoCommonTacOrOtherTreatmentAssignmentDescription(reportingPeriodWithOtherDescription2));
+    }
 }

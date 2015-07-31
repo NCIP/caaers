@@ -33,6 +33,7 @@ import gov.nih.nci.cabig.caaers.validation.AdverseEventGroup;
 import gov.nih.nci.cabig.caaers.validation.CourseCycleGroup;
 import gov.nih.nci.cabig.caaers.validation.fields.validators.NotNullConstraint;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
+
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -1089,6 +1090,29 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
 	public String toString() {
 		return "AdverseEventReportingPeriod [cycleNumber=" + cycleNumber
 				+ ", reviewStatus=" + reviewStatus + ", externalId=" + externalId + "]";
+	}
+	
+	
+	 /**
+     * verifies that other reporting period has no common TAC or otherTreatmentAssignmentDescription
+     * related to CAAERS-7323
+     *
+     * @param otherReportingPeriod, the other reporting period
+     * @return true, if successful
+     */
+	public Boolean hasNoCommonTacOrOtherTreatmentAssignmentDescription(
+			AdverseEventReportingPeriod otherReportingPeriod) {
+		if (getTreatmentAssignment() != null && getTreatmentAssignment().getCode() != null) {
+			// verify that it has different TAC
+			return (otherReportingPeriod.getTreatmentAssignment() == null || !StringUtils
+					.equalsIgnoreCase(getTreatmentAssignment().getCode(), otherReportingPeriod
+							.getTreatmentAssignment().getCode()));
+		}
+		
+		// verify that it has different otherTreatmentAssignmentDescription
+		return !StringUtils.equalsIgnoreCase(
+				getTreatmentAssignmentDescription(),
+				otherReportingPeriod.getTreatmentAssignmentDescription());
 	}
     
 }
