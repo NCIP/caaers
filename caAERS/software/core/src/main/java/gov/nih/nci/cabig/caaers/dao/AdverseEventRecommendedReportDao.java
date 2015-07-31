@@ -80,11 +80,11 @@ public class AdverseEventRecommendedReportDao extends GridIdentifiableDao<Advers
     }
     
     public List<AdverseEventRecommendedReport> getAllUnreportedRecords(){
-    	return getHibernateTemplate().find("from AdverseEventRecommendedReport aerr where aerr.aeReported = 0");
+    	return getHibernateTemplate().find("from AdverseEventRecommendedReport aerr where aerr.aeReported = 'false' ");
     }
     
     public List<ReportDefinition> getAllRecommendedReportsNotReported(){
-    	List<ReportDefinition> rds = getHibernateTemplate().find("select distinct aerr.reportDefinition from AdverseEventRecommendedReport aerr where aerr.aeReported = 0");
+    	List<ReportDefinition> rds = getHibernateTemplate().find("select distinct aerr.reportDefinition from AdverseEventRecommendedReport aerr where aerr.aeReported = 'false' ");
     	if(rds != null) {
 	    	for(ReportDefinition rd : rds){
 	    		for(PlannedNotification pn:rd.getPlannedNotifications()){
@@ -98,7 +98,7 @@ public class AdverseEventRecommendedReportDao extends GridIdentifiableDao<Advers
     
     public List<AdverseEventRecommendedReport> getAllAdverseEventsGivenReportDefinition(ReportDefinition rd){
     	List<AdverseEventRecommendedReport> aeRecomReports = getHibernateTemplate().find("select distinct aerr from AdverseEventRecommendedReport aerr where aerr.reportDefinition.id = ? and " +
-    			"aerr.aeReported = 0",new Object[]{rd.getId()});
+    			"aerr.aeReported = 'false' ",new Object[]{rd.getId()});
     	if(aeRecomReports != null) {
 	    	for(AdverseEventRecommendedReport aeRecomReport : aeRecomReports){
 	    		aeRecomReport.getAdverseEvent().getReportingPeriod().getAssignment().getParticipant().getIdentifiers().size();
