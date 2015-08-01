@@ -10,7 +10,6 @@ import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.providers.TestingAuthenticationToken;
-import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -42,12 +41,7 @@ public class CSMTest extends CaaersTestCase {
 
     }
 
-    private void printStats(BasicDataSource bds) {
-        System.out.println("##########################################");
-        System.out.println("numActive: " + bds.getNumActive());
-        System.out.println("numIdle: " + bds.getNumIdle());
-        System.out.println("##########################################");
-    }
+
 
     private class MyThread extends Thread {
         private boolean done = false;

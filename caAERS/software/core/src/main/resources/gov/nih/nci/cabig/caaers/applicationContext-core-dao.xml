@@ -698,10 +698,13 @@ This applicationContext contains the definition of the DAOs
     	<bean class="org.springframework.context.event.SimpleApplicationEventMulticaster" />
     </property>
     <property name="taskExecutor">
-       <bean class="org.springframework.core.task.SimpleAsyncTaskExecutor">
-           <property name="threadNamePrefix" value="caaers-async" />
-           <property name="daemon" value="true" />
-       </bean>
+        <bean class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+            <property name="corePoolSize" value="3" />
+            <property name="maxPoolSize" value="15" />
+            <property name="queueCapacity" value="150" />
+            <property name="daemon" value="true" />
+            <property name="threadNamePrefix" value="caaers-async" />
+        </bean>
     </property>
   </bean>
 

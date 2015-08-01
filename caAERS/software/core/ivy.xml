@@ -141,11 +141,7 @@
             </dependency>
 
             <!-- Connection Pool  -->
-            <dependency org="commons-dbcp" name="commons-dbcp" rev="1.2.2">
-                <exclude module="xml-apis" conf="*"/>
-        		<exclude module="xerces" conf="*"/>
-            </dependency>  <!-- DBCP, by caAERS -->
-            <dependency org="c3p0" name="c3p0" rev="0.8.5.2" />   <!-- c3po, by CSM -->
+            <dependency org="com.zaxxer" name="HikariCP" rev="2.4.0" />
 
             <!-- Databases -->
             <dependency org="postgresql" name="postgresql" rev="9.0-801.jdbc4"  conf="build,dist,distGrid->default"/>
