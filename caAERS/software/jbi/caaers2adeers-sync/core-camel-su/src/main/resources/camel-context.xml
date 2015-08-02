@@ -159,7 +159,7 @@
      </bean>
      <bean id="hibernateProperties" class="gov.nih.nci.cabig.caaers2adeers.hibernate.HibernatePropertiesFactoryBean">
         <property name="dialectName">
-            <value>s[caaers.datasource.dialect]</value>
+            <value>s[datasource.dialect]</value>
         </property>
         <property name="properties">
             <props>
