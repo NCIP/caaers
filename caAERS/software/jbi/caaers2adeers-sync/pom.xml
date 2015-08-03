@@ -161,6 +161,11 @@
           <artifactId>jetty-server</artifactId>
           <version>${jettyVersion}</version>
       </dependency>
+      <dependency>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-io</artifactId>
+          <version>${jettyVersion}</version>
+      </dependency>
 
       <!-- General XML and XSL apis -->
         <dependency>
