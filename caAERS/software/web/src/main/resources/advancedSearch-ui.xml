@@ -1451,7 +1451,7 @@
 			</ui-attribute>
 			<ui-attribute>
 				<name>reportIdentifer</name>
-				<label>Id</label>
+				<label>ID</label>
 				<data-type>String</data-type>
 				<field-type>text-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				

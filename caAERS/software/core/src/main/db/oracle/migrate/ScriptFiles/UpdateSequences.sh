@@ -1,5 +1,5 @@
 #!/bin/bash
-sqlplus username/password << EOF
+sqlplus username/password@//hostname:1521/orcl << EOF
 DECLARE
    MAX_VAL NUMBER;
    TABLENAME VARCHAR2(2000);
