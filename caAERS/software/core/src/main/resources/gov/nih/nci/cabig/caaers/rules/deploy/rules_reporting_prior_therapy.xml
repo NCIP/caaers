@@ -52,36 +52,7 @@
         </rhs>
     </rule>
 
-    <!-- ==========================================================================
-     RuleName : PTY_BR5_CHK
-     Logic :  Prior Therapy is required
-     Error Code : PTY_BR5_ERR
-     Error Message : Prior Therapy is required
-     ============================================================================= 
-    <rule name="PTY_BR5_CHK">
-        <lhs>
-            <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-            <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-            <eval>new ExpeditedAdverseEventValidator() {
 
-                public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
-                int i = 0;
-                for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
-                i++;
-                if (pt.getPriorTherapy() == null) {
-                errors.addValidationError("PTY_BR5_ERR","Prior Therapy is required", i);
-                }
-                }
-                return errors.hasErrors() ? FAIL : SUCCESS;
-                }
-                }.validate(aeReport, errors)
-            </eval>
-        </lhs>
-        <rhs>
-
-        </rhs>
-    </rule>
-	-->
     <!-- ==========================================================================
      RuleName : PTY_BR3_CHK
      Logic :  “Therapy End Date” must not be provided if “Therapy Start Date” is not provided
@@ -146,51 +117,6 @@
 
         </rhs>
     </rule>
-    <!-- ==========================================================================
-     RuleName : PTY_BR4A_CHK
-     Logic : ‘Prior Therapy Agents’ must be provided if "Prior_Therapy" is
-             ‘Bone Marrow Transplant’
-             ‘Chemotherapy (NOS)’
-             ‘Chemotherapy multiple agents systemic’
-             ‘Chemotherapy single agent systemic’
-             ‘Immunotherapy’
-             ‘Hormonal Therapy’
-     Error Code : PTY_BR4A_ERR
-     Error Message : CHEMO_AGENTS must be provided for the  provided PRIOR_THERAPY value.
-     ============================================================================= -->
-<!--
-    <rule name="PTY_BR4A_CHK">
-        <lhs>
-            <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-            <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-            <eval>new ExpeditedAdverseEventValidator() {
-                public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
-                int i = 0;
-                for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
-                i++;
-                if(!(NullSafeFieldExtractor.extractField(pt, "priorTherapy.id") instanceof Integer)) continue;
-                if(ArrayUtils.contains(new int[] {3,4,5,6,7,8,11},
-                NullSafeFieldExtractor.extractIntegerField(pt, "priorTherapy.id"))) {
-                if(pt.getPriorTherapyAgents().size() &lt; 1) {
-                errors.addValidationError("PTY_BR4A_ERR", "'Prior Therapy Agents' must be provided if 'Prior_Therapy' is
-                " +
-                "'Bone Marrow Transplant', 'Chemotherapy (NOS)' ,'Chemotherapy multiple agents systemic', 'Chemotherapy
-                single agent systemic','Chemotherapy non-cytotoxic','Immunotherapy', 'Hormonal Therapy'", i);
-                }
-                }
-
-                }
-                return errors.hasErrors() ? FAIL : SUCCESS;
-                }
-                }.validate(aeReport, errors)
-            </eval>
-        </lhs>
-        <rhs>
-
-        </rhs>
-    </rule>
--->
-
 
 
     <!-- ==========================================================================
@@ -277,34 +203,34 @@
      Error Code : PTA_UK_ERR
      Error Message : AGENT_NAME must be unique
      ============================================================================= -->
-    <rule name="PTA_UK_CHK">
-        <lhs>
-            <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-            <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-            <eval>new ExpeditedAdverseEventValidator() {
-                public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
-                    int i = 0;
-                    if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
-                    for (SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()) {
-                        HashSet hSet = new HashSet();
-                        i++;
-                        if(aet.getPriorTherapyAgents() == null) continue;
-                        for(PriorTherapyAgent pta : aet.getPriorTherapyAgents()) {
-                            if (!hSet.add(String.valueOf(pta.getName()))) {
-                                errors.addValidationError("PTA_UK_ERR", "Agents within a single prior therapy must be unique", i);
-                            }
-                        }
-                    }
-                    return errors.hasErrors() ? FAIL : SUCCESS;
-                }
-                }.validate(aeReport, errors)
-            </eval>
-        </lhs>
-        <rhs>
-            <!-- Already Populated Error Message-->
+    <!--<rule name="PTA_UK_CHK">-->
+        <!--<lhs>-->
+            <!--<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>-->
+            <!--<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>-->
+            <!--<eval>new ExpeditedAdverseEventValidator() {-->
+                <!--public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {-->
+                    <!--int i = 0;-->
+                    <!--if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;-->
+                    <!--for (SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()) {-->
+                        <!--HashSet hSet = new HashSet();-->
+                        <!--i++;-->
+                        <!--if(aet.getPriorTherapyAgents() == null) continue;-->
+                        <!--for(PriorTherapyAgent pta : aet.getPriorTherapyAgents()) {-->
+                            <!--if (!hSet.add(String.valueOf(pta.getName()))) {-->
+                                <!--errors.addValidationError("PTA_UK_ERR", "Agents within a single prior therapy must be unique", i);-->
+                            <!--}-->
+                        <!--}-->
+                    <!--}-->
+                    <!--return errors.hasErrors() ? FAIL : SUCCESS;-->
+                <!--}-->
+                <!--}.validate(aeReport, errors)-->
+            <!--</eval>-->
+        <!--</lhs>-->
+        <!--<rhs>-->
+            <!--&lt;!&ndash; Already Populated Error Message&ndash;&gt;-->
 
-        </rhs>
-    </rule>
+        <!--</rhs>-->
+    <!--</rule>-->
     
       <!-- ==========================================================================
     RuleName : PTY_BR6_CHK

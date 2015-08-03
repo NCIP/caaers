@@ -27,21 +27,6 @@
         <constructor-arg value="CTMS_SUITE"/>
     </bean>
 
-    <util:map id="connectionProperties" map-class="java.util.HashMap" key-type="java.lang.String"
-              value-type="java.lang.String">
-        <entry key="hibernate.connection.url" value="s[csm.datasource.url]"></entry>
-        <entry key="hibernate.connection.driver_class" value="s[datasource.driver]"></entry>
-        <entry key="hibernate.dialect" value="s[csm.datasource.dialect]"></entry>
-        <entry key="hibernate.connection.username" value="s[csm.datasource.username]"></entry>
-        <entry key="hibernate.connection.password" value="s[csm.datasource.password]"></entry>
-        <entry key="hibernate.connection.release_mode" value="after_transaction"></entry>
-        <entry key="hibernate.c3p0.min_size" value="2"></entry>
-        <entry key="hibernate.c3p0.max_size" value="20"></entry>
-        <entry key="hibernate.c3p0.timeout" value="300"></entry>
-        <entry key="hibernate.c3p0.max_statements" value="50"></entry>
-        <entry key="hibernate.c3p0.idle_test_period" value="3000"></entry>
-    </util:map>
-
 
     <bean id="csmSessionFactory " class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
@@ -83,9 +68,13 @@
         <constructor-arg index="1" ref="csmApplicationContextName"/>
     </bean>
 
-    <bean id="csmUserProvisioningManager" class="gov.nih.nci.security.provisioning.AuthorizationManagerImpl">
+    <bean id="csmHBSessionPreLoader" class="gov.nih.nci.cabig.caaers.security.CSMHibernateSessionFactoryPreInitBean">
         <constructor-arg index="0" ref="csmApplicationContextName"/>
-        <constructor-arg index="1" ref="connectionProperties"/>
+        <constructor-arg index="1" ref="csmSessionFactory" />
+    </bean>
+
+    <bean id="csmUserProvisioningManager" class="gov.nih.nci.security.provisioning.AuthorizationManagerImpl" depends-on="csmHBSessionPreLoader">
+        <constructor-arg index="0" ref="csmApplicationContextName"/>
         <property name="authorizationDAO" ref="fasterAuthorizationDao"/>
     </bean>
 

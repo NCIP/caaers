@@ -74,26 +74,26 @@
     </bean>
 
 
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="s[caaers.datasource.driver]"/>
-        <property name="url" value="s[caaers.datasource.url]"/>
-        <property name="username" value="s[caaers.datasource.username]"/>
-        <property name="password" value="s[caaers.datasource.password]"/>
-        <property name="maxActive" value="s[caaers.cp.maxActive:75]" />
-        <property name="minIdle" value="s[caaers.cp.minIdle:15]" />
-        <property name="initialSize" value="s[caaers.cp.initialSize:5]" />
-        <property name="maxWait" value="s[caaers.cp.maxWait:10000]" />
-        <property name="removeAbandoned" value="true" />
-        <property name="removeAbandonedTimeout" value="30" />
-        <property name="logAbandoned" value="true" />
-        <property name="testWhileIdle" value="true" />
-        <property name="testOnBorrow" value="true" />
-        <property name="testOnReturn" value="false" />
-        <property name="timeBetweenEvictionRunsMillis" value="s[caaers.cp.timeBetweenEvictionRunsMillis:60000]" />
-        <property name="minEvictableIdleTimeMillis" value="s[caaers.cp.minEvictableIdleTimeMillis:120000]" />
-        <property name="validationQuery" value="select release from bering_version where release = 1" />
-
+    <!-- https://github.com/brettwooldridge/HikariCP/wiki/Spring-Hibernate -->
+    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+        <property name="poolName" value="caaersServiceMixConnectionPool" />
+        <property name="driverClassName" value="s[datasource.driver]" />
+        <property name="jdbcUrl"  value="s[datasource.url]" />
+        <property name="username" value="s[datasource.username]" />
+        <property name="password"  value="s[datasource.password]" />
+        <!--<property name="connectionTestQuery" value="s[datasource.validationQuery:select release from bering_version where release = 1]" /> -->
+        <property name="connectionTimeout" value="s[datasource.connectionTimeout:15000]" />
+        <property name="idleTimeout" value="s[datasource.idleTimeout:300000]"/>
+        <property name="initializationFailFast" value="s[datasource.initializationFailFast:true]" />
+        <property name="maximumPoolSize" value="s[datasource.maximumPoolSize:15]" />
+        <property name="registerMbeans" value="true" />
     </bean>
+
+
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg ref="hikariConfig" />
+    </bean>
+
 
     <bean id="integrationLogDao" class="gov.nih.nci.cabig.caaers2adeers.track.IntegrationLogDao">
        <property name="hibernateTemplate" ref="hibernateTemplate" />
@@ -159,7 +159,7 @@
      </bean>
      <bean id="hibernateProperties" class="gov.nih.nci.cabig.caaers2adeers.hibernate.HibernatePropertiesFactoryBean">
         <property name="dialectName">
-            <value>s[caaers.datasource.dialect]</value>
+            <value>s[datasource.dialect]</value>
         </property>
         <property name="properties">
             <props>
