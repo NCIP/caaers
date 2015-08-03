@@ -146,7 +146,7 @@
             <dependency org="com.zaxxer" name="HikariCP" rev="2.4.0" />
 
             <!-- Databases -->
-            <dependency org="postgresql" name="postgresql" rev="9.2-1004-jdbc4"  conf="build,dist,distGrid->default"/>
+            <dependency org="org.postgresql" name="postgresql" rev="9.2-1004-jdbc4"  conf="build,dist,distGrid->default"/>
             <!-- For oracle 12c we need ojdbc7. We have to download ojdbc7 and follow the instructions specified in quick start guide -->
             <dependency org="oracle" name="ojdbc7" rev="12.1.0.2.0"  conf="build,dist,distGrid->default"/>
 
