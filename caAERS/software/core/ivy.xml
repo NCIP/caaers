@@ -85,7 +85,9 @@
                 <exclude org="org.slf4j" />
                 <exclude org="gov.nih.nci.cabig.ctms" />
 				<exclude module="collection-setter-injector" />
+                <exclude org="org.eclipse.jdt" />
             </dependency>
+            <dependency org="org.eclipse.jdt.core.compiler" name="ecj" rev="4.4.1"/>
 
             <!-- content filtering -->
             <dependency org="com.semanticbits.security.contentfilter" name="contentfilter" rev="0.4" conf="build,dist,distGrid->default"  />
@@ -144,7 +146,7 @@
             <dependency org="com.zaxxer" name="HikariCP" rev="2.4.0" />
 
             <!-- Databases -->
-            <dependency org="postgresql" name="postgresql" rev="9.0-801.jdbc4"  conf="build,dist,distGrid->default"/>
+            <dependency org="postgresql" name="postgresql" rev="9.2-1004-jdbc4"  conf="build,dist,distGrid->default"/>
             <!-- For oracle 12c we need ojdbc7. We have to download ojdbc7 and follow the instructions specified in quick start guide -->
             <dependency org="oracle" name="ojdbc7" rev="12.1.0.2.0"  conf="build,dist,distGrid->default"/>
 

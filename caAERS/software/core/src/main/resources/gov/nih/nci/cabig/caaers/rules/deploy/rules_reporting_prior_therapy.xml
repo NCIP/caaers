@@ -203,34 +203,34 @@
      Error Code : PTA_UK_ERR
      Error Message : AGENT_NAME must be unique
      ============================================================================= -->
-    <!--<rule name="PTA_UK_CHK">-->
-        <!--<lhs>-->
-            <!--<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>-->
-            <!--<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>-->
-            <!--<eval>new ExpeditedAdverseEventValidator() {-->
-                <!--public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {-->
-                    <!--int i = 0;-->
-                    <!--if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;-->
-                    <!--for (SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()) {-->
-                        <!--HashSet hSet = new HashSet();-->
-                        <!--i++;-->
-                        <!--if(aet.getPriorTherapyAgents() == null) continue;-->
-                        <!--for(PriorTherapyAgent pta : aet.getPriorTherapyAgents()) {-->
-                            <!--if (!hSet.add(String.valueOf(pta.getName()))) {-->
-                                <!--errors.addValidationError("PTA_UK_ERR", "Agents within a single prior therapy must be unique", i);-->
-                            <!--}-->
-                        <!--}-->
-                    <!--}-->
-                    <!--return errors.hasErrors() ? FAIL : SUCCESS;-->
-                <!--}-->
-                <!--}.validate(aeReport, errors)-->
-            <!--</eval>-->
-        <!--</lhs>-->
-        <!--<rhs>-->
-            <!--&lt;!&ndash; Already Populated Error Message&ndash;&gt;-->
+    <rule name="PTA_UK_CHK">
+        <lhs>
+            <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+            <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>new ExpeditedAdverseEventValidator() {
+                public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                    int i = 0;
+                    if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
+                    for (SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()) {
+                        HashSet hSet = new HashSet();
+                        i++;
+                        if(aet.getPriorTherapyAgents() == null) continue;
+                        for(PriorTherapyAgent pta : aet.getPriorTherapyAgents()) {
+                            if (!hSet.add(String.valueOf(pta.getName()))) {
+                                errors.addValidationError("PTA_UK_ERR", "Agents within a single prior therapy must be unique", i);
+                            }
+                        }
+                    }
+                    return errors.hasErrors() ? FAIL : SUCCESS;
+                }
+                }.validate(aeReport, errors)
+            </eval>
+        </lhs>
+        <rhs>
+            <!-- Already Populated Error Message-->
 
-        <!--</rhs>-->
-    <!--</rule>-->
+        </rhs>
+    </rule>
     
       <!-- ==========================================================================
     RuleName : PTY_BR6_CHK
