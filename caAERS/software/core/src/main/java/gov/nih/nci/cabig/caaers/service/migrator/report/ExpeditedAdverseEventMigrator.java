@@ -411,7 +411,7 @@ public class ExpeditedAdverseEventMigrator implements Migrator<ExpeditedAdverseE
                 }
             });
             if(existingOtherCause == null){
-                outcome.addError("ER-CA-1", "Error migrating OtherCauseAttribution. Could not find matching OtherCause in report" );
+                //outcome.addError("ER-CA-1", "Error migrating OtherCauseAttribution. Could not find matching OtherCause in report" );
                 break;
             }
             //remove the intervention from the list of interventions obtained from report.
