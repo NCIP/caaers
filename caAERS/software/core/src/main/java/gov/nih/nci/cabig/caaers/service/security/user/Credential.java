@@ -7,6 +7,7 @@
 package gov.nih.nci.cabig.caaers.service.security.user;
 
 import gov.nih.nci.cabig.caaers.domain.User;
+import org.acegisecurity.userdetails.UserDetails;
 
 public class Credential {
     private String _userName;
@@ -14,6 +15,7 @@ public class Credential {
     private String _password;
     
     private User user;
+    private UserDetails userDetails;
 
     public Credential(String userName, String password) {
         _userName = userName;
@@ -35,4 +37,12 @@ public class Credential {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+    public UserDetails getUserDetails() {
+        return userDetails;
+    }
+
+    public void setUserDetails(UserDetails userDetails) {
+        this.userDetails = userDetails;
+    }
 }

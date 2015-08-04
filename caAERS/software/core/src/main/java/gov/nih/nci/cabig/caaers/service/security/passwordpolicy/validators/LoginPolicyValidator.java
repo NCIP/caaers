@@ -6,15 +6,12 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators;
 
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
-
-import org.acegisecurity.AuthenticationException;
-import org.acegisecurity.CredentialsExpiredException;
-import org.acegisecurity.DisabledException;
-import org.acegisecurity.LockedException;
+import org.acegisecurity.*;
 
 /**
  * @author Jared Flatow
@@ -31,7 +28,8 @@ public class LoginPolicyValidator implements PasswordPolicyValidator {
 
         return validateLockOutDuration(loginPolicy, credential)
                 && validateAllowedFailedLoginAttempts(loginPolicy, credential)
-                && validateMaxPasswordAge(loginPolicy, credential);
+                && validateMaxPasswordAge(loginPolicy, credential)
+                && validateAccountExpiry(loginPolicy, credential);
     }
     
     /**
@@ -42,11 +40,8 @@ public class LoginPolicyValidator implements PasswordPolicyValidator {
      * @return
      * @throws DisabledException - when number of failed login attempts is greater than the one set in login policy
      */
-    public boolean validateAllowedFailedLoginAttempts(LoginPolicy policy, Credential credential)
-            throws DisabledException {
-        if (credential.getUser().getFailedLoginAttempts() > policy
-                .getAllowedFailedLoginAttempts()) {
-            //throw new TooManyAllowedFailedLoginAttemptsException("Too many failed logins.");
+    public boolean validateAllowedFailedLoginAttempts(LoginPolicy policy, Credential credential) throws DisabledException {
+        if (credential.getUser().getFailedLoginAttempts() > policy.getAllowedFailedLoginAttempts()) {
         	throw new DisabledException("Too many failed login attempts resulted in account lock out for "+policy.getLockOutDuration()+" seconds.");
         }
        	return true;
@@ -60,15 +55,18 @@ public class LoginPolicyValidator implements PasswordPolicyValidator {
      * @return
      * @throws LockedException - when login policy lock out duration is greater than the seconds past last failed login attempt
      */
-    public boolean validateLockOutDuration(LoginPolicy policy, Credential credential)
-            throws LockedException {
-    	if(credential.getUser().getSecondsPastLastFailedLoginAttempt() == -1) 
-    		return true;
-    	else if(policy.getLockOutDuration()>credential.getUser().getSecondsPastLastFailedLoginAttempt() && credential.getUser().getFailedLoginAttempts()==-1) {
-    		//throw new UserLockedOutException("User is locked out");
-    		long timeLeft = policy.getLockOutDuration() - credential.getUser().getSecondsPastLastFailedLoginAttempt();
+    public boolean validateLockOutDuration(LoginPolicy policy, Credential credential)  throws LockedException {
+        User user = credential.getUser();
+        if(user.isLocked()) throw new LockedException("User account is locked or disabled.");
+
+        long secondsPastLastFailedLoginAttempt = user.getSecondsPastLastFailedLoginAttempt();
+    	if(secondsPastLastFailedLoginAttempt <= 0) return true;
+
+        if(policy.getLockOutDuration() > secondsPastLastFailedLoginAttempt && user.getFailedLoginAttempts() > policy.getAllowedFailedLoginAttempts()) {
+    		long timeLeft = policy.getLockOutDuration() - secondsPastLastFailedLoginAttempt;
     		throw new LockedException("Account is locked out for "+timeLeft+" more second(s).");
-    		}
+    	}
+
     	return true;
     }
     
@@ -80,8 +78,7 @@ public class LoginPolicyValidator implements PasswordPolicyValidator {
      * @return
      * @throws CredentialsExpiredException - when password age is greater than the one set in login policy 
      */
-    public boolean validateMaxPasswordAge(LoginPolicy policy, Credential credential)
-            throws CredentialsExpiredException {
+    public boolean validateMaxPasswordAge(LoginPolicy policy, Credential credential)  throws CredentialsExpiredException {
     	
         if (credential.getUser().getPasswordAge() > policy
                 .getMaxPasswordAge()) {
@@ -89,4 +86,21 @@ public class LoginPolicyValidator implements PasswordPolicyValidator {
         }
         return true;
     }
+
+    /**
+     * Checks if account is expired, yes then it will throw and Account Expired exception.
+     * @param policy
+     * @param credential
+     * @return
+     * @throws CredentialsExpiredException - when password age is greater than the one set in login policy
+     */
+    public boolean validateAccountExpiry(LoginPolicy policy, Credential credential)  throws AccountExpiredException {
+
+        if(!credential.getUserDetails().isAccountNonExpired()){
+            throw new AccountExpiredException((new StringBuilder()).append("Error authenticating: User is InActive").toString());
+        }
+        return true;
+    }
+
+
 }

@@ -19,6 +19,8 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class LoginPolicy {
 
+    public static Integer MAX_LOGIN_ATTEMPTS_ALLOWED = 99999;
+
     /** The allowed failed login attempts. */
     private int allowedFailedLoginAttempts;
     

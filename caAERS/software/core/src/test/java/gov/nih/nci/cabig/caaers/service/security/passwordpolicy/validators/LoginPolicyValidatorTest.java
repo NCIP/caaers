@@ -10,15 +10,14 @@ import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
-
-import java.sql.Timestamp;
-import java.util.Calendar;
-
+import gov.nih.nci.security.acegi.authentication.CSMUserDetails;
 import junit.framework.TestCase;
-
 import org.acegisecurity.CredentialsExpiredException;
 import org.acegisecurity.DisabledException;
 import org.acegisecurity.LockedException;
+
+import java.sql.Timestamp;
+import java.util.Calendar;
 
 /**
  * @author Ram Seethiraju
@@ -40,6 +39,7 @@ public class LoginPolicyValidatorTest extends TestCase {
 		user = new User();
 		credential = new Credential(userName, password);
 		credential.setUser(user);
+        credential.setUserDetails(new CSMUserDetails(null, password, userName, null));
 		loginPolicyValidator = new LoginPolicyValidator();
 		loginPolicy = new LoginPolicy();
 		loginPolicy.setAllowedFailedLoginAttempts(3); // 3 attempts
@@ -104,13 +104,21 @@ public class LoginPolicyValidatorTest extends TestCase {
 	public void testForLockOutDuration_CheckingFailure1() {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MINUTE, -1); // last attempt made 1 minute ago
-		user.setFailedLoginAttempts(-1);
+		user.setFailedLoginAttempts(3);
 		user.setLastFailedLoginAttemptTime(cal.getTime());
 		try {
 			loginPolicyValidator.validateLockOutDuration(loginPolicy, credential);
-			fail("Testcase Failed: LockOutDuration limit has not been reached but exception was not thrown.");
 		} catch (LockedException e) {
+            fail("Testcase Failed: LockOutDuration limit has not been reached but exception was not thrown.");
 		}
+        user.setFailedLoginAttempts(4);
+        user.setLastFailedLoginAttemptTime(cal.getTime());
+        try {
+            loginPolicyValidator.validateLockOutDuration(loginPolicy, credential);
+            fail("Testcase Failed: LockOutDuration limit has not been reached but exception was not thrown.");
+        } catch (LockedException e) {
+
+        }
 	}
 	
 	public void testValidateMethod_CheckingSuccess() {

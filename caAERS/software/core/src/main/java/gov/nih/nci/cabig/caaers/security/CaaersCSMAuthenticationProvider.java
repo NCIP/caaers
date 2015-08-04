@@ -8,28 +8,25 @@ package gov.nih.nci.cabig.caaers.security;
 
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
+import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyService;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.LoginPolicyValidator;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.acegi.csm.authentication.CSMAuthenticationProvider;
 import gov.nih.nci.cabig.ctms.audit.DataAuditInfo;
-
-import java.util.Date;
-
-import org.acegisecurity.AccountExpiredException;
-import org.acegisecurity.Authentication;
-import org.acegisecurity.AuthenticationException;
-import org.acegisecurity.BadCredentialsException;
-import org.acegisecurity.CredentialsExpiredException;
-import org.acegisecurity.DisabledException;
-import org.acegisecurity.LockedException;
+import org.acegisecurity.*;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.userdetails.UserDetails;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.StaleObjectStateException;
+import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 /**
  * @author Ram Seethiraju
@@ -53,88 +50,90 @@ public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider {
 	 */
 	@Override
     @Transactional
-	protected void additionalAuthenticationChecks(UserDetails user, UsernamePasswordAuthenticationToken token) 
-	throws AuthenticationException {
+	protected void additionalAuthenticationChecks(UserDetails user, UsernamePasswordAuthenticationToken token) throws AuthenticationException {
+
+        int previousFailedLogins = 0;
+        int newFailedLogins = 0;
+        Date previousFailedDate = null;
+        Date newFailedDate = null;
+
+
 
 		User caaersUser = null;
 		Credential credential =  new Credential(user.getUsername(), user.getPassword());
+        credential.setUserDetails(user);
 		PasswordPolicy passwordPolicy = passwordPolicyService.getPasswordPolicy();
-		LoginPolicyValidator loginPolicyValidator = new LoginPolicyValidator();		
-		
-		logger.debug((new StringBuilder()).append("Authenticating ").append(user.getUsername()).append("...").toString());
-		if(!user.isAccountNonExpired()){
-			throw new AccountExpiredException((new StringBuilder()).append("Error authenticating: User is InActive").toString());
-		}		
-		
-		caaersUser = userRepository.getUserByLoginName(user.getUsername());
-		
-		try {
-			// If the user is a caAERS user, then apply Login Policy Validations
-			if(caaersUser!=null) {	
-				// check if the account is locked
-					if(caaersUser.isLocked()){
-						throw new LockedException("Account is locked.");
-					}
-					
-					if(caaersUser.getSecondsPastLastFailedLoginAttempt() > passwordPolicy.getLoginPolicy().getLockOutDuration()) {
-						if(passwordPolicy.getLoginPolicy().getAllowedLoginTime() <= caaersUser.getSecondsPastLastFailedLoginAttempt()) {
-							caaersUser.setFailedLoginAttempts(0);
-							caaersUser.setLastFailedLoginAttemptTime(null);
-						}
-					}
-				credential.setUser(caaersUser);
-				loginPolicyValidator.validate(passwordPolicy, credential, null);
-				if(caaersUser.getFailedLoginAttempts()==-1)	caaersUser.setFailedLoginAttempts(0);
-				if(passwordPolicy.getLoginPolicy().getAllowedLoginTime() <= caaersUser.getSecondsPastLastFailedLoginAttempt())	caaersUser.setFailedLoginAttempts(0);
+		LoginPolicyValidator loginPolicyValidator = new LoginPolicyValidator();
 
-			}
-			
-			super.additionalAuthenticationChecks(user, token);
-			
-			if(caaersUser!=null){
-				// If the caAERS user passes the checks and validations, then do the following
-				caaersUser.setFailedLoginAttempts(0);
-				caaersUser.setLastFailedLoginAttemptTime(null);
-			}
-			
+        // CAAERS-7171, preventing oops by setting the data. (BJ - original code of DW)
+        populateDataAuditInfoIfNeeded();
+
+        if(logger.isDebugEnabled()) {
+            logger.debug((new StringBuilder()).append("Authenticating ").append(user.getUsername()).append("...").toString());
+        }
+
+        try {
+
+                //load the user
+                caaersUser = userRepository.getUserByLoginName(user.getUsername());
+
+
+                //check the login policy
+                if(caaersUser != null) {
+                    previousFailedLogins = caaersUser.getFailedLoginAttempts();
+                    previousFailedDate = caaersUser.getLastFailedLoginAttemptTime();
+
+                    credential.setUser(caaersUser);
+                    loginPolicyValidator.validate(passwordPolicy, credential, null);
+
+                }
 		} catch (DisabledException attemptsEx) {
 			// This exception is thrown when too many failed login attempts occur.
-			caaersUser.setLastFailedLoginAttemptTime(new Date());
-			caaersUser.setFailedLoginAttempts(-1);
+            newFailedDate = new Date();
+            newFailedLogins = LoginPolicy.MAX_LOGIN_ATTEMPTS_ALLOWED;
 			throw attemptsEx;
 		} catch (LockedException lockEx) {
 			// This exception is thrown when user tries to login while the account is locked.
 			throw lockEx;
 		}catch (CredentialsExpiredException oldEx) {
 			// This exception is thrown when the password is too old.
-			caaersUser.setFailedLoginAttempts(0);
-			caaersUser.setLastFailedLoginAttemptTime(null);
+            newFailedLogins = 0;
+            newFailedDate = null;
 			throw oldEx;
 		} catch (AuthenticationException authEx) {
 			// This exception is thrown when invalid credentials are used to login.
-			if(caaersUser!=null) {
-				caaersUser.setFailedLoginAttempts(caaersUser.getFailedLoginAttempts()+1);
-				if(caaersUser.getFailedLoginAttempts()==1)	caaersUser.setLastFailedLoginAttemptTime(new Date());
-			}
+            newFailedLogins = previousFailedLogins + 1;
+            newFailedDate = new Date();
 			throw new BadCredentialsException("Invalid login credentials");
 		} finally {
 			// save the caAERS user properties.
-			
-			//check for oops
-			if(DataAuditInfo.getLocal() == null) {
-				logger.error("DataAuditInfor is not set! This is not supposed to happen, emergency setting it to prevent oops.");
-				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-				if(auth != null) {
-					DataAuditInfo.setLocal(new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo(
-							auth.getName(), "UNKNOWN", new Date()));
-				}
-			}
-			
-			if(caaersUser!=null) {
-				userRepository.save(caaersUser);
+			if(caaersUser != null) {
+                if( (newFailedLogins != previousFailedLogins) || DateUtils.compateDateAndTime(previousFailedDate, newFailedDate) != 0 ) {
+                    try {
+                        userRepository.save(caaersUser);
+                    }catch (StaleObjectStateException  | ConcurrencyFailureException ignore) {
+                        if(logger.isDebugEnabled()) {
+                            logger.debug("Error while saving user, generally this can be ignored", ignore);
+                        }
+                    }
+                }
+
 			}
 		}
 	}
+
+    private void populateDataAuditInfoIfNeeded() {
+
+        //check for oops
+        if(DataAuditInfo.getLocal() == null) {
+            logger.warn("DataAuditInfor is not set! This is not supposed to happen, emergency setting it to prevent oops.");
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if(auth != null) {
+                DataAuditInfo.setLocal(new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo(auth.getName(), "UNKNOWN", new Date()));
+            }
+        }
+
+    }
 
 	public void setUserRepository(UserRepository userRepository) {
 		this.userRepository = userRepository;

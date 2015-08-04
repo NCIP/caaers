@@ -7,12 +7,8 @@
 package gov.nih.nci.cabig.caaers.ws;
 
 
-
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
-import gov.nih.nci.cabig.caaers.security.CaaersCSMAuthenticationProvider;
-import gov.nih.nci.security.acegi.authentication.CSMAuthenticationProvider;
-import gov.nih.nci.security.exceptions.CSLoginException;
 import org.acegisecurity.*;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.TestingAuthenticationToken;
@@ -55,7 +51,10 @@ public class AuthenticationWSHandler implements CallbackHandler {
 
         try{
             Authentication authz = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password));
-            logger.debug(authz);
+            if(logger.isDebugEnabled()) {
+                logger.debug(authz);
+            }
+
         }catch(AuthenticationException e) {
             logger.error("Invalid Username/Password.", e);
             throw new SoapFault("Invalid Username/Password ", Fault.FAULT_CODE_SERVER);
@@ -78,7 +77,10 @@ public class AuthenticationWSHandler implements CallbackHandler {
         authentication.setAuthenticated(true);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        logger.debug("Populated authentication in SecurityHolder : " + authentication.toString());
+        if(logger.isDebugEnabled()) {
+            logger.debug("Populated authentication in SecurityHolder : " + authentication.toString());
+        }
+
     }
 
     public AuthenticationManager getAuthenticationManager() {
