@@ -53,6 +53,7 @@ import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -592,6 +593,15 @@ public class SafetyReportServiceImpl {
 		
 		initiateSafetyReportAction(aeSrcReport, caaersServiceResponse, errors);
 		
+		Iterator<ValidationError> it = errors.getErrors().iterator();
+		while (it.hasNext()) {
+			final ValidationError val = it.next();
+			if("ER-CA-1".equals(val.getCode())) {
+				it.remove();
+			}
+			
+		}
+		
 		if(errors.getErrorCount() > 0) {
 			throw new CaaersValidationException(errors.toString());
 		}
@@ -606,6 +616,14 @@ public class SafetyReportServiceImpl {
 		
 		retVal.setReportId(aeSrcReport.getExternalId());
 		
+		it = errors.getErrors().iterator();
+		while (it.hasNext()) {
+			final ValidationError val = it.next();
+			if("ER-CA-1".equals(val.getCode())) {
+				it.remove();
+			}
+			
+		}
 		if(errors.getErrorCount() > 0) {
 			throw new CaaersValidationException(errors.toString());
 		}
