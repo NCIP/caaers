@@ -220,7 +220,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
         return attributionMap;
     }
 
-    public void setAttributionMap(AttributionMap attributionMap) {
+    public void setAttributionMap(Map<String, List<List<Attribution>>> attributionMap) {
         this.attributionMap = attributionMap;
     }
 
