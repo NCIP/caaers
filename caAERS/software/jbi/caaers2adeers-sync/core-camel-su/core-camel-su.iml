@@ -153,7 +153,7 @@
     <orderEntry type="library" name="Maven: com.sna-projects.krati:krati:0.4.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: log4j:log4j:1.2.17" level="project" />
     <orderEntry type="library" name="Maven: org.idevlab:rjc:0.6.4" level="project" />
-    <orderEntry type="library" name="Maven: commons-pool:commons-pool:1.3" level="project" />
+    <orderEntry type="library" name="Maven: commons-pool:commons-pool:1.5.4" level="project" />
     <orderEntry type="library" name="Maven: net.sf.ehcache:ehcache:1.2.3" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ws.security:wss4j:1.6.6" level="project" />
@@ -175,7 +175,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.0.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.0.6.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: jencks:xapool-without-pool:1.4" level="project" />
-    <orderEntry type="library" name="Maven: commons-dbcp:commons-dbcp:1.2.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: commons-dbcp:commons-dbcp:1.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.geronimo.specs:geronimo-annotation_1.0_spec:1.1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.servicemix:servicemix-core:3.4.1" level="project" />
     <orderEntry type="library" name="Maven: xml-apis:xml-apis:1.3.04" level="project" />
@@ -253,10 +253,11 @@
     <orderEntry type="library" name="Maven: asm:asm:1.5.3" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-commons-annotations:3.0.0.ga" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:ejb3-persistence:1.0.1.GA" level="project" />
-    <orderEntry type="library" name="Maven: postgresql:postgresql:9.0-801.jdbc3" level="project" />
+    <orderEntry type="library" name="Maven: org.postgresql:postgresql:9.2-1004-jdbc4" level="project" />
     <orderEntry type="library" name="Maven: com.oracle:ojdbc7:12.1.0.2.0" level="project" />
     <orderEntry type="library" name="Maven: com.oracle:ojpse:12.1.0.2.0" level="project" />
     <orderEntry type="library" name="Maven: com.oracle:oraclepki:12.1.0.2.0" level="project" />
+    <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:2.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.activemq:activemq-camel:5.5.1" level="project" />
     <orderEntry type="library" name="Maven: net.sf.saxon:Saxon-HE:9.5.1-8" level="project" />
     <orderEntry type="library" name="Maven: org.apache.axis:axis:1.4" level="project" />

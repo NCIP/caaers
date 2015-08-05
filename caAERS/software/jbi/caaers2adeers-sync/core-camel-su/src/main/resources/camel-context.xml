@@ -85,7 +85,8 @@
         <property name="connectionTimeout" value="s[datasource.connectionTimeout:15000]" />
         <property name="idleTimeout" value="s[datasource.idleTimeout:300000]"/>
         <property name="initializationFailFast" value="s[datasource.initializationFailFast:true]" />
-        <property name="maximumPoolSize" value="s[datasource.maximumPoolSize:15]" />
+        <property name="maximumPoolSize" value="s[datasource.maximumPoolSize:8]" />
+        <property name="leakDetectionThreshold" value="s[datasource.leakDetectionThreshold:60000]" />
         <property name="registerMbeans" value="true" />
     </bean>
 
