@@ -567,26 +567,26 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
         });
     }
 
-    public void testSaveSkipsPhysicianWhenNotSavable() throws Exception {
+    public void testSavePhysicianWithMissingData() throws Exception {
         doSaveTest(new SaveTester() {
             public void setupReport(ExpeditedAdverseEventReport report) {
                 report.getPhysician().setLastName(null);
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
-                assertNull(loaded.getPhysician());
+                assertNotNull(loaded.getPhysician());
             }
         });
     }
 
-    public void testSaveSkipsReporterWhenNotSavable() throws Exception {
+    public void testSaveReporterWhithMissingData() throws Exception {
         doSaveTest(new SaveTester() {
             public void setupReport(ExpeditedAdverseEventReport report) {
                 report.getReporter().setFirstName(null);
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
-                assertNull(loaded.getReporter());
+                assertNotNull(loaded.getReporter());
             }
         });
     }
