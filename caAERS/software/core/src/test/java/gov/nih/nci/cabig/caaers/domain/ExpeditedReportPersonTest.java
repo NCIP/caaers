@@ -33,13 +33,13 @@ public class ExpeditedReportPersonTest extends CaaersTestCase {
     public void testSaveableWithoutFirstName() throws Exception {
         setSaveable();
         person.setFirstName(null);
-        assertFalse(person.isSavable());
+        assertTrue(person.isSavable());
     }
 
     public void testSaveableWithoutLastName() throws Exception {
         setSaveable();
         person.setLastName(null);
-        assertFalse(person.isSavable());
+        assertTrue(person.isSavable());
     }
 
 

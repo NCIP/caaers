@@ -181,6 +181,10 @@ public class DateUtils {
      * @return 0 if same, -1 if d1 is less and 1 if d1 is higher. 
      */
     public static int compateDateAndTime(Date d1, Date d2){
+        if (d1 == null && d2 == null) return 0;
+        if(d1 == null && d2 != null) return -1;
+        if(d2 == null && d1 != null) return 1;
+
     	long t1 = d1.getTime();
     	long t2 = d2.getTime();
     	if(t1 > t2) return 1;
