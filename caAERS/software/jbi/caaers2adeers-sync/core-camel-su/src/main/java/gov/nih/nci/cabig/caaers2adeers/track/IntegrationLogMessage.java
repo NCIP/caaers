@@ -10,8 +10,10 @@ package gov.nih.nci.cabig.caaers2adeers.track;
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.persistence.Lob;
 
 @Entity
 @Table(name="integration_log_message")
@@ -71,6 +73,8 @@ public class IntegrationLogMessage{
  		this.stage = stage;
  	}
 
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
  	public String getMessage() {
  		return message;
  	}

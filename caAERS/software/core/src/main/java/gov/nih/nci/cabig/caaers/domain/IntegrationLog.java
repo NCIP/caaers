@@ -18,6 +18,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name="integration_logs")
@@ -43,8 +44,10 @@ public class IntegrationLog extends AbstractMutableDomainObject{
 	private String notes;
 	
 	private List<IntegrationLogDetail> integrationLogDetails = new ArrayList<IntegrationLogDetail>();
-	
-	public String getNotes() {
+
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    public String getNotes() {
 		return notes;
 	}
 
