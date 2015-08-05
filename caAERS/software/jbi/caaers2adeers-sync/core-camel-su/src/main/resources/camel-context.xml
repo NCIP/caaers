@@ -87,6 +87,7 @@
         <property name="initializationFailFast" value="s[datasource.initializationFailFast:true]" />
         <property name="maximumPoolSize" value="s[datasource.maximumPoolSize:8]" />
         <property name="leakDetectionThreshold" value="s[datasource.leakDetectionThreshold:60000]" />
+        <property name="maxLifetime" value="s[datasource.maxLifetime:1800000]" />
         <property name="registerMbeans" value="true" />
     </bean>
 
