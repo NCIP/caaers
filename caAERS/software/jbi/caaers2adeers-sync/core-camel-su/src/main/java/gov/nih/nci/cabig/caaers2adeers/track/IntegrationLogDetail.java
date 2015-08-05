@@ -70,6 +70,7 @@ public class IntegrationLogDetail{
  	}
 
     @Lob
+    @Column(length = 10000)
  	public String getOutcome() {
  		return outcome;
  	}

@@ -45,6 +45,7 @@ public class IntegrationLog extends AbstractMutableDomainObject{
 	private List<IntegrationLogDetail> integrationLogDetails = new ArrayList<IntegrationLogDetail>();
 
     @Lob
+    @Column(length = 10000)
 	public String getNotes() {
 		return notes;
 	}

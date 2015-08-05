@@ -73,6 +73,7 @@ public class IntegrationLogMessage{
  	}
 
     @Lob
+    @Column(length = 10000)
  	public String getMessage() {
  		return message;
  	}
