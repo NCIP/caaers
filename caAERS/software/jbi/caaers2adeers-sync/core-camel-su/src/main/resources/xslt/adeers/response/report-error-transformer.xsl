@@ -21,12 +21,12 @@
                         </jobExceptions>
                         <reportStatus xmlns="">ERROR</reportStatus>
                         <comments xmlns=""><xsl:value-of select="$c2a_submission_error_details" /></comments>
-                        <CAEERS_AEREPORT_ID><xsl:value-of select="$c2a_ae_report_id" /></CAEERS_AEREPORT_ID>
-                        <CAAERSRID><xsl:value-of select="$c2a_caaersr_id" /></CAAERSRID>
-                        <SUBMITTER_EMAIL><xsl:value-of select="$c2a_submitter_email"  /></SUBMITTER_EMAIL>
-                        <MESSAGE_COMBO_ID><xsl:value-of select="$c2a_message_combo_id" /></MESSAGE_COMBO_ID>
-                        <CORRELATION_ID><xsl:value-of select="$c2a_correlation_id"/></CORRELATION_ID>
-                        <SYSTEM_NAME><xsl:value-of select="$c2a_correlation_id"/></SYSTEM_NAME>
+                        <CAEERS_AEREPORT_ID xmlns=""><xsl:value-of select="$c2a_ae_report_id" /></CAEERS_AEREPORT_ID>
+                        <CAAERSRID xmlns=""><xsl:value-of select="$c2a_caaersr_id" /></CAAERSRID>
+                        <SUBMITTER_EMAIL xmlns=""><xsl:value-of select="$c2a_submitter_email"  /></SUBMITTER_EMAIL>
+                        <MESSAGE_COMBO_ID xmlns=""><xsl:value-of select="$c2a_message_combo_id" /></MESSAGE_COMBO_ID>
+                        <CORRELATION_ID xmlns=""><xsl:value-of select="$c2a_correlation_id"/></CORRELATION_ID>
+                        <SYSTEM_NAME xmlns=""><xsl:value-of select="$c2a_correlation_id"/></SYSTEM_NAME>
                     </ns1:AEReportJobInfo>
                 </submitAEDataXMLAsAttachmentResponse>
             </soapenv:Body>
