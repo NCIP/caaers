@@ -593,14 +593,7 @@ public class SafetyReportServiceImpl {
 		
 		initiateSafetyReportAction(aeSrcReport, caaersServiceResponse, errors);
 		
-		Iterator<ValidationError> it = errors.getErrors().iterator();
-		while (it.hasNext()) {
-			final ValidationError val = it.next();
-			if("ER-CA-1".equals(val.getCode())) {
-				it.remove();
-			}
-			
-		}
+		errors.removeErrorsWithCode("ER-CA-1");
 		
 		if(errors.getErrorCount() > 0) {
 			throw new CaaersValidationException(errors.toString());
@@ -616,14 +609,8 @@ public class SafetyReportServiceImpl {
 		
 		retVal.setReportId(aeSrcReport.getExternalId());
 		
-		it = errors.getErrors().iterator();
-		while (it.hasNext()) {
-			final ValidationError val = it.next();
-			if("ER-CA-1".equals(val.getCode())) {
-				it.remove();
-			}
-			
-		}
+		errors.removeErrorsWithCode("ER-CA-1");
+		
 		if(errors.getErrorCount() > 0) {
 			throw new CaaersValidationException(errors.toString());
 		}

@@ -7,6 +7,7 @@
 package gov.nih.nci.cabig.caaers.validation;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -52,5 +53,18 @@ public class ValidationErrors {
     		if(StringUtils.equals(error.getCode(),code)) return true;
     	}
     	return false;
+    }
+    
+    public void removeErrorsWithCode(String code){
+    	if(code == null) {
+    		return;
+    	}
+    	final Iterator<ValidationError> it = errors.iterator();
+		while (it.hasNext()) {
+			final ValidationError val = it.next();
+			if(code.equals(val.getCode())) {
+				it.remove();
+			}
+		}
     }
 }
