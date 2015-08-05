@@ -210,7 +210,7 @@ public class ExpeditedAdverseEventMigrator implements Migrator<ExpeditedAdverseE
             //check if the Cause is present in the destination report?
             final CourseAgent existingCourseAgent = dest.findReportCourseAgentByNscNumber(agentToSearch);
             if(existingCourseAgent == null){
-                //outcome.addError("ER-CA-1", "Error migrating Course Agent Attribution. Could not find matching Agent in report" );
+                outcome.addError("ER-CA-1", "Error migrating Course Agent Attribution. Could not find matching Agent in report" );
                 break;
             }
             //find if any attribution for this agent exist.
@@ -257,7 +257,7 @@ public class ExpeditedAdverseEventMigrator implements Migrator<ExpeditedAdverseE
             //check if the Cause is present in the destination report?
             final MedicalDevice existingMedicalDevice = dest.findReportMedicalDevice(srcMedicalDevice);
             if(existingMedicalDevice == null){
-                outcome.addError("ER-CA-1", "Error migrating MedicalDevice Attribution. Could not find matching Medical Device in report" );
+                //outcome.addError("ER-CA-1", "Error migrating MedicalDevice Attribution. Could not find matching Medical Device in report" );
                 break;
             }
             //find if any attribution for this agent exist.
