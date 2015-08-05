@@ -46,7 +46,7 @@ public class IntegrationLog extends AbstractMutableDomainObject{
 	private List<IntegrationLogDetail> integrationLogDetails = new ArrayList<IntegrationLogDetail>();
 
     @Lob
-    @Type(type="org.hibernate.type.MaterializedClobType")
+    @Type(type = "org.hibernate.type.TextType")
     public String getNotes() {
 		return notes;
 	}

@@ -74,7 +74,7 @@ public class IntegrationLogMessage{
  	}
 
     @Lob
-    @Type(type="org.hibernate.type.MaterializedClobType")
+    @Type(type = "org.hibernate.type.TextType")
  	public String getMessage() {
  		return message;
  	}
