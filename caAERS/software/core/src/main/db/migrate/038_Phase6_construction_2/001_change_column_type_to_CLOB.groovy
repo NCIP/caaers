@@ -22,7 +22,7 @@ class ChangeColumnTypeToCLOB extends edu.northwestern.bioinformatics.bering.Migr
 
             //Change integration_log_details -> outcome column type to CLOB
             addColumn("integration_log_details","temp_outcome","string", limit:4000);
-            execute("update integration_log_details set temp_notes = outcome");
+            execute("update integration_log_details set temp_outcome = outcome");
             execute("update integration_log_details set outcome = null");
             execute("alter table integration_log_details modify outcome long");
             execute("alter table integration_log_details modify outcome clob");
