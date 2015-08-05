@@ -10,6 +10,7 @@ package gov.nih.nci.cabig.caaers2adeers.track;
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.persistence.Lob;
@@ -70,7 +71,7 @@ public class IntegrationLogDetail{
  	}
 
     @Lob
-    @Column(length = 10000)
+    @Type(type="org.hibernate.type.MaterializedClobType")
  	public String getOutcome() {
  		return outcome;
  	}

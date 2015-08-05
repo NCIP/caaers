@@ -18,6 +18,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name="integration_logs")
@@ -45,8 +46,8 @@ public class IntegrationLog extends AbstractMutableDomainObject{
 	private List<IntegrationLogDetail> integrationLogDetails = new ArrayList<IntegrationLogDetail>();
 
     @Lob
-    @Column(length = 10000)
-	public String getNotes() {
+    @Type(type="org.hibernate.type.MaterializedClobType")
+    public String getNotes() {
 		return notes;
 	}
 
