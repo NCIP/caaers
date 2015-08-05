@@ -43,7 +43,8 @@ public class IntegrationLog extends AbstractMutableDomainObject{
 	private String notes;
 	
 	private List<IntegrationLogDetail> integrationLogDetails = new ArrayList<IntegrationLogDetail>();
-	
+
+    @Lob
 	public String getNotes() {
 		return notes;
 	}

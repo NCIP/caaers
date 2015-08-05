@@ -12,6 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import javax.persistence.Lob;
 
 @Entity
 @Table(name="integration_log_message")
@@ -71,6 +72,7 @@ public class IntegrationLogMessage{
  		this.stage = stage;
  	}
 
+    @Lob
  	public String getMessage() {
  		return message;
  	}
