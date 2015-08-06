@@ -336,7 +336,7 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 			Helper.populateMessage(caaersServiceResponse, message);
 			logger.info(message);
 	        if(eventFactory != null) {
-	        	eventFactory.publishEntityModifiedEvent(importedDomainObject, false);
+	        	eventFactory.publishEntityModifiedEvent(importedDomainObject, true);
 	        }
 		}   
 

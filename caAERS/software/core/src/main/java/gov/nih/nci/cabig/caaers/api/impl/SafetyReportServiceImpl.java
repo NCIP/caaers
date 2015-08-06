@@ -353,6 +353,8 @@ public class SafetyReportServiceImpl {
                 	buildReportInformationOutput(createdReport, caaersServiceResponse, ActionType.CREATE);
                 }
             }
+            //only fire event in create flow
+            if(getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(aeDestReport);
         }else{
             //update flow
         	dbReport.updateAESignatures();
@@ -363,7 +365,7 @@ public class SafetyReportServiceImpl {
         	inferReportingAction(aeSrcReport, dbReport,	aeDestReport, reportsAffected, caaersServiceResponse);
         }
 
-        if(getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(aeDestReport);
+
         return aeDestReport;
     }
 
@@ -398,7 +400,6 @@ public class SafetyReportServiceImpl {
 
         inferReportingAction(aeSrcReport, dbReport,	aeDestReport, reportsAffected, null);
 
-        if(getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(aeDestReport);
         return reportsAffected;
     }
     

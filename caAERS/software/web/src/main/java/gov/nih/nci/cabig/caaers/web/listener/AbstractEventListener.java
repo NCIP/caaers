@@ -51,7 +51,7 @@ public abstract class AbstractEventListener   implements ApplicationListener {
                 EntityModificationEvent entityModificationEvent = (EntityModificationEvent)event;
                 loginName = SecurityUtils.getUserLoginName(entityModificationEvent.getAuthentication());
                 entityId = entityModificationEvent.getEntity().getId() != null ? entityModificationEvent.getEntity().getId() : -1;
-                eventType = entityModificationEvent.getEventType().name();
+                eventType = entityModificationEvent.getClass().getSimpleName() + " - "  + entityModificationEvent.getEventType().name();
             }
 
             return eventMonitor.addEvent(loginName, eventType, entityId);
