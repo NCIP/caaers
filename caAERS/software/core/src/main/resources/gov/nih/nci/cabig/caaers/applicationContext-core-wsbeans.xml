@@ -92,13 +92,16 @@
 	    <property name="defaultUri" value="https://localhost:8196/GenericProcessorService"/>
 	    <property name="faultMessageResolver" ref="soapFaultResolver"/>
 	</bean>
-	
-	<bean id="proxyWebServiceFacade" class="gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade">
+
+    <bean id="threadScopeDataHolderService" class="gov.nih.nci.cabig.caaers.service.ThreadScopeDataHolderService" factory-method="getInstance"  />
+	<bean id="proxyWebServiceFacade" class="gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade" depends-on="threadScopeDataHolderService">
 		<property name="webServiceTemplate" ref="webServiceTemplate"/>
 		<property name="studyConverter" ref="studyConverter"/>
         <property name="configuration" ref="configuration" />
         <property name="studyDao" ref="studyDao" />
         <property name="eventFactory" ref="eventFactory" />
 	</bean>
+
+
 
 </beans>

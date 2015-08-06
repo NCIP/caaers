@@ -372,7 +372,11 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
     }
 
     public String importStudy(String sponsorIdentifierValue) {
-
+        boolean syncEnabled = ThreadScopeDataHolderService.getInstance().isStudySyncEnabled();
+        if(!syncEnabled) {
+            log.info("Ignoring study sync/import call - as it is turned off for this thread");
+            return null;
+        }
         String studyDbId = syncStudy(CREATE_STUDY_OPERATION_NAME, sponsorIdentifierValue);
         Study study = new LocalStudy();
         if(NumberUtils.isNumber(studyDbId)){
@@ -385,6 +389,12 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
     }
 
     public String updateStudy(Integer id, boolean force) {
+        boolean syncEnabled = ThreadScopeDataHolderService.getInstance().isStudySyncEnabled();
+        if(!syncEnabled) {
+            log.info("Ignoring study sync/update call - as it is turned off for this thread");
+            return String.valueOf(id);
+        }
+
         Study study = studyDao.getById(id);
         if(study == null) return "Unable to find the study (" + id + ")";
         if(!force){

@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAndInitiateI
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAndInitiateOutputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsInputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsOutputMessage;
+import gov.nih.nci.cabig.caaers.service.ThreadScopeDataHolderService;
 import gov.nih.nci.cabig.caaers.ws.SAEEvaluationService;
 import gov.nih.nci.cabig.caaers.ws.faults.CaaersFault;
 
@@ -101,11 +102,14 @@ public class SAEEvaluationWebServiceImpl implements SAEEvaluationService {
             targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules")
     EvaluateAndInitiateInputMessage evaluateAndInitiateInputMessage) throws CaaersFault {
     	try {
-    		return svcImpl.processAndInitiate(evaluateAndInitiateInputMessage);
+            ThreadScopeDataHolderService.getInstance().disableStudySync();
+            return svcImpl.processAndInitiate(evaluateAndInitiateInputMessage);
     	} catch(Exception e) {
-    		log.error("An error occured during Evaluate and Initiate; ", e);
+    		log.error("An error occurred during Evaluate and Initiate; ", e);
     		throw e;
-    	}
+    	}  finally {
+            ThreadScopeDataHolderService.getInstance().enableStudySync();
+        }
     }
 
 
