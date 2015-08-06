@@ -70,4 +70,15 @@ public class Event{
     }
 
 
+    public String getShortName() {
+        return new StringBuilder(threadName)
+                .append("-")
+                .append(loginName)
+                .append(":")
+                .append(eventType)
+                .append(":")
+                .append(entityId)
+                .toString();
+    }
+
 }

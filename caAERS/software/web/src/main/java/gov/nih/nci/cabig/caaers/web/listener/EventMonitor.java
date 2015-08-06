@@ -29,9 +29,10 @@ public class EventMonitor {
 
     
     public Event addEvent(String loginName, String eventType, int entityId){
-        StringBuilder sb = new StringBuilder(loginName).append(":").append(eventType).append(':').append(entityId);
+        StringBuilder sb = new StringBuilder(loginName).append(":").append(eventType);
         String eventKey = sb.toString();
 
+        sb.append(':').append(entityId);
         String thread = Thread.currentThread().getName();
         Date now = new Date();
         String id = sb.append(':').append(now.getTime()).toString();
@@ -39,7 +40,7 @@ public class EventMonitor {
         Event e = new Event(eventKey, loginName, thread, now, eventType, "NEW", entityId, id);
         Event active = activeMap.get(eventKey);
         if(active != null){
-            e.complete("IGNORED for |" + active.getEventKey() + "|");
+            e.complete("IGNORED for |" + active.getShortName() + "|");
         }else{
             activeMap.put(eventKey, e);
         }
