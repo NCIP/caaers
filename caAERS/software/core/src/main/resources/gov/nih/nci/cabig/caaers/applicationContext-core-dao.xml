@@ -699,9 +699,9 @@ This applicationContext contains the definition of the DAOs
     </property>
     <property name="taskExecutor">
         <bean class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-            <property name="corePoolSize" value="3" />
-            <property name="maxPoolSize" value="15" />
-            <property name="queueCapacity" value="150" />
+            <property name="corePoolSize" value="s[event.corePoolSize:3]" />
+            <property name="maxPoolSize" value="s[event.maxPoolSize:25]" />
+            <property name="queueCapacity" value="s[event.queueCapacity:250]" />
             <property name="daemon" value="true" />
             <property name="threadNamePrefix" value="caaers-async" />
         </bean>
