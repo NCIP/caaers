@@ -43,20 +43,19 @@ public class TreatmentAssignmentSynchronizer implements Migrator<gov.nih.nci.cab
             if (xmlTreatmentAssignment.getCtepDbIdentifier() != null) {
             	ta = dbCtepIndexMap.get(xmlTreatmentAssignment.getCtepDbIdentifier().toUpperCase());
             }
-            if(ta == null) {
-            	ta = dbTacIndexMap.remove(xmlTreatmentAssignment.getCode().toUpperCase());
-            }
 
             if (ta == null) {
                 //newly added one, so add it to study
                 dbStudy.addTreatmentAssignment(xmlTreatmentAssignment);
                 continue;
             }
-
-            //existing one - update the details
+            
+            //CAAERS-7367 - tac existing in db, update the details from xml and remove it from the dbTacIndexMap map
             if (StringUtils.isNotEmpty(xmlTreatmentAssignment.getDescription())) ta.setDescription(xmlTreatmentAssignment.getDescription());
             if (StringUtils.isNotEmpty(xmlTreatmentAssignment.getComments())) ta.setComments(xmlTreatmentAssignment.getComments());
             if (xmlTreatmentAssignment.getDoseLevelOrder() != null) ta.setDoseLevelOrder(xmlTreatmentAssignment.getDoseLevelOrder());
+            
+            dbTacIndexMap.remove(xmlTreatmentAssignment.getCode().toUpperCase());
         }
 
         //soft delete - all the TACs that were not present in XML Study
