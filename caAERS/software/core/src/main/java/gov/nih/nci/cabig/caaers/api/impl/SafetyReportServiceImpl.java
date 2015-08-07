@@ -320,12 +320,10 @@ public class SafetyReportServiceImpl {
     	//Determine the flow, create vs update
         ExpeditedAdverseEventReport dbReport = getOrSetReportId(aeSrcReport);
         
-        System.err.println("DirkDebug; in init, db=" + dbReport);
         List<Report> reportsAffected = new ArrayList<Report>();
         ExpeditedAdverseEventReport aeDestReport = new ExpeditedAdverseEventReport();
         
         migrate(aeSrcReport, aeDestReport, errors);
-        System.err.println("DirkDebug; dest:" + aeDestReport);
         if(ignoreER_CA1) errors.removeErrorsWithCode("ER-CA-1");
         if(errors.hasErrors()) return aeDestReport;
         
