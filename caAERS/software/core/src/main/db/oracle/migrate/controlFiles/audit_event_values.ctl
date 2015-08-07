@@ -10,8 +10,8 @@ LOAD DATA
 		ID					    INTEGER EXTERNAL,
 		AUDIT_EVENT_ID 			    INTEGER EXTERNAL,
 		ATTRIBUTE_NAME 			    CHAR(2000),
-		PREVIOUS_VALUE 				    CHAR(4000),
-		NEW_VALUE					    CHAR(4000),
+		PREVIOUS_VALUE 				    CHAR(4000) "replace(:PREVIOUS_VALUE,'\\n',chr(10))",
+		NEW_VALUE					    CHAR(4000) "replace(:NEW_VALUE,'\\n',chr(10))",
 		VERSION				    INTEGER EXTERNAL 
 	)
 

@@ -17,7 +17,7 @@ LOAD DATA
 															END",
 		LOCATION				    INTEGER EXTERNAL(10),
 		WORKFLOW_CONFIG_ID			    INTEGER EXTERNAL(10),
-		MESSAGE					    CHAR(2000),
+		MESSAGE					    CHAR(2000) "replace(:MESSAGE,'\\n',chr(10))",
 		TASK_NAME					    CHAR(2000)
 	)
 

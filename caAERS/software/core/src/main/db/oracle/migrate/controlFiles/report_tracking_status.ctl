@@ -13,7 +13,7 @@ LOAD DATA
 													when 't'then to_number(1)
 													when 'f'then to_number(0)
 													END",
-		STATUS_MESSAGE 				    CHAR(4000),
+		STATUS_MESSAGE 				    CHAR(4000) "replace(:STATUS_MESSAGE,'\\n',chr(10))",
 		RECORDED_TIME				   DATE "YYYY-MM-DD" NULLIF RECORDED_TIME="",
 		GRID_ID					    CHAR(2000)
 	)
