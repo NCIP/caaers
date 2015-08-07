@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="xml" indent="yes"/>
+    <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
+    <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
     <xsl:template match="/">
         <AE_REPORT>
             <xsl:apply-templates/>
@@ -147,7 +149,10 @@
                 </TREATMENT_ASSIGNMENT_CODE>
             </xsl:if>
            <xsl:if test="TreatmentInformation/treatmentDescription != '' ">
-            <OTHER_TREATMENT_ASSIGNMENT><xsl:value-of select="TreatmentInformation/treatmentDescription"/></OTHER_TREATMENT_ASSIGNMENT>
+               <xsl:if test="translate(TreatmentInformation/TreatmentAssignment/code, $smallcase, $uppercase) = 'OTHER'">
+                   <OTHER_TREATMENT_ASSIGNMENT><xsl:value-of select="TreatmentInformation/treatmentDescription"/></OTHER_TREATMENT_ASSIGNMENT>
+               </xsl:if>
+
            </xsl:if>
         </TREATMENT_ASSIGNMENT_INFORMATION>
         <xsl:if test="TreatmentInformation/firstCourseDate or TreatmentInformation/AdverseEventCourse/child::* or TreatmentInformation/totalCourses or TreatmentInformation/investigationalAgentAdministered or investigationalDeviceAdministered">
@@ -767,7 +772,7 @@
                     <!-- modify case. Eg: HOURS to Hours -->
                     <DELAY_UOM>
                         <xsl:value-of
-                            select="concat(translate(substring(administrationDelayUnits,1,1),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'),translate(substring(administrationDelayUnits,2),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))"
+                            select="concat(translate(substring(administrationDelayUnits,1,1),$smallcase,$uppercase),translate(substring(administrationDelayUnits,2),$uppercase,$smallcase))"
                         />
                     </DELAY_UOM>
                 </xsl:if>
