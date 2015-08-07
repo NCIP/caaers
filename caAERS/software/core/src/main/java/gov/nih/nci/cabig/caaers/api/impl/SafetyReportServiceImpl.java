@@ -253,6 +253,9 @@ public class SafetyReportServiceImpl {
         Report newReport = reportRepository.createReport(report.getReportDefinition(), aeReport) ;
         newReport.copy(report);
         reportRepository.save(newReport);
+        if(logger.isInfoEnabled()) {
+            logger.info("Created report : " + newReport.getName() + "(" + String.valueOf(newReport.getId()) + ")");
+        }
         return newReport;
     }
 
@@ -266,6 +269,9 @@ public class SafetyReportServiceImpl {
     public Report withdrawReport(Report report, ExpeditedAdverseEventReport aeReport){
         reportRepository.withdrawReport(report);
         reportRepository.withdrawExternalReport(aeReport, report);
+        if(logger.isInfoEnabled()) {
+            logger.info("Withdrew report : " + report.getName() + "(" + String.valueOf(report.getId()) + ")");
+        }
         return report;
     }
 
@@ -277,6 +283,9 @@ public class SafetyReportServiceImpl {
      */
     public Report amendReport(Report report, ExpeditedAdverseEventReport aeReport){
         reportRepository.amendReport(report);
+        if(logger.isInfoEnabled()) {
+            logger.info("Amended report : " + report.getName() + "(" + String.valueOf(report.getId()) + ")");
+        }
         return report;
     }
 
@@ -288,6 +297,9 @@ public class SafetyReportServiceImpl {
      */
     public Report unAmendReport(Report report, ExpeditedAdverseEventReport aeReport){
         reportRepository.unAmendReport(report);
+        if(logger.isInfoEnabled()) {
+            logger.info("Unamended report : " + report.getName() + "(" + String.valueOf(report.getId()) + ")");
+        }
         return report;
     }
     
@@ -406,10 +418,7 @@ public class SafetyReportServiceImpl {
     }
     
 
-	private void inferReportingAction(ExpeditedAdverseEventReport aeSrcReport,
-			ExpeditedAdverseEventReport dbReport, 
-			ExpeditedAdverseEventReport aeDestReport,
-			List<Report> reportsAffected, CaaersServiceResponse caaersServiceResponse) {
+	private void inferReportingAction(ExpeditedAdverseEventReport aeSrcReport, ExpeditedAdverseEventReport dbReport, ExpeditedAdverseEventReport aeDestReport, List<Report> reportsAffected, CaaersServiceResponse caaersServiceResponse) {
 		
 		 //Withdraw active reports
 		 //find active reports that are eligible for withdraw
@@ -422,9 +431,9 @@ public class SafetyReportServiceImpl {
 	    		for(Report withdrawableReport : withdrawableReports){
 	    			if(withdrawableReport.isSameReportByCaseNumberOrReportDefinition(report)){
 	    				 withdrawReport(withdrawableReport, dbReport);
-	    	                if(caaersServiceResponse != null){
-	    	                	buildReportInformationOutput(withdrawableReport, caaersServiceResponse, ActionType.WITHDRAW);
-	    	                }
+	    	             if(caaersServiceResponse != null){
+	    	                buildReportInformationOutput(withdrawableReport, caaersServiceResponse, ActionType.WITHDRAW);
+	    	             }
 	    			}
 	    		}
 	    	}
@@ -493,6 +502,9 @@ public class SafetyReportServiceImpl {
                 		//TODO : need to check if we should call the report.copy() to get all the info
                 		report.setSubmitter(srcReport.getSubmitter());
                 		report.setCaseNumber(srcReport.getCaseNumber());
+                        if(logger.isInfoEnabled()) {
+                            logger.info("Edited report : " + report.getName() + "( id :" + String.valueOf(report.getId()) + ", caseNumber:" +  srcReport.getCaseNumber() + ")");
+                        }
                 		if(caaersServiceResponse != null){
                 			buildReportInformationOutput(report, caaersServiceResponse, ActionType.EDIT);
                 		}

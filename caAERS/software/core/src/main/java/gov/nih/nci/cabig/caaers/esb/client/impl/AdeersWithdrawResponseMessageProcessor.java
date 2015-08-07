@@ -44,8 +44,11 @@ public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProce
 	@Override
 	@Transactional
 	public void processMessage(String message) throws CaaersSystemException {
-		
-		log.debug("AdeersWithdrawResponseMessageProcessor - message recieved");
+
+        if(log.isDebugEnabled()) {
+            log.debug("message received :\n" + message );
+        }
+
         
         Element cancelInfo = this.getResponseElement(message,"withdrawAEReportResponse","AEReportCancelInfo");
         Namespace emptyNS=null;
@@ -112,25 +115,27 @@ public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProce
 
             
             if (cancelInfo.getChild("comments",ctepNS) != null) {
-            	 String commentsMessage = messageSource.getMessage("comments.reportWithdraw.message", new Object[]{cancelInfo.getChild("comments").getValue()}, Locale.getDefault());
+            	 String commentsMessage = messageSource.getMessage("comments.reportWithdraw.message", new Object[]{cancelInfo.getChild("comments",ctepNS).getValue()}, Locale.getDefault());
                  sb.append(commentsMessage);
             }
 
         } catch (Exception e) {
-           log.error(e);
+           log.error("Error while retrieving data from AdEERS response message",  e);
         }
 
-        String messages = sb.toString();
+        String emailMessage = sb.toString();
 
         // Notify submitter
 
         try {
         	
-            log.debug("Calling notfication service ..");
-            getMessageNotificationService().sendWithdrawNotificationToReporter(submitterEmail, messages, caaersAeReportId, reportId, success, ticketNumber, url, communicationError);
+            if(log.isDebugEnabled() ) {
+                log.debug("Sending notification to [" + submitterEmail + "] : \n" + emailMessage);
+            }
+            getMessageNotificationService().sendWithdrawNotificationToReporter(submitterEmail, emailMessage, caaersAeReportId, reportId, success, ticketNumber, url, communicationError);
             
         } catch (Exception e) {
-           log.error(e);
+           log.error("Error while sending notification", e);
         }       
 	}
 
