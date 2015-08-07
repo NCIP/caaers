@@ -13,7 +13,9 @@ public class ThreadScopeDataHolderService {
     }
 
     public static ThreadScopeDataHolderService getInstance() {
-        if(INSTANCE == null) INSTANCE = new ThreadScopeDataHolderService();
+        if(INSTANCE == null) {
+            INSTANCE = new ThreadScopeDataHolderService();
+        }
         return INSTANCE;
     }
     public Boolean isStudySyncEnabled() {
@@ -26,6 +28,6 @@ public class ThreadScopeDataHolderService {
     }
 
     public void disableStudySync() {
-        SYNC_STUDY_INDICATOR.set(true);
+        SYNC_STUDY_INDICATOR.set(false);
     }
 }
