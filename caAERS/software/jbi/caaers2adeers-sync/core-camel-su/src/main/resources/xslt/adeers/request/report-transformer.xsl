@@ -152,6 +152,10 @@
                <xsl:if test="translate(TreatmentInformation/TreatmentAssignment/code, $smallcase, $uppercase) = 'OTHER'">
                    <OTHER_TREATMENT_ASSIGNMENT><xsl:value-of select="TreatmentInformation/treatmentDescription"/></OTHER_TREATMENT_ASSIGNMENT>
                </xsl:if>
+            <xsl:if test="count(TreatmentInformation/TreatmentAssignment/code) = 0">
+                <TREATMENT_ASSIGNMENT_CODE>Other</TREATMENT_ASSIGNMENT_CODE>
+                <OTHER_TREATMENT_ASSIGNMENT><xsl:value-of select="TreatmentInformation/treatmentDescription"/></OTHER_TREATMENT_ASSIGNMENT>
+            </xsl:if>
 
            </xsl:if>
         </TREATMENT_ASSIGNMENT_INFORMATION>
