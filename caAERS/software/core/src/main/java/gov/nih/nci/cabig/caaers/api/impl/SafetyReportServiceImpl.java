@@ -315,27 +315,29 @@ public class SafetyReportServiceImpl {
      * @param errors
      * @return
      */
-    public ExpeditedAdverseEventReport initiateSafetyReportAction(ExpeditedAdverseEventReport aeSrcReport, CaaersServiceResponse caaersServiceResponse, ValidationErrors errors){
+    public ExpeditedAdverseEventReport initiateSafetyReportAction(ExpeditedAdverseEventReport aeSrcReport, CaaersServiceResponse caaersServiceResponse, ValidationErrors errors, boolean ignoreER_CA1){
     	
     	//Determine the flow, create vs update
         ExpeditedAdverseEventReport dbReport = getOrSetReportId(aeSrcReport);
-        
         
         List<Report> reportsAffected = new ArrayList<Report>();
         ExpeditedAdverseEventReport aeDestReport = new ExpeditedAdverseEventReport();
         
         migrate(aeSrcReport, aeDestReport, errors);
+        if(ignoreER_CA1) errors.removeErrorsWithCode("ER-CA-1");
         if(errors.hasErrors()) return aeDestReport;
         
         if(dbReport != null) {
 	        DomainObjectImportOutcome<ExpeditedAdverseEventReport> outCome = new DomainObjectImportOutcome<ExpeditedAdverseEventReport>();
 	        aeReportSynchronizer.migrate(aeDestReport, dbReport, outCome);
-	        
+
 	        if(outCome.hasErrors()) errors.addValidationErrors(outCome.getValidationErrors().getErrors());
+	        if(ignoreER_CA1) errors.removeErrorsWithCode("ER-CA-1");
             if(errors.hasErrors()) return aeDestReport;
         }
 
         transferStudySubjectIfRequired(aeSrcReport, aeDestReport, errors);
+        if(ignoreER_CA1) errors.removeErrorsWithCode("ER-CA-1");
         if(errors.hasErrors()) return aeDestReport;
 
         if(dbReport == null){
@@ -592,7 +594,7 @@ public class SafetyReportServiceImpl {
 		ExpeditedAdverseEventReport aeSrcReport = evaluateAndInitiateReportConverter.convert(evaluateInputMessage, repPeriod, response);
 		ValidationErrors errors = new ValidationErrors();
 		
-		initiateSafetyReportAction(aeSrcReport, caaersServiceResponse, errors);
+		initiateSafetyReportAction(aeSrcReport, caaersServiceResponse, errors, true);
 		
 		errors.removeErrorsWithCode("ER-CA-1");
 		
@@ -605,7 +607,7 @@ public class SafetyReportServiceImpl {
 			response.getRecommendedActions().add(createAction);
 			evaluateInputMessage.setReportId(null);
 			aeSrcReport = evaluateAndInitiateReportConverter.convert(evaluateInputMessage, repPeriod, response);
-			initiateSafetyReportAction(aeSrcReport, caaersServiceResponse, errors);
+			initiateSafetyReportAction(aeSrcReport, caaersServiceResponse, errors, true);
 		}
 		
 		retVal.setReportId(aeSrcReport.getExternalId());
@@ -647,7 +649,7 @@ public class SafetyReportServiceImpl {
             caaersServiceResponse.getServiceResponse().setResponseData(rdType);
             rdType.setAny(new BaseReports());
 
-            initiateSafetyReportAction(aeSrcReport, caaersServiceResponse, errors);
+            initiateSafetyReportAction(aeSrcReport, caaersServiceResponse, errors, false);
 
             if(errors.hasErrors())  {
                 expeditedAdverseEventReportDao.clearSession();
