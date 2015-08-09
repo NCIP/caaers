@@ -143,21 +143,17 @@
             </xsl:attribute>
         </PROTOCOL_INFORMATION>
         <TREATMENT_ASSIGNMENT_INFORMATION>
-            <xsl:if test="TreatmentInformation/TreatmentAssignment/code != '' ">
-                <TREATMENT_ASSIGNMENT_CODE>
-                    <xsl:value-of select="TreatmentInformation/TreatmentAssignment/code"/>
-                </TREATMENT_ASSIGNMENT_CODE>
+            <xsl:if test="count(TreatmentInformation/TreatmentAssignment/code) > 0">
+                <xsl:if test="translate(TreatmentInformation/TreatmentAssignment/code, $smallcase, $uppercase) != 'OTHER'">
+                    <TREATMENT_ASSIGNMENT_CODE><xsl:value-of select="TreatmentInformation/TreatmentAssignment/code"/></TREATMENT_ASSIGNMENT_CODE>
+                </xsl:if>
+                <xsl:if test="translate(TreatmentInformation/TreatmentAssignment/code, $smallcase, $uppercase) = 'OTHER'">
+                    <OTHER_TREATMENT_ASSIGNMENT><xsl:value-of select="TreatmentInformation/treatmentDescription"/></OTHER_TREATMENT_ASSIGNMENT>
+                </xsl:if>
             </xsl:if>
-           <xsl:if test="TreatmentInformation/treatmentDescription != '' ">
-               <xsl:if test="translate(TreatmentInformation/TreatmentAssignment/code, $smallcase, $uppercase) = 'OTHER'">
-                   <OTHER_TREATMENT_ASSIGNMENT><xsl:value-of select="TreatmentInformation/treatmentDescription"/></OTHER_TREATMENT_ASSIGNMENT>
-               </xsl:if>
-            <xsl:if test="count(TreatmentInformation/TreatmentAssignment/code) = 0">
-                <TREATMENT_ASSIGNMENT_CODE>Other</TREATMENT_ASSIGNMENT_CODE>
+            <xsl:if test="count(TreatmentInformation/TreatmentAssignment/code) &lt; 1">
                 <OTHER_TREATMENT_ASSIGNMENT><xsl:value-of select="TreatmentInformation/treatmentDescription"/></OTHER_TREATMENT_ASSIGNMENT>
             </xsl:if>
-
-           </xsl:if>
         </TREATMENT_ASSIGNMENT_INFORMATION>
         <xsl:if test="TreatmentInformation/firstCourseDate or TreatmentInformation/AdverseEventCourse/child::* or TreatmentInformation/totalCourses or TreatmentInformation/investigationalAgentAdministered or investigationalDeviceAdministered">
             <COURSE_INFORMATION>
