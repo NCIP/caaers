@@ -466,7 +466,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
      */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "treatment_assignment_id")
-    @Cascade(value = { CascadeType.LOCK, CascadeType.SAVE_UPDATE })
+    @Cascade({CascadeType.LOCK})
     public TreatmentAssignment getTreatmentAssignment() {
         return treatmentAssignment;
     }
