@@ -44,7 +44,7 @@ public class TreatmentAssignmentSynchronizer implements Migrator<gov.nih.nci.cab
             	ta = dbCtepIndexMap.get(xmlTreatmentAssignment.getCtepDbIdentifier().toUpperCase());
             }
 
-            if (ta == null) {
+            if (ta == null && !StringUtils.isBlank(xmlTreatmentAssignment.getCtepDbIdentifier())) {
                 //newly added one, so add it to study
                 dbStudy.addTreatmentAssignment(xmlTreatmentAssignment);
                 continue;
