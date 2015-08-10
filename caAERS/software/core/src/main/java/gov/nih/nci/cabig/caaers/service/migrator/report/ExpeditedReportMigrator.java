@@ -79,9 +79,6 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
 
 			}
 
-			//FIXME: Check for other fields taht should be updated.
-			arp.setTreatmentAssignmentDescription(src.getReportingPeriod().getTreatmentAssignment().getDescription());
-			logger.debug(" in migrate; arp return; " + arp.getTreatmentAssignmentDescription());
 			dest.setReportingPeriod(arp);
 			return;
 		} 
