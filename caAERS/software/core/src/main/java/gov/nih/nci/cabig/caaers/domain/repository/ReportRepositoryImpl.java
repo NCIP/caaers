@@ -196,6 +196,9 @@ public class ReportRepositoryImpl implements ReportRepository {
 
     @Transactional(readOnly = false)
     public Report createReport(ReportDefinition reportDefinition, ExpeditedAdverseEventReport aeReport) {
+        return createReport(reportDefinition, aeReport, null);
+    }
+    private Report createReport(ReportDefinition reportDefinition, ExpeditedAdverseEventReport aeReport, Report parentReport) {
     	
     	//reassociate all the study orgs
 //    	studyDao.reassociateStudyOrganizations(aeReport.getStudy().getStudyOrganizations());
@@ -203,7 +206,10 @@ public class ReportRepositoryImpl implements ReportRepository {
 //    	reportDefinitionDao.lock(reportDefinition);
     	
         Report report = reportFactory.createReport(reportDefinition, aeReport, reportDefinition.getBaseDate());
-        
+        if(parentReport != null ) {
+            report.setCaseNumber(parentReport.getCaseNumber());
+        }
+
         //update report version, based on latest amendment. 
         Report lastSubmittedReport = aeReport.findLastSubmittedReport(reportDefinition);
         if(lastSubmittedReport != null){
@@ -234,8 +240,7 @@ public class ReportRepositoryImpl implements ReportRepository {
         save(report);
         
         // update AE recommended reports flag to reported
-        List<AdverseEventRecommendedReport> aeRecomReports = adverseEventRecommendedReportDao.
-        		getAllAdverseEventsGivenReportDefinition(reportDefinition);
+        List<AdverseEventRecommendedReport> aeRecomReports = adverseEventRecommendedReportDao.getAllAdverseEventsGivenReportDefinition(reportDefinition);
         
         for(AdverseEvent aeInReport : aeReport.getActiveAdverseEvents()){
         	for(AdverseEventRecommendedReport aeRecomReport : aeRecomReports){
@@ -277,7 +282,7 @@ public class ReportRepositoryImpl implements ReportRepository {
     		instantiatedReports = new ArrayList<Report>();
     		for(ReportDefinition rdChild : rdChildren){
                 rdChild.setManuallySelected(report.isManuallySelected());
-    			Report childReport = createReport(rdChild, report.getAeReport());
+    			Report childReport = createReport(rdChild, report.getAeReport(), report);
     			instantiatedReports.add(childReport);
     		}
     	}

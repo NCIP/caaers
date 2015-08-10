@@ -48,18 +48,13 @@ public class AdverseEventReportingPeriodMigrator extends CompositeMigrator<Adver
 
     public void preMigrate(AdverseEventReportingPeriod src, AdverseEventReportingPeriod dest, DomainObjectImportOutcome<AdverseEventReportingPeriod> outcome) {
 
-        // Check for Treatment Assignment Codes.
-        if ( !((src.getTreatmentAssignment().getCode().equalsIgnoreCase("Other") && StringUtils.isNotBlank(src.getTreatmentAssignmentDescription()) && !src.getTreatmentAssignmentDescription().equalsIgnoreCase("N/A") ) ||
-                (src.getTreatmentAssignmentDescription().equalsIgnoreCase("N/A") && StringUtils.isNotBlank(src.getTreatmentAssignment().getCode())) && !src.getTreatmentAssignment().getCode().equalsIgnoreCase("Other"))
-            ) {
+        //check the validity of TAC - both TreatmentAssignemnt and otherTreatementAssignmentDescription should not be present.
+        String tac = src.getTreatmentAssignment() != null ? src.getTreatmentAssignment().getCode() :  null;
+        String desc = src.getTreatmentAssignmentDescription();
+
+        if(StringUtils.isEmpty(tac) && StringUtils.isEmpty(desc)) {
             outcome.addError("WS_AEMS_083", "Treatment Assignment code and other treatment assignment description doesn't contain valid values.");
             return;
-        }
-        if ( ( src.getTreatmentAssignment() != null && src.getTreatmentAssignment().getCode() != null && src.getTreatmentAssignment().getCode().equalsIgnoreCase("Other") )) {
-        	src.setTreatmentAssignment(null);
-        }
-        if ( (src.getTreatmentAssignmentDescription() != null && src.getTreatmentAssignmentDescription().equalsIgnoreCase("N/A") )) {
-        	src.setTreatmentAssignmentDescription(null);
         }
 
         // Check for AdverseEvents StartDate and DateFirstLearned Cannot be in future.
@@ -165,11 +160,11 @@ public class AdverseEventReportingPeriodMigrator extends CompositeMigrator<Adver
 
         //migrate TAC
         dest.setTreatmentAssignmentDescription(src.getTreatmentAssignmentDescription());
-        if(src.getTreatmentAssignment() != null){
+        if(tac != null){
             TreatmentAssignment ta = study.findActiveTreatmentAssignment(src.getTreatmentAssignment().getCode());
             if(ta == null){
-                logger.error("Could not identify a treatment assignment with TAC : " + src.getTreatmentAssignment().getCode() +", in the study : " + study.getId());
-                outcome.addError("WS_AEMS_009", "Treatment assignment code is not valid", new String[]{src.getTreatmentAssignment().getCode()});
+                logger.error("Could not identify a treatment assignment with TAC : " + tac +", in the study : " + study.getId());
+                outcome.addError("WS_AEMS_009", "Treatment assignment code is not valid", new String[]{tac});
                 return;
             }
             dest.setTreatmentAssignment(ta);
