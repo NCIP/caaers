@@ -2108,11 +2108,19 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
     
     public Report findReportByCaseNumber(String caseNumber){
-    	for(Report report : reports){
+        //Look in active reports first
+    	for(Report report : getActiveReports()){
     		if(report.getCaseNumber() != null && report.getCaseNumber().equalsIgnoreCase(caseNumber)){
     			return report;
     		}
     	}
+
+        //check in others also
+        for(Report report : getReports()){
+            if(report.getCaseNumber() != null && report.getCaseNumber().equalsIgnoreCase(caseNumber)){
+                return report;
+            }
+        }
     	
     	return null;
     }

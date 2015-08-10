@@ -74,8 +74,8 @@ public class ThreadSafeXsltBuilder extends XsltBuilder {
             transformer.transform(source, result);
             log.debug("Output Result [" + Thread.currentThread() + "] : " + result);
             resultHandler.setBody(out);
-            if(StringUtils.contains(out.getBody(String.class), "--")){
-                log.warn("Invalid XSLT transformation [" + Thread.currentThread().getName() + "] \n=====================================================================================: " + out.getBody(String.class) + "\n******************************************************\n");
+            if(log.isDebugEnabled()){
+                log.debug("Transformed XSLT [" + Thread.currentThread().getName() + "] \n=====================================================================================: " + out.getBody(String.class) + "\n******************************************************\n");
             }
         } finally {
             // IOHelper can handle if is is null

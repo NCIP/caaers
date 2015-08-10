@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CourseType;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEventResult;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsInputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.Criteria;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -70,16 +71,20 @@ public class SAEAdverseEventReportingPeriodConverter {
             rp.getEpoch().setName(course.getTreatmentType());
         }
         if(course.getTreatmentAssignmentCode() !=null ) {
-            rp.setTreatmentAssignment(new TreatmentAssignment());
-            rp.getTreatmentAssignment().setStudy(study);
-            rp.getTreatmentAssignment().setCode(course.getTreatmentAssignmentCode());
-            
-            if(course.getOtherTreatmentAssignmentDescription() !=null ) {
-            	rp.getTreatmentAssignment().setDescription(course.getOtherTreatmentAssignmentDescription());
+            String code = course.getTreatmentAssignmentCode();
+            String desc = course.getOtherTreatmentAssignmentDescription();
+
+            //other TAC ?
+            if(StringUtils.equalsIgnoreCase("other", code)) {
+                if(StringUtils.isNotEmpty(desc) && !StringUtils.equalsIgnoreCase("n/a", desc)) {
+                    rp.setTreatmentAssignmentDescription(desc);
+                }
+            } else {
+                TreatmentAssignment ta = new TreatmentAssignment();
+                ta.setCode(code);
+                ta.setStudy(study);
+                rp.setTreatmentAssignment(ta);
             }
-        }
-        if(course.getOtherTreatmentAssignmentDescription() !=null ) {
-            rp.setTreatmentAssignmentDescription(course.getOtherTreatmentAssignmentDescription());
         }
 
         if(course.getStartDateOfFirstCourse() != null){
