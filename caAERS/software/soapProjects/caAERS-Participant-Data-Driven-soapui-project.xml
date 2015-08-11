@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project activeEnvironment="Default" name="caAERS Data Driven" resourceRoot="" soapui-version="5.1.3" abortOnError="false" runType="SEQUENTIAL" id="d37cb3a4-60ad-40b6-a351-d3e428a41b88" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="b366e9bd-d8c7-4563-8e0e-c8e88e8e1b0b" wadlVersion="http://wadl.dev.java.net/2009/02" name="https://dev.semanticbits.com" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>https://dev.semanticbits.com</con:endpoint></con:endpoints><con:resource name="ParticipantInitialization" path="/caaers/ParticipantInitialization" id="126b9074-75dd-46e6-a42a-9f8ca1fb0982"><con:settings/><con:parameters/><con:method name="ParticipantInitialization" id="11e3e62f-e566-4857-b411-3c25289aa43c" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST"><con:mediaType>text/xml</con:mediaType><con:params/><con:element xmlns:v1="http://www.cdisc.org/ns/odm/v1.3">v1:ODM</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/html; charset=iso-8859-1</con:mediaType><con:status>503</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/plain; charset=UTF-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:request name="Request 1" id="5cc715eb-5bfb-4bf7-a887-49bb857343c6" mediaType="text/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>https://dev.semanticbits.com</con:endpoint><con:request><![CDATA[<ODM CreationDateTime="2013-04-17T13:06:03" FileOID="RavePatientPush.xml" FileType="Transactional" ODMVersion="1.3" xmlns="http://www.cdisc.org/ns/odm/v1.3" xmlns:mdsol="http://www.mdsol.com/ns/odm/metadata">
+<con:soapui-project activeEnvironment="Default" name="caAERS Data Driven" resourceRoot="" soapui-version="5.2.0" abortOnError="false" runType="SEQUENTIAL" id="d37cb3a4-60ad-40b6-a351-d3e428a41b88" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="b366e9bd-d8c7-4563-8e0e-c8e88e8e1b0b" wadlVersion="http://wadl.dev.java.net/2009/02" name="https://dev.semanticbits.com" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>https://dev.semanticbits.com</con:endpoint></con:endpoints><con:resource name="ParticipantInitialization" path="/caaers/ParticipantInitialization" id="126b9074-75dd-46e6-a42a-9f8ca1fb0982"><con:settings/><con:parameters/><con:method name="ParticipantInitialization" id="11e3e62f-e566-4857-b411-3c25289aa43c" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST"><con:mediaType>text/xml</con:mediaType><con:params/><con:element xmlns:v1="http://www.cdisc.org/ns/odm/v1.3">v1:ODM</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/html; charset=iso-8859-1</con:mediaType><con:status>503</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/plain; charset=UTF-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:request name="Request 1" id="5cc715eb-5bfb-4bf7-a887-49bb857343c6" mediaType="text/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>https://dev.semanticbits.com</con:endpoint><con:request><![CDATA[<ODM CreationDateTime="2013-04-17T13:06:03" FileOID="RavePatientPush.xml" FileType="Transactional" ODMVersion="1.3" xmlns="http://www.cdisc.org/ns/odm/v1.3" xmlns:mdsol="http://www.mdsol.com/ns/odm/metadata">
    <ClinicalData MetaDataVersionOID="3629771" StudyOID="A071102">
       <SubjectData SubjectKey="S34-A071102" TransactionType="Insert">
          <SiteRef LocationOID="CTSUTST01"/>
@@ -2194,7 +2194,7 @@
       <soap:address location="https://dev.semanticbits.com/caaers/services/SAEEvaluationService"/>
     </wsdl:port>
   </wsdl:service>
-</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://dev.semanticbits.com/caaers/services/SAEEvaluationService</con:endpoint></con:endpoints><con:operation id="84ad796e-b209-4e41-afaf-4b63747094ae" isOneWay="false" action="" name="evaluateAEs" bindingOperationName="evaluateAEs" type="Request-Response" outputName="evaluateAEsResponse" inputName="evaluateAEs" receivesAttachments="false" sendsAttachments="false"><con:settings/></con:operation><con:operation id="a462da94-1c7b-46f5-a516-bc46aede56f0" isOneWay="false" action="" name="EvaluateAndInitiate" bindingOperationName="EvaluateAndInitiate" type="Request-Response" outputName="EvaluateAndInitiateResponse" inputName="EvaluateAndInitiate" receivesAttachments="false" sendsAttachments="false"><con:settings/></con:operation><con:operation id="abf1ec86-ff4f-4c89-97d1-08c2e42d5e34" isOneWay="false" action="" name="saveAndEvaluateAEs" bindingOperationName="saveAndEvaluateAEs" type="Request-Response" outputName="saveAndEvaluateAEsResponse" inputName="saveAndEvaluateAEs" receivesAttachments="false" sendsAttachments="false"><con:settings/></con:operation></con:interface><con:testSuite name="Participant" id="ff7aab02-d58b-4ccf-a91a-3a04629553c8"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Participant Data Driven" searchProperties="true" id="9824c379-6c54-435e-85d8-51c7868e2415"><con:settings/><con:testStep type="restrequest" name="Create Participant" id="ec762846-2cbc-4235-9385-c1264214df52"><con:settings/><con:config service="https://dev.semanticbits.com" methodName="ParticipantInitialization" resourcePath="/caaers/ParticipantInitialization" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create Participant" id="eb427498-b9fa-4b27-acea-b7e4bfdd48d3" mediaType="text/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com</con:endpoint><con:request><![CDATA[<ODM CreationDateTime="2013-04-17T13:06:03" FileOID="RavePatientPush.xml" FileType="Transactional" ODMVersion="1.3" xmlns="http://www.cdisc.org/ns/odm/v1.3" xmlns:mdsol="http://www.mdsol.com/ns/odm/metadata">
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://dev.semanticbits.com/caaers/services/SAEEvaluationService</con:endpoint></con:endpoints><con:operation id="84ad796e-b209-4e41-afaf-4b63747094ae" isOneWay="false" action="" name="evaluateAEs" bindingOperationName="evaluateAEs" type="Request-Response" outputName="evaluateAEsResponse" inputName="evaluateAEs" receivesAttachments="false" sendsAttachments="false"><con:settings/></con:operation><con:operation id="a462da94-1c7b-46f5-a516-bc46aede56f0" isOneWay="false" action="" name="EvaluateAndInitiate" bindingOperationName="EvaluateAndInitiate" type="Request-Response" outputName="EvaluateAndInitiateResponse" inputName="EvaluateAndInitiate" receivesAttachments="false" sendsAttachments="false"><con:settings/></con:operation><con:operation id="abf1ec86-ff4f-4c89-97d1-08c2e42d5e34" isOneWay="false" action="" name="saveAndEvaluateAEs" bindingOperationName="saveAndEvaluateAEs" type="Request-Response" outputName="saveAndEvaluateAEsResponse" inputName="saveAndEvaluateAEs" receivesAttachments="false" sendsAttachments="false"><con:settings/></con:operation></con:interface><con:testSuite name="Participant" id="ff7aab02-d58b-4ccf-a91a-3a04629553c8"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="false" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Participant Data Driven" searchProperties="true" id="9824c379-6c54-435e-85d8-51c7868e2415" timeout="0" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword=""><con:settings/><con:testStep type="restrequest" name="Create Participant" id="ec762846-2cbc-4235-9385-c1264214df52"><con:settings/><con:config service="https://dev.semanticbits.com" methodName="ParticipantInitialization" resourcePath="/caaers/ParticipantInitialization" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create Participant" id="eb427498-b9fa-4b27-acea-b7e4bfdd48d3" mediaType="text/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.support.AbstractHttpRequest@dump-file">/Users/semanticbits/Desktop/caAERS/</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.71:7700</con:endpoint><con:request><![CDATA[<ODM CreationDateTime="2013-04-17T13:06:03" FileOID="RavePatientPush.xml" FileType="Transactional" ODMVersion="1.3" xmlns="http://www.cdisc.org/ns/odm/v1.3" xmlns:mdsol="http://www.mdsol.com/ns/odm/metadata">
    <ClinicalData MetaDataVersionOID="3629771" StudyOID="${#TestCase#Study}">
       <SubjectData SubjectKey="${#TestCase#SubjectKey}" TransactionType="Insert">
          <SiteRef LocationOID="${#TestCase#Site}"/>
@@ -2317,7 +2317,7 @@ if (line != null) {
 		log.info "Found property: " + context.headers[i] + "=" + props[i]
 		testCase.setPropertyValue(context.headers[i],props[i])
 	}
-}</con:setupScript><con:tearDownScript>context.fileReader.close()</con:tearDownScript><con:properties><con:property><con:name>file</con:name><con:value>/Users/mccon012/Downloads/caAERS Participant Data Driven - Participant Data.csv</con:value></con:property><con:property><con:name>Ethnicity</con:name><con:value>Not Hispanic or Latino</con:value></con:property><con:property><con:name>Gender</con:name><con:value>Male Gender</con:value></con:property><con:property><con:name>Race</con:name><con:value>White</con:value></con:property><con:property><con:name>Success</con:name><con:value>1</con:value></con:property><con:property><con:name>SubjectKey</con:name><con:value>S16803685-A071102</con:value></con:property><con:property><con:name>Site</con:name><con:value>CTSUTST01</con:value></con:property><con:property><con:name>Study</con:name><con:value>A071102</con:value></con:property><con:property><con:name>EnrollmentDate</con:name><con:value>21 Feb 2014</con:value></con:property><con:property><con:name>CurrentSite</con:name><con:value>MN008</con:value></con:property><con:property><con:name>ParticipantId</con:name><con:value>S16803685-A071102</con:value></con:property><con:property><con:name>EnrollingSite</con:name><con:value>MN008</con:value></con:property><con:property><con:name>LeadSite</con:name><con:value>SWOG</con:value></con:property><con:property><con:name>EnrollmentTime</con:name><con:value>10:38:38:AM</con:value></con:property><con:property><con:name>Initials</con:name><con:value>GVE</con:value></con:property><con:property><con:name>Birth</con:name><con:value>17 Aug 1920</con:value></con:property><con:property><con:name>Country</con:name><con:value>US</con:value></con:property><con:property><con:name>Zipcode</con:name><con:value>51443</con:value></con:property><con:property><con:name>Payment</con:name><con:value>PRIVATE INSURANCE</con:value></con:property><con:property><con:name>TrackingNumber</con:name><con:value>110347</con:value></con:property><con:property><con:name>Physician</con:name><con:value>Elizabeth Poplin</con:value></con:property><con:property><con:name>Registrar</con:name><con:value>David Gorski</con:value></con:property><con:property><con:name>Investigator</con:name><con:value>Paul Rosenthal</con:value></con:property><con:property><con:name>Assessment</con:name><con:value>Blinded</con:value></con:property><con:property><con:name>Note</con:name><con:value>Values</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:testSuite name="SAE Evaluation" id="69fc26ce-a859-4deb-bc15-88de7f18d5fd"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="false" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="SAE Evaluation Data Driven" searchProperties="true" id="efbd7acd-fbd0-4ac9-b7e3-bc677ebad044" timeout="0" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword=""><con:settings/><con:testStep type="request" name="saveAndEvaluateAEs - A071102 - TAC - VAR" id="20f2c81c-f05c-4262-859c-1800114d441c"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs - A071102 - TAC - VAR" id="934a52f0-a969-424b-a7f3-a15e546f191b"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+}</con:setupScript><con:tearDownScript>context.fileReader.close()</con:tearDownScript><con:properties><con:property><con:name>file</con:name><con:value>/Users/semanticbits/Downloads/caAERS Participant Data Driven - Participant Data (1).csv</con:value></con:property><con:property><con:name>Ethnicity</con:name><con:value>Not Hispanic or Latino</con:value></con:property><con:property><con:name>Gender</con:name><con:value>Male Gender</con:value></con:property><con:property><con:name>Race</con:name><con:value>Asian</con:value></con:property><con:property><con:name>Success</con:name><con:value>1</con:value></con:property><con:property><con:name>SubjectKey</con:name><con:value>S18858389-A071102</con:value></con:property><con:property><con:name>Site</con:name><con:value>CTSUTST01</con:value></con:property><con:property><con:name>Study</con:name><con:value>RTOG-1106</con:value></con:property><con:property><con:name>EnrollmentDate</con:name><con:value>30-Jun-12</con:value></con:property><con:property><con:name>CurrentSite</con:name><con:value>MN008</con:value></con:property><con:property><con:name>ParticipantId</con:name><con:value>S18858389-A071102</con:value></con:property><con:property><con:name>EnrollingSite</con:name><con:value>MN008</con:value></con:property><con:property><con:name>LeadSite</con:name><con:value>SWOG</con:value></con:property><con:property><con:name>EnrollmentTime</con:name><con:value>06:27:56:AM</con:value></con:property><con:property><con:name>Initials</con:name><con:value>SVE</con:value></con:property><con:property><con:name>Birth</con:name><con:value>29-Oct-52</con:value></con:property><con:property><con:name>Country</con:name><con:value>US</con:value></con:property><con:property><con:name>Zipcode</con:name><con:value>5008</con:value></con:property><con:property><con:name>Payment</con:name><con:value>PRIVATE INSURANCE</con:value></con:property><con:property><con:name>TrackingNumber</con:name><con:value>110347</con:value></con:property><con:property><con:name>Physician</con:name><con:value>Elizabeth Poplin</con:value></con:property><con:property><con:name>Registrar</con:name><con:value>David Gorski</con:value></con:property><con:property><con:name>Investigator</con:name><con:value>Paul Rosenthal</con:value></con:property><con:property><con:name>Assessment</con:name><con:value>Blinded</con:value></con:property><con:property><con:name>Note</con:name><con:value>Values</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:testSuite name="SAE Evaluation" id="69fc26ce-a859-4deb-bc15-88de7f18d5fd"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="false" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="SAE Evaluation Data Driven" searchProperties="true" id="efbd7acd-fbd0-4ac9-b7e3-bc677ebad044" timeout="0" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword=""><con:settings/><con:testStep type="request" name="saveAndEvaluateAEs - A071102 - TAC - VAR" id="20f2c81c-f05c-4262-859c-1800114d441c"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs - A071102 - TAC - VAR" id="934a52f0-a969-424b-a7f3-a15e546f191b"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
    <soapenv:Header>
       <wsse:Security soapenv:mustUnderstand="1">
          <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
@@ -2338,7 +2338,7 @@ if (line != null) {
                      <ctepCode>${#TestCase#Ctepcode}</ctepCode>
                   </adverseEventCtepTerm>
                   <grade>${#TestCase#Grade}</grade>
-                  <!--<hospitalization>YES</hospitalization>-->
+                  <hospitalization>${#TestCase#Hospitalization}</hospitalization>-->
                   <dateFirstLearned>${#TestCase#DateFirstLearned}</dateFirstLearned>
                   <outcome>
                      <outComeEnumType>${#TestCase#Outcome}</outComeEnumType>
@@ -2433,4 +2433,140 @@ if (line != null) {
 		log.info "Found property: " + context.headers[i] + "=" + props[i]
 		testCase.setPropertyValue(context.headers[i],props[i])
 	}
-}</con:setupScript><con:tearDownScript>context.fileReader.close()</con:tearDownScript><con:properties><con:property><con:name>file</con:name><con:value>/Users/mccon012/Downloads/SAEEvaluation for A071102 - case_sensitivity.csv</con:value></con:property><con:property><con:name>StudySubjectID</con:name><con:value>S38-A071102</con:value></con:property><con:property><con:name>Study</con:name><con:value>a071102</con:value></con:property><con:property><con:name>TAC</con:name><con:value>TAC 1</con:value></con:property><con:property><con:name>TAD</con:name><con:value>N/A</con:value></con:property><con:property><con:name>StartDateoffirstcourse</con:name><con:value>2015-01-06</con:value></con:property><con:property><con:name>StartDateofthiscourse</con:name><con:value>2015-01-26</con:value></con:property><con:property><con:name>Coursenumber</con:name><con:value>21</con:value></con:property><con:property><con:name>AEExternalID</con:name><con:value>reaction-88</con:value></con:property><con:property><con:name>Verbatim</con:name><con:value>Verbatim7</con:value></con:property><con:property><con:name>Ctepcode</con:name><con:value>10010774</con:value></con:property><con:property><con:name>Grade</con:name><con:value>3</con:value></con:property><con:property><con:name>DateFirstLearned</con:name><con:value>2015-01-11T20:15:01.0Z</con:value></con:property><con:property><con:name>Outcome</con:name><con:value>life_threatening</con:value></con:property><con:property><con:name>Reporteremail</con:name><con:value>vasudev.chatti@semanticbits.com</con:value></con:property><con:property><con:name>Success</con:name><con:value>1</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer><con:outgoing><con:name>caaers</con:name><con:entry type="Username" username="mayo-super-user" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing><con:outgoing><con:name>caaers-integ</con:name><con:entry type="Username" username="sb-admin" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing></con:wssContainer><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
+}</con:setupScript><con:tearDownScript>context.fileReader.close()</con:tearDownScript><con:properties><con:property><con:name>file</con:name><con:value>/Users/semanticbits/Downloads/Data for SAEEvaluation for A071102 - case_sensitivity (1).csv</con:value></con:property><con:property><con:name>StudySubjectID</con:name><con:value>S38-A071102</con:value></con:property><con:property><con:name>Study</con:name><con:value>A071102</con:value></con:property><con:property><con:name>TAC</con:name><con:value>TAC 1</con:value></con:property><con:property><con:name>TAD</con:name><con:value>N/A</con:value></con:property><con:property><con:name>StartDateoffirstcourse</con:name><con:value>2015-01-06</con:value></con:property><con:property><con:name>StartDateofthiscourse</con:name><con:value>2015-01-06</con:value></con:property><con:property><con:name>Coursenumber</con:name><con:value>33</con:value></con:property><con:property><con:name>AEExternalID</con:name><con:value>reaction-88</con:value></con:property><con:property><con:name>Verbatim</con:name><con:value>Verbatim1</con:value></con:property><con:property><con:name>Ctepcode</con:name><con:value>10016825</con:value></con:property><con:property><con:name>Grade</con:name><con:value>4</con:value></con:property><con:property><con:name>DateFirstLearned</con:name><con:value>2015-01-06T17:05:01.0Z</con:value></con:property><con:property><con:name>Outcome</con:name><con:value>HOSPITALIZATION</con:value></con:property><con:property><con:name>Reporteremail</con:name><con:value>vasudev.chatti@semanticbits.com</con:value></con:property><con:property><con:name>Success</con:name><con:value>0</con:value></con:property><con:property><con:name>Hospitalization</con:name><con:value>YES</con:value></con:property><con:property><con:name>Notes</con:name><con:value>"Invalid grade for ctep code (Flusing accepts 1</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:testSuite name="evaluateAndInitiate" id="1be0c167-7123-46ea-92c1-abc1ecc5a2a3"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="false" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="evaluateAndInitiate" searchProperties="true" id="c6345d32-48c0-4c24-92c5-ad6a12bff0e8" timeout="0" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword=""><con:settings/><con:testStep type="request" name="evaluateAndInitiate" id="cd309116-4e13-4f56-a08b-c4186a59763b"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="evaluateAndInitiate" id="934a52f0-a969-424b-a7f3-a15e546f191b"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.71:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="1">
+         <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>SYSTEM</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">system_admin</wsse:Password>
+            <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>
+            <wsu:Created>2014-01-10T21:31:08.6661550+00:00</wsu:Created>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <saer:EvaluateAndInitiate>
+         <saer:EvaluateAndInitiateInputMessage>
+             <saer:adverseEvents>
+               <saer:adverseEvent>
+                  <verbatim>${#TestCase#Verbatim}</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>${#TestCase#Ctepcode}</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>${#TestCase#Grade}</grade>
+                  <hospitalization>${#TestCase#Hospitalization}</hospitalization>
+                  <dateFirstLearned>${#TestCase#DateFirstLearned}</dateFirstLearned>
+                  <outcome>
+                     <outComeEnumType>${#TestCase#Outcome}</outComeEnumType>
+                  </outcome>
+                  <externalId>${#TestCase#AEExternalID}</externalId>
+                  <reporterEmail>${#TestCase#Reporteremail}</reporterEmail>
+               </saer:adverseEvent>
+               <!--<saer:adverseEvent>
+                  <verbatim>Verbatim2</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>10047700</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>3</grade>
+                  <hospitalization>YES</hospitalization>
+                  <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
+                  
+                  <outcome>
+                     <outComeEnumType>HOSPITALIZATION</outComeEnumType>
+                  </outcome>
+                  <externalId>reaction-89</externalId>
+                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
+               </saer:adverseEvent>-->
+            </saer:adverseEvents>
+            <saer:criteria>
+               <studySubjectIdentifier>${#TestCase#StudySubjectID}</studySubjectIdentifier>
+               <studyIdentifier>${#TestCase#Study}</studyIdentifier>
+               <course>
+                  <startDateOfFirstCourse>${#TestCase#StartDateoffirstcourse}</startDateOfFirstCourse>
+                  <startDateOfThisCourse>${#TestCase#StartDateofthiscourse}</startDateOfThisCourse>
+                  <cycleNumber>${#TestCase#Coursenumber}</cycleNumber>
+                  <treatmentAssignmentCode>${#TestCase#TAC}</treatmentAssignmentCode>
+                  <otherTreatmentAssignmentDescription>${#TestCase#TAD}</otherTreatmentAssignmentDescription>
+               </course>
+            </saer:criteria>
+          <!--  <reportId>1606112998</reportId>-->
+            <!--<withdrawReport>true</withdrawReport>-->
+            <reporter>
+               <aer:firstName>Reporter</aer:firstName>
+               <aer:lastName>one</aer:lastName>
+               <aer:middleName>middlename</aer:middleName>
+               <aer:street>Sunrise valley drive</aer:street>
+               <aer:city>Chicago</aer:city>
+               <aer:state>IL</aer:state>
+               <aer:zip>20170</aer:zip>
+               <aer:country>USA</aer:country>
+               <aer:contactMechanism>
+                  <aer:type>phone</aer:type>
+                  <aer:value>703-787-1234</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>e-mail</aer:type>
+                  <aer:value>vasudev.chatti@semanticbits.com</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>fax</aer:type>
+                  <aer:value>703-787-1222</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>alternateEmails</aer:type>
+                  <aer:value>vasudevkarthik@gmail.com</aer:value>
+               </aer:contactMechanism>
+            </reporter>
+         </saer:EvaluateAndInitiateInputMessage>
+      </saer:EvaluateAndInitiate>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="f4c711c9-b70b-47ae-9502-9853ccfe9de5"/><con:assertion type="Schema Compliance" id="16a3083f-885f-4319-8c90-627159edf634"><con:configuration/></con:assertion><con:assertion type="Simple Contains" id="f673e797-5399-4475-a81e-0e9f822ae7dd" name="Contains"><con:configuration><token>&lt;recommendedActions></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="groovy" name="Next Line" id="572ee11a-fb90-43d9-b030-54ff0e5a1363"><con:settings/><con:config><script>// ${#TestCase#ColHeader}
+testCase = testRunner.testCase;
+
+line = context.fileReader.readLine()
+log.info "Read line: " + line
+
+if (line != null) {
+	String[] props = line.split(",")
+	
+	for (int i = 0; i &lt; props.length &amp;&amp; i &lt; context.headers.length; i++) {
+		log.info "Found property: " + context.headers[i] + "=" + props[i]
+		testCase.setPropertyValue(context.headers[i],props[i])
+	}
+
+	// loop
+	testRunner.gotoStep(0)
+}
+</script></con:config></con:testStep><con:setupScript>testCase = testRunner.testCase;
+file = testCase.getPropertyValue("file")
+
+log.info "Data Driven: reading from " + file
+
+// open a file reader in context.filereader
+context.fileReader = new BufferedReader(new FileReader(file))
+
+// read headers into context.headers and trim them
+line = context.fileReader.readLine()
+if (line != null) {
+	context.headers = line.split(",")
+	
+	for (int i = 0; i &lt; context.headers.length; i++) {
+		context.headers[i] = context.headers[i].trim()
+		log.info "Found header: " + context.headers[i]
+	}
+}
+
+// read first line
+line = context.fileReader.readLine()
+log.info "Read line: " + line
+
+if (line != null) {
+	String[] props = line.split(",")
+
+	log.info "Found properties: " + props.length
+	log.info "Using headers: " + context.headers.length
+	for (int i = 0; i &lt; props.length &amp;&amp; i &lt; context.headers.length; i++) {
+		log.info "Found property: " + context.headers[i] + "=" + props[i]
+		testCase.setPropertyValue(context.headers[i],props[i])
+	}
+}</con:setupScript><con:tearDownScript>context.fileReader.close()</con:tearDownScript><con:properties><con:property><con:name>file</con:name><con:value>/Users/semanticbits/Downloads/Data for evaluateAndInitiate for A071102 - case_sensitivity (3).csv</con:value></con:property><con:property><con:name>StudySubjectID</con:name><con:value>S3RC1-A071102</con:value></con:property><con:property><con:name>Study</con:name><con:value>A071102</con:value></con:property><con:property><con:name>TAC</con:name><con:value>TAC 1</con:value></con:property><con:property><con:name>TAD</con:name><con:value>N/A</con:value></con:property><con:property><con:name>StartDateoffirstcourse</con:name><con:value>2015-01-06</con:value></con:property><con:property><con:name>StartDateofthiscourse</con:name><con:value>2015-01-06</con:value></con:property><con:property><con:name>Coursenumber</con:name><con:value>33</con:value></con:property><con:property><con:name>AEExternalID</con:name><con:value>reaction-88</con:value></con:property><con:property><con:name>Verbatim</con:name><con:value>Verbatim1</con:value></con:property><con:property><con:name>Ctepcode</con:name><con:value>10016825</con:value></con:property><con:property><con:name>Grade</con:name><con:value>4</con:value></con:property><con:property><con:name>DateFirstLearned</con:name><con:value>2015-01-06T17:05:01.0Z</con:value></con:property><con:property><con:name>Outcome</con:name><con:value>HOSPITALIZATION</con:value></con:property><con:property><con:name>Reporteremail</con:name><con:value>vasudev.chatti@semanticbits.com</con:value></con:property><con:property><con:name>Success</con:name><con:value>0</con:value></con:property><con:property><con:name>hospitalization</con:name><con:value>YES</con:value></con:property><con:property><con:name>Site</con:name><con:value>MN008</con:value></con:property><con:property><con:name>Notes</con:name><con:value>"Invalid grade for ctep code (Flusing accepts 1</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer><con:outgoing><con:name>caaers</con:name><con:entry type="Username" username="mayo-super-user" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing><con:outgoing><con:name>caaers-integ</con:name><con:entry type="Username" username="sb-admin" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing></con:wssContainer><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
