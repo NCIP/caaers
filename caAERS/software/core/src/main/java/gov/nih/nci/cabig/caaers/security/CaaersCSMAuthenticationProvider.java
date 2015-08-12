@@ -110,6 +110,8 @@ public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider {
 			if(caaersUser != null) {
                 if( (newFailedLogins != previousFailedLogins) || DateUtils.compateDateAndTime(previousFailedDate, newFailedDate) != 0 ) {
                     try {
+                        caaersUser.setFailedLoginAttempts(newFailedLogins);
+                        caaersUser.setLastFailedLoginAttemptTime(newFailedDate);
                         userRepository.save(caaersUser);
                     }catch (StaleObjectStateException  | ConcurrencyFailureException ignore) {
                         if(logger.isDebugEnabled()) {
