@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project activeEnvironment="Default" name="rave-integration-msgs-git" resourceRoot="${projectDir}" soapui-version="5.1.3" abortOnError="false" runType="SEQUENTIAL" id="d37cb3a4-60ad-40b6-a351-d3e428a41b88" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="SafetyReportManagementServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/aereport}SafetyReportManagementServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://dev.semanticbits.com/caaers/services/SafetyReportService?wsdl" id="cbd8a527-2cbe-4039-a739-50d1c6987505" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://dev.semanticbits.com/caaers/services/SafetyReportService?wsdl"><con:part><con:url>https://dev.semanticbits.com/caaers/services/SafetyReportService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="SafetyReportManagementService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<con:soapui-project activeEnvironment="Default" name="rave-integration-msgs-git" resourceRoot="${projectDir}" soapui-version="5.2.0" abortOnError="false" runType="SEQUENTIAL" id="d37cb3a4-60ad-40b6-a351-d3e428a41b88" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="SafetyReportManagementServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/aereport}SafetyReportManagementServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://dev.semanticbits.com/caaers/services/SafetyReportService?wsdl" id="cbd8a527-2cbe-4039-a739-50d1c6987505" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://dev.semanticbits.com/caaers/services/SafetyReportService?wsdl"><con:part><con:url>https://dev.semanticbits.com/caaers/services/SafetyReportService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="SafetyReportManagementService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="treatmentAssignment" type="TreatmentAssignmentType"/>
@@ -1858,7 +1858,7 @@
       <soap:address location="https://dev.semanticbits.com/caaers/services/SafetyReportService"/>
     </wsdl:port>
   </wsdl:service>
-</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://10.10.10.22:7711/caaers/services/RaveIntegrationServices</con:endpoint><con:endpoint>http://10.10.10.63:7711/caaers/services/RaveIntegrationServices</con:endpoint><con:endpoint>https://10.10.10.22:8447/caaers/services/IntegSafetyReportService</con:endpoint><con:endpoint>https://dev.semanticbits.com/caaers/services/IntegSafetyReportService</con:endpoint><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService?wsdl</con:endpoint><con:endpoint>https://integ.semanticbits.com/caaers/services/isrs/SafetyReportService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="initiateSafetyReportAction" bindingOperationName="initiateSafetyReportAction" type="Request-Response" outputName="initiateSafetyReportActionResponse" inputName="initiateSafetyReportAction" receivesAttachments="false" sendsAttachments="false" anonymous="optional" id="9a5385ae-2eea-482b-8f40-cdcf4d2505b8"><con:settings/><con:call name="Request 1" id="a33aef5c-0054-4d46-b821-440d50ebf154"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://10.10.10.22:7711/caaers/services/RaveIntegrationServices</con:endpoint><con:endpoint>http://10.10.10.63:7711/caaers/services/RaveIntegrationServices</con:endpoint><con:endpoint>http://10.10.10.71:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:endpoint>https://10.10.10.22:8447/caaers/services/IntegSafetyReportService</con:endpoint><con:endpoint>https://dev.semanticbits.com/caaers/services/IntegSafetyReportService</con:endpoint><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService?wsdl</con:endpoint><con:endpoint>https://integ.semanticbits.com/caaers/services/isrs/SafetyReportService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="initiateSafetyReportAction" bindingOperationName="initiateSafetyReportAction" type="Request-Response" outputName="initiateSafetyReportActionResponse" inputName="initiateSafetyReportAction" receivesAttachments="false" sendsAttachments="false" anonymous="optional" id="9a5385ae-2eea-482b-8f40-cdcf4d2505b8"><con:settings/><con:call name="Request 1" id="a33aef5c-0054-4d46-b821-440d50ebf154"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
    <soapenv:Header/>
    <soapenv:Body>
       <aer:initiateSafetyReportAction>
@@ -4820,7 +4820,7 @@
          </saer:EvaluateAndInitiateInputMessage>
       </saer:EvaluateAndInitiate>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/EvaluateAndInitiate"/></con:call></con:operation></con:interface><con:interface xsi:type="con:RestService" id="827a0e1b-5590-4ebf-bc9e-ae495a603f49" wadlVersion="http://wadl.dev.java.net/2009/02" name="https://dev.semanticbits.com" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache/><con:endpoints><con:endpoint>https://dev.semanticbits.com</con:endpoint></con:endpoints><con:resource name="ParticipantInitialization" path="/caaers/ParticipantInitialization" id="3dbb7069-eb93-4580-bc6d-8cc3398820e5"><con:settings/><con:parameters/><con:method name="ParticipantInitialization" id="d00ccaea-dc6d-482f-b57d-2b07a90aac75" method="POST"><con:settings/><con:parameters/><con:request name="Request 1" id="b74c7ef1-4338-4481-a71f-93b580a8f498" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>https://dev.semanticbits.com</con:endpoint><con:request><![CDATA[<ODM CreationDateTime="2013-04-17T13:06:03" FileOID="RavePatientPush.xml" FileType="Transactional" ODMVersion="1.3" xmlns="http://www.cdisc.org/ns/odm/v1.3" xmlns:mdsol="http://www.mdsol.com/ns/odm/metadata">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/EvaluateAndInitiate"/></con:call></con:operation></con:interface><con:interface xsi:type="con:RestService" id="827a0e1b-5590-4ebf-bc9e-ae495a603f49" wadlVersion="http://wadl.dev.java.net/2009/02" name="https://dev.semanticbits.com" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>http://10.10.10.71</con:endpoint></con:endpoints><con:resource name="ParticipantInitialization" path="/caaers/ParticipantInitialization" id="3dbb7069-eb93-4580-bc6d-8cc3398820e5"><con:settings/><con:parameters/><con:method name="ParticipantInitialization" id="d00ccaea-dc6d-482f-b57d-2b07a90aac75" method="POST"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/xml</con:mediaType><con:params/><con:element xmlns:v1="http://www.cdisc.org/ns/odm/v1.3">v1:ODM</con:element></con:representation><con:request name="Request 1" id="b74c7ef1-4338-4481-a71f-93b580a8f498" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://10.10.10.71:7700</con:endpoint><con:request><![CDATA[<ODM CreationDateTime="2013-04-17T13:06:03" FileOID="RavePatientPush.xml" FileType="Transactional" ODMVersion="1.3" xmlns="http://www.cdisc.org/ns/odm/v1.3" xmlns:mdsol="http://www.mdsol.com/ns/odm/metadata">
    <ClinicalData MetaDataVersionOID="3629771" StudyOID="A071102">
       <SubjectData SubjectKey="S34-A071102" TransactionType="Insert">
          <SiteRef LocationOID="CTSUTST01"/>
@@ -4897,102 +4897,7 @@
          </StudyEventData>
       </SubjectData>
    </ClinicalData>
-</ODM>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/><con:parameterOrder/></con:request></con:method></con:resource></con:interface><con:testSuite id="2df69ef2-fbe0-4327-a862-083d2e1dfe58" name="BOM"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="2c8b3b32-c2f6-4023-bd5d-ad7a3d6e1da1" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="BOM" searchProperties="true"><con:settings/><con:testStep type="request" name="saveAndEvaluateAEs - A071102 - TAC" id="4aa1728f-537e-4209-88ad-7128efc6d8f7"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs - A071102 - TAC" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">    <soapenv:Header>       <wsse:Security soapenv:mustUnderstand="1">          <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">             <wsse:Username>SYSTEM</wsse:Username>             <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">system_admin</wsse:Password>             <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>             <wsu:Created>2014-01-10T21:31:08.6661550+00:00</wsu:Created>          </wsse:UsernameToken>       </wsse:Security>    </soapenv:Header>    <soapenv:Body>       <saer:saveAndEvaluateAEs>          <saer:SaveAndEvaluateAEsInputMessage>             <saer:adverseEvents>                <saer:adverseEvent>                   <verbatim>Verbatim4</verbatim>                   <adverseEventCtepTerm>                      <ctepCode>10010774</ctepCode>                   </adverseEventCtepTerm>                   <grade>4</grade>                  <hospitalization>YES</hospitalization>                   <dateFirstLearned>2015-04-10T17:05:01.0000000Z</dateFirstLearned>                   <outcome>                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>                   </outcome>                   <externalId>reaction-88</externalId>                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>                </saer:adverseEvent>  <!--<saer:adverseEvent>                   <verbatim>Verbatim2</verbatim>                   <adverseEventCtepTerm>                      <ctepCode>10047700</ctepCode>                   </adverseEventCtepTerm>                   <grade>2</grade>                   <hospitalization>YES</hospitalization>                   <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>                                      <outcome>                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>                   </outcome>                   <externalId>reaction-89</externalId>                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>                </saer:adverseEvent> -->                              </saer:adverseEvents>             <saer:criteria>                <studySubjectIdentifier>S29-A071102</studySubjectIdentifier>                <studyIdentifier>A071102</studyIdentifier>                <course>                   <startDateOfFirstCourse>2014-01-06</startDateOfFirstCourse>                   <startDateOfThisCourse>2015-05-03</startDateOfThisCourse>                   <cycleNumber>3</cycleNumber>                   <treatmentAssignmentCode>TAC 1</treatmentAssignmentCode>                   <otherTreatmentAssignmentDescription>N/A</otherTreatmentAssignmentDescription>                </course>             </saer:criteria>          </saer:SaveAndEvaluateAEsInputMessage>       </saer:saveAndEvaluateAEs>    </soapenv:Body> </soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="groovy" name="BOM" id="c3882435-c7f8-412f-980d-1df14e9947fe"><con:settings/><con:config><script>// fail: https://dev.semanticbits.com/caaers/services/SAEEvaluationService
-// pass: http://10.10.10.61:6611/caaers/services/RaveIntegrationServices
-
-testCase = testRunner.testCase;
-testStep = testCase.getTestStepAt(0)
-
-// get properties
-sendBOM = "true".equals(testCase.getPropertyValue("sendBOM"))
-socketTimeout = testCase.getPropertyValue("socketTimeout").toInteger() // 10000
-endpoint = testStep.getPropertyValue("endpoint");
-post = new String(testStep.testRequest.messageExchange.rawRequestData)
-xml = testStep.testRequest.messageExchange.requestContent
-
-url = new URL(endpoint)
-host = url.getHost()
-port = url.getPort()
-isSSL = url.getProtocol() == "https"
-charset = java.nio.charset.StandardCharsets.UTF_8
-
-if (port &lt;= 0) {
-	if (isSSL) port = 443
-	else port = 80
-}
-
-// build soap payload
-xmlBytes = xml.getBytes(charset)
-bomBytes = new String("\uFEFF").getBytes()
-if (! sendBOM) bomBytes = new byte[0]
-message = new byte[xmlBytes.length + bomBytes.length]
-System.arraycopy(bomBytes, 0, message, 0, bomBytes.length);
-System.arraycopy(xmlBytes, 0, message, bomBytes.length, xmlBytes.length);
-
-// modify the content-length to include bom
-if (sendBOM) {
-	post = post.replaceFirst(/Content-Length\: (\d+)/) { all, length -> 
-		"Content-Length: " + message.length
-	}
-}
-
-// pront out some debug info
-log.info "BOM Host: " + host
-log.info "BOM Port: " + port
-log.info "BOM Post: " + post
-log.info "BOM XML: " + xml
-log.info "BOM Message length: " + message.length
-
-sock = new Socket(url.getHost(), port)
-
-// wrap with an ssl socket if we are using ssl
-if (isSSL) {
-	sock = javax.net.ssl.SSLSocketFactory.getDefault().createSocket(sock, host, port, true)
-}
-
-// set a socket timeout for poorly bahaving servers
-if (socketTimeout) {
-	sock.setSoTimeout(socketTimeout)
-	log.info "BOM Timeout: " + socketTimeout
-}
-
-// if you need to debug the payload, uncomment the two lines below and change the file path
-//new File("/Users/mccon012",'message.xml').withOutputStream { out ->
-//	out.write(message)
-//}
-
-// send the http details then the soap payload
-// read the response
-resp = ""
-try {
-	os = sock.getOutputStream()
-	is = sock.getInputStream()
-
-	os.write(post.getBytes(charset))
-	os.write(message)
-	os.flush()
-	
-	byte[] buf = new byte[1024]
-	int count = 0
-	while ((count = is.read(buf, 0, buf.length)) != -1) {
-		resp += new String(buf, 0, count)
-	}	
-
-	os.close()
-	is.close()
-} catch (SocketTimeoutException e) {
-	log.warn "BOM socket timed out but will check response anyway"
-} finally {
-	sock.close()
-}
-
-// print debug message
-log.info "BOM Response: " + resp
-
-// assert that we get 200 response code
-assert resp.startsWith("HTTP/1.1 200 OK") == true : "BOM failed - didn't return  200"
-// assert that the payload contains some real stuff
-assert resp.contains("saveAndEvaluateAEsResponse") == true : "BOM failed - couldn't find saveAndEvaluateAEs in response"</script></con:config></con:testStep><con:properties><con:property><con:name>sendBOM</con:name><con:value>true</con:value></con:property><con:property><con:name>socketTimeout</con:name><con:value>10000</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:testSuite name="Smoke test-create" id="87cfa69a-4331-4644-8c5f-a9d7437c36f9"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="19b6ab19-a219-4071-b261-b3685bb6a61b" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="participantInitialization" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="participantInitialization" id="f6623bb4-5ba4-44b4-a141-f3c03d59c5e0"><con:settings/><con:config service="https://dev.semanticbits.com" methodName="ParticipantInitialization" resourcePath="/caaers/ParticipantInitialization" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="participantInitialization" id="e013b435-3b67-4115-b0d9-aa0ad04709eb" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com</con:endpoint><con:request><![CDATA[<ODM CreationDateTime="2013-04-17T13:06:03" FileOID="RavePatientPush.xml" FileType="Transactional" ODMVersion="1.3" xmlns="http://www.cdisc.org/ns/odm/v1.3" xmlns:mdsol="http://www.mdsol.com/ns/odm/metadata">
+</ODM>]]></con:request><con:originalUri>http://10.10.10.71/caaers/ParticipantInitialization</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/><con:parameterOrder/></con:request></con:method></con:resource></con:interface><con:testSuite name="Smoke test-create" id="87cfa69a-4331-4644-8c5f-a9d7437c36f9"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="19b6ab19-a219-4071-b261-b3685bb6a61b" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="participantInitialization" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="participantInitialization" id="f6623bb4-5ba4-44b4-a141-f3c03d59c5e0"><con:settings/><con:config service="https://dev.semanticbits.com" methodName="ParticipantInitialization" resourcePath="/caaers/ParticipantInitialization" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="participantInitialization" id="e013b435-3b67-4115-b0d9-aa0ad04709eb" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com</con:endpoint><con:request><![CDATA[<ODM CreationDateTime="2013-04-17T13:06:03" FileOID="RavePatientPush.xml" FileType="Transactional" ODMVersion="1.3" xmlns="http://www.cdisc.org/ns/odm/v1.3" xmlns:mdsol="http://www.mdsol.com/ns/odm/metadata">
    <ClinicalData MetaDataVersionOID="3629771" StudyOID="${#TestCase#Study}">
       <SubjectData SubjectKey="${#TestCase#SubjectKey}" TransactionType="Insert">
          <SiteRef LocationOID="${#TestCase#Site}"/>
@@ -6258,7 +6163,7 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
          </saer:SaveAndEvaluateAEsInputMessage>
       </saer:saveAndEvaluateAEs>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="8ab60d40-a7d9-43e2-82d5-12f8f5bd5128" name="Contains"><con:configuration><token>&lt;recommendedActions></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties><con:property><con:name>file</con:name><con:value>/Users/semanticbits/caaers/caAERS/software/soapProjects/Data-driven-test-data/Data for evaluateAndInitiate for A071102 - case_sensitivity.csv</con:value></con:property></con:properties></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Create-Success" searchProperties="true" id="42c80a56-f9f6-4c80-b65d-7bb3fcfb1955"><con:settings/><con:testStep type="request" name="saveAndEvaluateAEs - A071102 - OTHER" id="c5478d17-526e-471a-a63c-af7b7c1b6ac1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs - A071102 - OTHER" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.63:7711/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="8ab60d40-a7d9-43e2-82d5-12f8f5bd5128" name="Contains"><con:configuration><token>&lt;recommendedActions></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties><con:property><con:name>file</con:name><con:value>/Users/semanticbits/caaers/caAERS/software/soapProjects/Data-driven-test-data/Data for evaluateAndInitiate for A071102 - case_sensitivity.csv</con:value></con:property></con:properties></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Create-Success" searchProperties="true" id="42c80a56-f9f6-4c80-b65d-7bb3fcfb1955"><con:settings/><con:testStep type="request" name="saveAndEvaluateAEs - A071102 - OTHER" id="c5478d17-526e-471a-a63c-af7b7c1b6ac1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs - A071102 - OTHER" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.71:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
    <soapenv:Header>
       <wsse:Security soapenv:mustUnderstand="1">
          <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
@@ -6274,50 +6179,49 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
          <saer:SaveAndEvaluateAEsInputMessage>
             <saer:adverseEvents>
                <saer:adverseEvent>
-                  <verbatim>Verbatim8</verbatim>
+                  <verbatim>Verbatim991</verbatim>
                   <adverseEventCtepTerm>
                      <ctepCode>10010774</ctepCode>
                   </adverseEventCtepTerm>
                   <grade>3</grade>
-                 <hospitalization>YES</hospitalization>
+                  <hospitalization>YES</hospitalization>
                   <dateFirstLearned>2015-07-15T17:05:01.0Z</dateFirstLearned>
-               <outcome>
+                  <outcome>
                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>
                   </outcome>
                   <externalId>reaction-88</externalId>
                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
                </saer:adverseEvent>
-         <!--   <saer:adverseEvent>
+               <saer:adverseEvent>
                   <verbatim>Verbatim2</verbatim>
                   <adverseEventCtepTerm>
                      <ctepCode>10047700</ctepCode>
                   </adverseEventCtepTerm>
-                  <grade>3</grade>
+                  <grade>4</grade>
                   <hospitalization>YES</hospitalization>
-                  <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
-                  
+                  <dateFirstLearned>2015-07-28T17:06:01.0000000Z</dateFirstLearned>
                   <outcome>
                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>
                   </outcome>
                   <externalId>reaction-89</externalId>
                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
-               </saer:adverseEvent> -->
+               </saer:adverseEvent>
             </saer:adverseEvents>
             <saer:criteria>
-               <studySubjectIdentifier>S43-A071102</studySubjectIdentifier>
+               <studySubjectIdentifier>S12RC1-A071102</studySubjectIdentifier>
                <studyIdentifier>A071102</studyIdentifier>
                <course>
                   <startDateOfFirstCourse>2014-01-06</startDateOfFirstCourse>
-                  <startDateOfThisCourse>2015-06-01</startDateOfThisCourse>
-                  <cycleNumber>1</cycleNumber>
-                  <treatmentAssignmentCode>other</treatmentAssignmentCode>
-                  <otherTreatmentAssignmentDescription>testing</otherTreatmentAssignmentDescription>
+                  <startDateOfThisCourse>2015-07-02</startDateOfThisCourse>
+                  <cycleNumber>32</cycleNumber>
+                  <treatmentAssignmentCode>TAC 1</treatmentAssignmentCode>
+                  <otherTreatmentAssignmentDescription>N/A</otherTreatmentAssignmentDescription>
                </course>
             </saer:criteria>
          </saer:SaveAndEvaluateAEsInputMessage>
       </saer:saveAndEvaluateAEs>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="8aa9530d-899f-41e6-9db1-a4df96e691b7" name="Contains"><con:configuration><token>&lt;recommendedActions></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="Evaluate_and_Initiate-A071102" id="4100c1c7-9304-4cfe-97c3-f28e28532d94"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="Evaluate_and_Initiate-A071102" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="8aa9530d-899f-41e6-9db1-a4df96e691b7" name="Contains"><con:configuration><token>&lt;recommendedActions></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="Evaluate_and_Initiate-A071102" id="4100c1c7-9304-4cfe-97c3-f28e28532d94"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="Evaluate_and_Initiate-A071102" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.71:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
    <soapenv:Header>
       <wsse:Security soapenv:mustUnderstand="1">
          <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
@@ -6332,41 +6236,40 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
       <saer:EvaluateAndInitiate>
          <saer:EvaluateAndInitiateInputMessage>
             <saer:adverseEvents>
-               <saer:adverseEvent>
-                  <verbatim>Verbatim8</verbatim>
+              <saer:adverseEvent>
+                  <verbatim>Verbatim1011</verbatim>
                   <adverseEventCtepTerm>
                      <ctepCode>10010774</ctepCode>
                   </adverseEventCtepTerm>
-                  <grade>3</grade>
+                  <grade>4</grade>
                   <hospitalization>YES</hospitalization>
-                  <dateFirstLearned>2015-07-18T17:06:01.0000000Z</dateFirstLearned>
+                  <dateFirstLearned>2015-07-27T17:06:01.0000000Z</dateFirstLearned>
                   <outcome>
                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>
                   </outcome>
                   <externalId>reaction-88</externalId>
                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
                </saer:adverseEvent>
-               <!--<saer:adverseEvent>
+               <saer:adverseEvent>
                   <verbatim>Verbatim9</verbatim>
                   <adverseEventCtepTerm>
                      <ctepCode>10047700</ctepCode>
                   </adverseEventCtepTerm>
-                  <grade>1</grade>
+                  <grade>3</grade>
                   <hospitalization>NO</hospitalization>
-                  <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
+                  <dateFirstLearned>2015-07-28T17:06:01.0000000Z</dateFirstLearned>
                   <outcome>
                      <outComeEnumType>OTHER_SERIOUS</outComeEnumType>
                   </outcome>
                   <externalId>reaction-89</externalId>
                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
-               </saer:adverseEvent>
-
-                <saer:adverseEvent>
+               </saer:adverseEvent> 
+               <!--<saer:adverseEvent>
                   <verbatim>Verbatim10</verbatim>
                   <adverseEventCtepTerm>
-                     <ctepCode>10047700</ctepCode>
+                     <ctepCode>10013442</ctepCode>
                   </adverseEventCtepTerm>
-                  <grade>1</grade>
+                  <grade>3</grade>
                   <hospitalization>NO</hospitalization>
                   <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
                   <outcome>
@@ -6379,30 +6282,30 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
                 <saer:adverseEvent>
                   <verbatim>Verbatim11</verbatim>
                   <adverseEventCtepTerm>
-                     <ctepCode>10047700</ctepCode>
+                     <ctepCode>10002272</ctepCode>
                   </adverseEventCtepTerm>
-                  <grade>1</grade>
+                  <grade>3</grade>
                   <hospitalization>NO</hospitalization>
                   <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
                   <outcome>
                      <outComeEnumType>OTHER_SERIOUS</outComeEnumType>
                   </outcome>
-                  <externalId>reaction-90</externalId>
+                  <externalId>reaction-91</externalId>
                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
                </saer:adverseEvent>-->
             </saer:adverseEvents>
             <saer:criteria>
-               <studySubjectIdentifier>S46-A071102</studySubjectIdentifier>
+               <studySubjectIdentifier>S14RC1-A071102</studySubjectIdentifier>
                <studyIdentifier>A071102</studyIdentifier>
                <course>
                   <startDateOfFirstCourse>2014-01-06</startDateOfFirstCourse>
-                  <startDateOfThisCourse>2015-06-11</startDateOfThisCourse>
-                  <cycleNumber>11</cycleNumber>
-                  <treatmentAssignmentCode>other</treatmentAssignmentCode>
-                  <otherTreatmentAssignmentDescription>testing</otherTreatmentAssignmentDescription>
+                  <startDateOfThisCourse>2015-07-17</startDateOfThisCourse>
+                  <cycleNumber>17</cycleNumber>
+                  <treatmentAssignmentCode>TAC 1</treatmentAssignmentCode>
+                  <otherTreatmentAssignmentDescription>N/A</otherTreatmentAssignmentDescription>
                </course>
             </saer:criteria>
-            <!--<reportId>0429078622</reportId>-->
+        <!-- <reportId>375407766</reportId>-->
             <!--<withdrawReport>true</withdrawReport>-->
             <reporter>
                <aer:firstName>Reporter</aer:firstName>
@@ -6433,7 +6336,7 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
          </saer:EvaluateAndInitiateInputMessage>
       </saer:EvaluateAndInitiate>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="60c64c94-8162-421d-993a-1ace68403dc9" name="Contains"><con:configuration><token>&lt;reportId></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="InitiateSafetyReportAction - A071102 - TAC" id="f2dbe8e2-e293-4b8e-8302-2e22877cf93c"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SafetyReportManagementServiceSoapBinding</con:interface><con:operation>initiateSafetyReportAction</con:operation><con:request name="InitiateSafetyReportAction - A071102 - TAC" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="27f96308-b58a-4b91-8837-2108331e883f"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="60c64c94-8162-421d-993a-1ace68403dc9" name="Contains"><con:configuration><token>&lt;reportId></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="InitiateSafetyReportAction - A071102 - TAC" id="f2dbe8e2-e293-4b8e-8302-2e22877cf93c"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SafetyReportManagementServiceSoapBinding</con:interface><con:operation>initiateSafetyReportAction</con:operation><con:request name="InitiateSafetyReportAction - A071102 - TAC" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="27f96308-b58a-4b91-8837-2108331e883f"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.71:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
    <soapenv:Header>
       <wsse:Security soapenv:mustUnderstand="1">
          <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
@@ -6449,8 +6352,8 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
          <aer:BaseAdverseEventReport>
             <aer:createdAt>2014-02-18T17:32:55</aer:createdAt>
             <aer:adverseEventReportingPeriod>
-               <aer:cycleNumber>12</aer:cycleNumber>
-               <aer:startDate>2015-05-12</aer:startDate>
+               <aer:cycleNumber>32</aer:cycleNumber>
+               <aer:startDate>2015-07-02</aer:startDate>
                <aer:studyParticipantAssignmentRef>
                   <aer:studySiteRef>
                      <aer:studyRef>
@@ -6463,11 +6366,11 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
                      </aer:studyRef>
                      <aer:nciInstituteCode>MN008</aer:nciInstituteCode>
                   </aer:studySiteRef>
-                  <aer:studySubjectIdentifier>S36-A071102</aer:studySubjectIdentifier>
+                  <aer:studySubjectIdentifier>S12RC1-A071102</aer:studySubjectIdentifier>
                </aer:studyParticipantAssignmentRef>
                <aer:treatmentAssignment>
                   <aer:code>TAC 1</aer:code>
-                  <!--<aer:description>someother</aer:description>-->
+                 
                   <!--<aer:description>N/A</aer:description>-->
                </aer:treatmentAssignment>
             </aer:adverseEventReportingPeriod>
@@ -6519,22 +6422,22 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
                   <aer:value>vasudev.chatti@semanticbits.com</aer:value>
                </aer:contactMechanism>
                
-            </aer:reporter>
+           </aer:reporter>
             <aer:reportedAE>
                <aer:externalId>reaction-88</aer:externalId>
             </aer:reportedAE>
-            <!--<aer:reportedAE>
+            <aer:reportedAE>
                <aer:externalId>reaction-89</aer:externalId>
-            </aer:reportedAE>-->
+            </aer:reportedAE>
             <aer:report>
-               <aer:caseNumber></aer:caseNumber>
-               <!--<aer:withdraw>true</aer:withdraw>-->
+               <aer:caseNumber>205145649</aer:caseNumber>
+            <!--  <aer:withdraw>true</aer:withdraw>-->
                <aer:aeReportDefinition>
-                  <aer:name>CTEP 10 Calendar Day SAE Report</aer:name>
+                  <aer:name>CTEP 24 Hour SAE Notification</aer:name>
                   <!--<aer:name>CTEP 24 Hour SAE Notification</aer:name>-->
                </aer:aeReportDefinition>
             </aer:report>
-            <aer:externalId></aer:externalId>
+            <aer:externalId>205145649</aer:externalId>
          </aer:BaseAdverseEventReport>
       </aer:initiateSafetyReportAction>
    </soapenv:Body>
@@ -6882,7 +6785,7 @@ if (line != null) {
 	// loop
 	testRunner.gotoStep(0)
 }
-</script></con:config></con:testStep><con:testStep type="request" name="E2B-submission" id="7f2f7489-9b45-49a4-ac7b-9373bade4682"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SafetyReportManagementServiceSoapBinding</con:interface><con:operation>submitSafetyReport</con:operation><con:request name="E2B-submission" id="e784c5f4-6f83-430c-b3a3-314e95bf9b5e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ae="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common">
+</script></con:config></con:testStep><con:testStep type="request" name="E2B-submission" id="7f2f7489-9b45-49a4-ac7b-9373bade4682"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SafetyReportManagementServiceSoapBinding</con:interface><con:operation>submitSafetyReport</con:operation><con:request name="E2B-submission" id="e784c5f4-6f83-430c-b3a3-314e95bf9b5e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.71:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ae="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common">
    <soapenv:Header>
       <wsse:Security>
          <wsse:UsernameToken wsu:Id="UsernameToken-2">
@@ -6894,16 +6797,15 @@ if (line != null) {
    <soapenv:Body>
       <ae:submitSafetyReport>
          <ae:AdverseEventReport>
-            <ae:createdAt>2014-12-17T18:56:38</ae:createdAt>
+            <ae:createdAt>2014-12-17T18:57:22</ae:createdAt>
             <ae:adverseEventResponseDescription>
                <ae:eventDescription>the description or narrative of the event</ae:eventDescription>
                <ae:presentStatus>NOT_RECOVERED</ae:presentStatus>
                <ae:retreated>false</ae:retreated>
             </ae:adverseEventResponseDescription>
             <ae:adverseEventReportingPeriod>
-               <ae:treatmentAssignmentDescription>testing</ae:treatmentAssignmentDescription>
-               <ae:cycleNumber>11</ae:cycleNumber>
-               <ae:startDate>2015-06-11</ae:startDate>
+               <ae:cycleNumber>37</ae:cycleNumber>
+               <ae:startDate>2015-06-27</ae:startDate>
                <ae:studyParticipantAssignmentRef>
                   <ae:studySiteRef>
                      <ae:studyRef>
@@ -6916,10 +6818,10 @@ if (line != null) {
                      </ae:studyRef>
                      <ae:nciInstituteCode>MN008</ae:nciInstituteCode>
                   </ae:studySiteRef>
-                  <ae:studySubjectIdentifier>S46-A071102</ae:studySubjectIdentifier>
+                  <ae:studySubjectIdentifier>9103827</ae:studySubjectIdentifier>
                </ae:studyParticipantAssignmentRef>
                <ae:treatmentAssignment>
-                  <ae:code>other</ae:code>
+                  <ae:code>TAC 1</ae:code>
                </ae:treatmentAssignment>
             </ae:adverseEventReportingPeriod>
             <ae:physician>
@@ -7022,6 +6924,50 @@ if (line != null) {
                   </ae:cause>
                </ae:diseaseAttribution>
             </ae:adverseEvent>
+            <ae:adverseEvent>
+               <verbatim>Verbatim8</verbatim>
+               <startDate>2014-12-07</startDate>
+               <externalId>reaction-89</externalId>
+               <ae:isPrimary>false</ae:isPrimary>
+               <ae:concomitantMedicationAttribution>
+                  <ae:attribution>1</ae:attribution>
+                  <ae:cause>
+                     <ae:name>Advil</ae:name>
+                  </ae:cause>
+               </ae:concomitantMedicationAttribution>
+               <ae:otherCauseAttribution>
+                  <ae:attribution>1</ae:attribution>
+                  <ae:cause>
+                     <ae:text>Convulsions</ae:text>
+                  </ae:cause>
+               </ae:otherCauseAttribution>
+               <ae:courseAgentAttribution>
+                  <ae:attribution>5</ae:attribution>
+                  <ae:cause>
+                     <ae:studyAgentRef>
+                        <ae:Agent>
+                           <ae:nscNumber>737664</ae:nscNumber>
+                        </ae:Agent>
+                     </ae:studyAgentRef>
+                  </ae:cause>
+               </ae:courseAgentAttribution>
+               <ae:courseAgentAttribution>
+                  <ae:attribution>5</ae:attribution>
+                  <ae:cause>
+                     <ae:studyAgentRef>
+                        <ae:Agent>
+                           <ae:nscNumber>362856</ae:nscNumber>
+                        </ae:Agent>
+                     </ae:studyAgentRef>
+                  </ae:cause>
+               </ae:courseAgentAttribution>
+               <ae:diseaseAttribution>
+                  <ae:attribution>4</ae:attribution>
+                  <ae:cause>
+                     <ae:primaryDisease>Glioblastoma multiforme</ae:primaryDisease>
+                  </ae:cause>
+               </ae:diseaseAttribution>
+            </ae:adverseEvent>
             <ae:lab>
                <ae:labTerm>
                   <ae:term>Bacterial Infection NOS</ae:term>
@@ -7029,6 +6975,66 @@ if (line != null) {
                <ae:infectiousAgent>Streptococcus</ae:infectiousAgent>
                <ae:site>APPENDIX</ae:site>
                <ae:labDate>2013-02-01</ae:labDate>
+            </ae:lab>
+            <ae:lab>
+               <ae:labTerm>
+                  <ae:term>Ammonia</ae:term>
+               </ae:labTerm>
+               <ae:units>mEq/L</ae:units>
+               <ae:baseline>
+                  <ae:value>10</ae:value>
+                  <ae:date>2014-02-25</ae:date>
+               </ae:baseline>
+            </ae:lab>
+            <ae:lab>
+               <ae:labTerm>
+                  <ae:term>Ammonia</ae:term>
+               </ae:labTerm>
+               <ae:units>mEq/L</ae:units>
+               <ae:recovery>
+                  <ae:value>12</ae:value>
+                  <ae:date>2014-02-25</ae:date>
+               </ae:recovery>
+            </ae:lab>
+            <ae:lab>
+               <ae:labTerm>
+                  <ae:term>Ammonia</ae:term>
+               </ae:labTerm>
+               <ae:units>mEq/L</ae:units>
+               <ae:nadir>
+                  <ae:value>12</ae:value>
+                  <ae:date>2014-02-25</ae:date>
+               </ae:nadir>
+            </ae:lab>
+            <ae:lab>
+               <ae:labTerm>
+                  <ae:term>Creatinine</ae:term>
+               </ae:labTerm>
+               <ae:units>g/L</ae:units>
+               <ae:baseline>
+                  <ae:value>15</ae:value>
+                  <ae:date>2014-01-10</ae:date>
+               </ae:baseline>
+            </ae:lab>
+            <ae:lab>
+               <ae:labTerm>
+                  <ae:term>Creatinine</ae:term>
+               </ae:labTerm>
+               <ae:units>g/L</ae:units>
+               <ae:nadir>
+                  <ae:value>16</ae:value>
+                  <ae:date>2014-01-15</ae:date>
+               </ae:nadir>
+            </ae:lab>
+            <ae:lab>
+               <ae:labTerm>
+                  <ae:term>Creatinine</ae:term>
+               </ae:labTerm>
+               <ae:units>g/L</ae:units>
+               <ae:recovery>
+                  <ae:value>18</ae:value>
+                  <ae:date>2014-01-20</ae:date>
+               </ae:recovery>
             </ae:lab>
             <ae:sAEReportPriorTherapy>
                <ae:priorTherapy>
@@ -7094,16 +7100,1106 @@ if (line != null) {
                <ae:otherInformation>this is the doc list</ae:otherInformation>
             </ae:additionalInformation>
             <ae:report>
-               <ae:caseNumber>1336899730</ae:caseNumber>
+               <ae:caseNumber>724914318</ae:caseNumber>
                <ae:aeReportDefinition>
                   <ae:name>CTEP 10 Calendar Day SAE Report</ae:name>
                </ae:aeReportDefinition>
                <ae:aeReportVersion>
                   <ae:ccEmails>vasudev.chatti.semanticbits.com</ae:ccEmails>
                </ae:aeReportVersion>
-               <ae:correlationId>1437508849239zVvCE</ae:correlationId>
+               <ae:correlationId>1438965325551VrzJ3</ae:correlationId>
             </ae:report>
          </ae:AdverseEventReport>
       </ae:submitSafetyReport>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="a7b1952b-1b30-493e-9d41-e3e337cee988"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties><con:property><con:name>file</con:name><con:value>/Users/semanticbits/caaers/caAERS/software/soapProjects/Data-driven-test-data/Data for evaluateAndInitiate for A071102 - case_sensitivity.csv</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer><con:outgoing><con:name>caaers</con:name><con:entry type="Username" username="mayo-super-user" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing><con:outgoing><con:name>caaers-integ</con:name><con:entry type="Username" username="sb-admin" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing></con:wssContainer><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="a7b1952b-1b30-493e-9d41-e3e337cee988"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="Blank-file" id="eca64cac-2143-473a-a369-239a3ee9f8a8"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SafetyReportManagementServiceSoapBinding</con:interface><con:operation>initiateSafetyReportAction</con:operation><con:request name="Blank-file" id="4f6dd2be-a9af-413b-b7b8-c4457793fbf7"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.22:7711/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<AdverseEventReport>
+   <EXTERNAL_SYSTEMS>https://betapps-ctep.nci.nih.gov/aers-SMPLFDbeta/services/AEReportXMLService::SBWSUSER::FALL#2015::AdEERS Beta System</EXTERNAL_SYSTEMS>
+   <CAAERSRID>90</CAAERSRID>
+   <SUBMITTER_EMAIL>vasudev.chatti@semanticbits.com</SUBMITTER_EMAIL>
+   <MESSAGE_COMBO_ID>895110835::20141217200153</MESSAGE_COMBO_ID>
+   <CORRELATION_ID>1439092149213</CORRELATION_ID>
+   <SYSTEM_NAME>AdEERS Beta System</SYSTEM_NAME>
+   <WITHDRAW>false</WITHDRAW>
+   <id>60</id>
+   <createdAt xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">2014-12-17 20:01:53.0</createdAt>
+   <AdverseEventReportingPeriod/>
+   <AdverseEventResponseDescription>
+      <eventDescription>the description or narrative of the event</eventDescription>
+      <presentStatus xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">NOT_RECOVERED</presentStatus>
+      <retreated>false</retreated>
+      <primaryTreatmentApproximateTime>
+         <type>0</type>
+      </primaryTreatmentApproximateTime>
+   </AdverseEventResponseDescription>
+   <Physician>
+      <firstName>Physician_given_name</firstName>
+      <lastName>Phyfamilyname</lastName>
+      <address/>
+      <ContactMechanism xsi:type="java:org.exolab.castor.mapping.MapItem" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+         <key xsi:type="java:java.lang.String">phone</key>
+         <value xsi:type="java:java.lang.String">7037879658</value>
+      </ContactMechanism>
+      <ContactMechanism xsi:type="java:org.exolab.castor.mapping.MapItem" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+         <key xsi:type="java:java.lang.String">e-mail</key>
+         <value xsi:type="java:java.lang.String">physicianone3@email.com</value>
+      </ContactMechanism>
+   </Physician>
+   <Reporter>
+      <firstName>Reporter</firstName>
+      <lastName>one</lastName>
+      <address/>
+      <ContactMechanism xsi:type="java:org.exolab.castor.mapping.MapItem" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+         <key xsi:type="java:java.lang.String">phone</key>
+         <value xsi:type="java:java.lang.String">703-787-1234</value>
+      </ContactMechanism>
+      <ContactMechanism xsi:type="java:org.exolab.castor.mapping.MapItem" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+         <key xsi:type="java:java.lang.String">alternate e-mail</key>
+         <value xsi:type="java:java.lang.String">vasudevkarthik@gmail.com</value>
+      </ContactMechanism>
+      <ContactMechanism xsi:type="java:org.exolab.castor.mapping.MapItem" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+         <key xsi:type="java:java.lang.String">e-mail</key>
+         <value xsi:type="java:java.lang.String">vasudev.chatti@semanticbits.com</value>
+      </ContactMechanism>
+      <ContactMechanism xsi:type="java:org.exolab.castor.mapping.MapItem" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+         <key xsi:type="java:java.lang.String">fax</key>
+         <value xsi:type="java:java.lang.String">703-787-1222</value>
+      </ContactMechanism>
+   </Reporter>
+   <Reviewer>
+      <firstName>Reporter</firstName>
+      <lastName>one</lastName>
+      <address/>
+      <ContactMechanism xsi:type="java:org.exolab.castor.mapping.MapItem" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+         <key xsi:type="java:java.lang.String">phone</key>
+         <value xsi:type="java:java.lang.String">703-787-1234</value>
+      </ContactMechanism>
+      <ContactMechanism xsi:type="java:org.exolab.castor.mapping.MapItem" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+         <key xsi:type="java:java.lang.String">alternate e-mail</key>
+         <value xsi:type="java:java.lang.String">vasudevkarthik@gmail.com</value>
+      </ContactMechanism>
+      <ContactMechanism xsi:type="java:org.exolab.castor.mapping.MapItem" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+         <key xsi:type="java:java.lang.String">e-mail</key>
+         <value xsi:type="java:java.lang.String">vasudev.chatti@semanticbits.com</value>
+      </ContactMechanism>
+   </Reviewer>
+   <DiseaseHistory>
+      <diagnosisDate/>
+      <CtepStudyDisease>
+         <id>4</id>
+         <leadDisease>true</leadDisease>
+         <DiseaseTerm>
+            <id>24</id>
+            <term>Glioblastoma multiforme</term>
+            <ctepTerm>Glioblastoma multiforme</ctepTerm>
+            <DiseaseCategory>
+               <id>16</id>
+               <name>Astrocytoma, High Grade</name>
+            </DiseaseCategory>
+         </DiseaseTerm>
+      </CtepStudyDisease>
+      <AnatomicSite>
+         <id>10</id>
+         <name>Appendix</name>
+         <category>Gastrointestinal</category>
+      </AnatomicSite>
+      <MetastaticDiseaseSite>
+         <id>73</id>
+         <AnatomicSite>
+            <id>17</id>
+            <name>Pancreas</name>
+            <category>Gastrointestinal</category>
+         </AnatomicSite>
+      </MetastaticDiseaseSite>
+      <MetastaticDiseaseSite>
+         <id>72</id>
+         <otherSite>unknown</otherSite>
+         <AnatomicSite>
+            <id>110</id>
+            <name>Other, specify</name>
+            <category>Other</category>
+         </AnatomicSite>
+      </MetastaticDiseaseSite>
+   </DiseaseHistory>
+   <ParticipantHistory>
+      <height>
+         <quantity>175.0</quantity>
+         <unit>centimeter</unit>
+      </height>
+      <weight>
+         <quantity>75.0</quantity>
+         <unit>kilogram</unit>
+      </weight>
+      <baselinePerformanceStatus>4 = 100% bedridden</baselinePerformanceStatus>
+      <bsa>1.9031</bsa>
+   </ParticipantHistory>
+   <StudyParticipantAssignment>
+      <dateOfEnrollment>2015-08-08T22:31:17.000-04:00</dateOfEnrollment>
+      <StudySite>
+         <statusCode>true</statusCode>
+         <startDate>2015-08-07T18:36:48.000-04:00</startDate>
+         <Study>
+            <id>2</id>
+            <shortTitle>A Phase II/III Randomized Trial of Veliparib or Placebo in Combination with Adjuvant Temozolomide in Newly Diagnosed Glioblastoma with MGMT Promoter Hypermethylation</shortTitle>
+            <phaseCode>Phase II/III Trial</phaseCode>
+            <Ctc>
+               <id>4</id>
+               <name>4.0</name>
+            </Ctc>
+            <Identifier>
+               <type>Protocol Authority Identifier</type>
+               <value>A071102</value>
+               <primaryIndicator>true</primaryIndicator>
+            </Identifier>
+            <Identifier>
+               <type>Coordinating Center Identifier</type>
+               <value>A071102</value>
+               <primaryIndicator>false</primaryIndicator>
+            </Identifier>
+            <Identifier>
+               <type>Other</type>
+               <value>A071102</value>
+               <primaryIndicator>false</primaryIndicator>
+            </Identifier>
+            <StudyAgent>
+               <Agent>
+                  <name>ABT-888 (Veliparib)</name>
+                  <description>ABT-888 (Veliparib)</description>
+                  <nscNumber>737664</nscNumber>
+               </Agent>
+               <INDType xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">OTHER</INDType>
+               <studyTherapyType xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">DRUG_ADMINISTRATION</studyTherapyType>
+            </StudyAgent>
+            <StudyAgent>
+               <Agent>
+                  <name>Temozolomide</name>
+                  <description>Temozolomide</description>
+                  <nscNumber>362856</nscNumber>
+               </Agent>
+               <INDType xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">NA_COMMERCIAL</INDType>
+               <studyTherapyType xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">DRUG_ADMINISTRATION</studyTherapyType>
+            </StudyAgent>
+            <CtepStudyDisease>
+               <id>4</id>
+               <leadDisease>true</leadDisease>
+               <DiseaseTerm>
+                  <id>24</id>
+                  <term>Glioblastoma multiforme</term>
+                  <ctepTerm>Glioblastoma multiforme</ctepTerm>
+                  <DiseaseCategory>
+                     <name>Astrocytoma, High Grade</name>
+                  </DiseaseCategory>
+               </DiseaseTerm>
+            </CtepStudyDisease>
+            <CtepStudyDisease>
+               <id>5</id>
+               <leadDisease>false</leadDisease>
+               <DiseaseTerm>
+                  <id>98</id>
+                  <term>Hematopoietic malignancy, NOS</term>
+                  <ctepTerm>Hematopoietic malignancy, NOS</ctepTerm>
+                  <DiseaseCategory>
+                     <name>Hematopoietic Neoplasm, Miscellaneous</name>
+                  </DiseaseCategory>
+               </DiseaseTerm>
+            </CtepStudyDisease>
+            <CtepStudyDisease>
+               <id>6</id>
+               <leadDisease>false</leadDisease>
+               <DiseaseTerm>
+                  <id>190</id>
+                  <term>Solid tumor, NOS</term>
+                  <ctepTerm>Solid tumor, NOS</ctepTerm>
+                  <DiseaseCategory>
+                     <name>Solid Tumor, Miscellaneous</name>
+                  </DiseaseCategory>
+               </DiseaseTerm>
+            </CtepStudyDisease>
+            <studyPurpose>Treatment</studyPurpose>
+         </Study>
+         <Organization>
+            <id>104505</id>
+            <name>Abbott-Northwestern Hospital</name>
+            <nciInstituteCode>MN008</nciInstituteCode>
+            <descriptionText>800 East 28th Street</descriptionText>
+         </Organization>
+      </StudySite>
+      <Participant>
+         <firstName>F</firstName>
+         <middleName>H</middleName>
+         <lastName>L</lastName>
+         <dateOfBirth>
+            <dayString>13</dayString>
+            <monthString>01</monthString>
+            <yearString>1961</yearString>
+         </dateOfBirth>
+         <gender>Unknown</gender>
+         <race>Black or African American</race>
+         <ethnicity>Not Reported</ethnicity>
+         <Identifier>
+            <type>MRN</type>
+            <value>S9RC1-A071102</value>
+            <primaryIndicator>true</primaryIndicator>
+         </Identifier>
+      </Participant>
+      <studySubjectIdentifier>S9RC1-A071102</studySubjectIdentifier>
+   </StudyParticipantAssignment>
+   <ConcomitantMedication>
+      <name>Advil</name>
+      <startDate/>
+      <endDate/>
+      <stillTakingMedications>false</stillTakingMedications>
+   </ConcomitantMedication>
+   <AdverseEvent>
+      <externalId>reaction-88</externalId>
+      <gridId>PRY74199ce1-a464-4077-8587-273bffdb9c8a</gridId>
+      <startDate>2014-12-07T00:00:00.000-05:00</startDate>
+      <detailsForOther>Verbatim8</detailsForOther>
+      <ConcomitantMedicationAttribution>
+         <id>289</id>
+         <attribution xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">1: Unrelated</attribution>
+         <ConcomitantMedication>
+            <name>Advil</name>
+            <startDate/>
+            <endDate/>
+            <stillTakingMedications>false</stillTakingMedications>
+         </ConcomitantMedication>
+      </ConcomitantMedicationAttribution>
+      <OtherCauseAttribution>
+         <attribution xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">1: Unrelated</attribution>
+         <OtherCause>
+            <text>Convulsions</text>
+         </OtherCause>
+      </OtherCauseAttribution>
+      <CourseAgentAttribution>
+         <id>290</id>
+         <attribution xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">5: Definite</attribution>
+         <CourseAgent>
+            <id>75</id>
+            <lastAdministeredDate>2014-07-10T00:00:00.000-04:00</lastAdministeredDate>
+            <administrationDelayAmount>1</administrationDelayAmount>
+            <administrationDelayUnits xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">DAYS</administrationDelayUnits>
+            <Dose>
+               <amount>600</amount>
+               <units>BVP</units>
+            </Dose>
+            <StudyAgent>
+               <Agent>
+                  <id>80</id>
+                  <name>ABT-888 (Veliparib)</name>
+                  <description>ABT-888 (Veliparib)</description>
+                  <nscNumber>737664</nscNumber>
+               </Agent>
+               <INDType xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">OTHER</INDType>
+               <studyTherapyType xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">DRUG_ADMINISTRATION</studyTherapyType>
+            </StudyAgent>
+            <lotNumber>111101</lotNumber>
+         </CourseAgent>
+      </CourseAgentAttribution>
+      <CourseAgentAttribution>
+         <id>291</id>
+         <attribution xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">5: Definite</attribution>
+         <CourseAgent>
+            <id>76</id>
+            <lastAdministeredDate>2014-07-10T00:00:00.000-04:00</lastAdministeredDate>
+            <Dose>
+               <amount>600</amount>
+               <units>Ci</units>
+            </Dose>
+            <StudyAgent>
+               <Agent>
+                  <id>1083</id>
+                  <name>Temozolomide</name>
+                  <description>Temozolomide</description>
+                  <nscNumber>362856</nscNumber>
+               </Agent>
+               <INDType xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">NA_COMMERCIAL</INDType>
+               <studyTherapyType xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">DRUG_ADMINISTRATION</studyTherapyType>
+            </StudyAgent>
+            <lotNumber>151111</lotNumber>
+         </CourseAgent>
+      </CourseAgentAttribution>
+      <DiseaseAttribution>
+         <id>292</id>
+         <attribution xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">4: Probable</attribution>
+         <DiseaseHistory>
+            <id>60</id>
+            <diagnosisDate/>
+            <CtepStudyDisease>
+               <id>4</id>
+               <leadDisease>true</leadDisease>
+               <DiseaseTerm>
+                  <id>24</id>
+                  <term>Glioblastoma multiforme</term>
+                  <ctepTerm>Glioblastoma multiforme</ctepTerm>
+                  <DiseaseCategory>
+                     <id>16</id>
+                     <name>Astrocytoma, High Grade</name>
+                  </DiseaseCategory>
+               </DiseaseTerm>
+            </CtepStudyDisease>
+            <AnatomicSite>
+               <id>10</id>
+               <name>Appendix</name>
+               <category>Gastrointestinal</category>
+            </AnatomicSite>
+            <MetastaticDiseaseSite>
+               <id>73</id>
+               <AnatomicSite>
+                  <id>17</id>
+                  <name>Pancreas</name>
+                  <category>Gastrointestinal</category>
+               </AnatomicSite>
+            </MetastaticDiseaseSite>
+            <MetastaticDiseaseSite>
+               <id>72</id>
+               <otherSite>unknown</otherSite>
+               <AnatomicSite>
+                  <id>110</id>
+                  <name>Other, specify</name>
+                  <category>Other</category>
+               </AnatomicSite>
+            </MetastaticDiseaseSite>
+         </DiseaseHistory>
+      </DiseaseAttribution>
+      <AdverseEventCtcTerm other-required="false" med-dRA="false" positive-attribution-needed="true">
+         <ctc-term>
+            <id>4214</id>
+            <term>Constipation</term>
+            <ctepTerm>Constipation</ctepTerm>
+            <ctepCode>10010774</ctepCode>
+            <otherRequired>false</otherRequired>
+            <CtcCategory>
+               <id>407</id>
+               <name>Gastrointestinal disorders</name>
+            </CtcCategory>
+         </ctc-term>
+         <universal-term>Constipation: Verbatim8</universal-term>
+         <term xsi:type="CtcTerm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <id>4214</id>
+            <term>Constipation</term>
+            <ctepTerm>Constipation</ctepTerm>
+            <ctepCode>10010774</ctepCode>
+            <otherRequired>false</otherRequired>
+            <CtcCategory>
+               <id>407</id>
+               <name>Gastrointestinal disorders</name>
+            </CtcCategory>
+         </term>
+         <full-name>Constipation</full-name>
+      </AdverseEventCtcTerm>
+      <AdverseEventMeddraLowLevelTerm/>
+      <LowLevelTerm/>
+      <grade xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">4: Life-threatening consequences; urgent intervention indicated.</grade>
+      <hospitalization xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">1: Yes</hospitalization>
+      <eventApproximateTime>
+         <type>0</type>
+      </eventApproximateTime>
+      <Outcome>
+         <id>263</id>
+         <OutcomeType xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">HOSPITALIZATION</OutcomeType>
+      </Outcome>
+   </AdverseEvent>
+   <AdverseEvent>
+      <externalId>reaction-89</externalId>
+      <gridId>PRN06e0392d-a55a-4e88-95cc-eb99e40bc8d1</gridId>
+      <startDate>2014-12-07T00:00:00.000-05:00</startDate>
+      <detailsForOther>Verbatim8</detailsForOther>
+      <ConcomitantMedicationAttribution>
+         <id>294</id>
+         <attribution xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">1: Unrelated</attribution>
+         <ConcomitantMedication>
+            <name>Advil</name>
+            <startDate/>
+            <endDate/>
+            <stillTakingMedications>false</stillTakingMedications>
+         </ConcomitantMedication>
+      </ConcomitantMedicationAttribution>
+      <OtherCauseAttribution>
+         <attribution xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">1: Unrelated</attribution>
+         <OtherCause>
+            <text>Convulsions</text>
+         </OtherCause>
+      </OtherCauseAttribution>
+      <CourseAgentAttribution>
+         <id>295</id>
+         <attribution xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">5: Definite</attribution>
+         <CourseAgent>
+            <id>75</id>
+            <lastAdministeredDate>2014-07-10T00:00:00.000-04:00</lastAdministeredDate>
+            <administrationDelayAmount>1</administrationDelayAmount>
+            <administrationDelayUnits xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">DAYS</administrationDelayUnits>
+            <Dose>
+               <amount>600</amount>
+               <units>BVP</units>
+            </Dose>
+            <StudyAgent>
+               <Agent>
+                  <id>80</id>
+                  <name>ABT-888 (Veliparib)</name>
+                  <description>ABT-888 (Veliparib)</description>
+                  <nscNumber>737664</nscNumber>
+               </Agent>
+               <INDType xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">OTHER</INDType>
+               <studyTherapyType xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">DRUG_ADMINISTRATION</studyTherapyType>
+            </StudyAgent>
+            <lotNumber>111101</lotNumber>
+         </CourseAgent>
+      </CourseAgentAttribution>
+      <CourseAgentAttribution>
+         <id>296</id>
+         <attribution xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">5: Definite</attribution>
+         <CourseAgent>
+            <id>76</id>
+            <lastAdministeredDate>2014-07-10T00:00:00.000-04:00</lastAdministeredDate>
+            <Dose>
+               <amount>600</amount>
+               <units>Ci</units>
+            </Dose>
+            <StudyAgent>
+               <Agent>
+                  <id>1083</id>
+                  <name>Temozolomide</name>
+                  <description>Temozolomide</description>
+                  <nscNumber>362856</nscNumber>
+               </Agent>
+               <INDType xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">NA_COMMERCIAL</INDType>
+               <studyTherapyType xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">DRUG_ADMINISTRATION</studyTherapyType>
+            </StudyAgent>
+            <lotNumber>151111</lotNumber>
+         </CourseAgent>
+      </CourseAgentAttribution>
+      <DiseaseAttribution>
+         <id>297</id>
+         <attribution xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">4: Probable</attribution>
+         <DiseaseHistory>
+            <id>60</id>
+            <diagnosisDate/>
+            <CtepStudyDisease>
+               <id>4</id>
+               <leadDisease>true</leadDisease>
+               <DiseaseTerm>
+                  <id>24</id>
+                  <term>Glioblastoma multiforme</term>
+                  <ctepTerm>Glioblastoma multiforme</ctepTerm>
+                  <DiseaseCategory>
+                     <id>16</id>
+                     <name>Astrocytoma, High Grade</name>
+                  </DiseaseCategory>
+               </DiseaseTerm>
+            </CtepStudyDisease>
+            <AnatomicSite>
+               <id>10</id>
+               <name>Appendix</name>
+               <category>Gastrointestinal</category>
+            </AnatomicSite>
+            <MetastaticDiseaseSite>
+               <id>73</id>
+               <AnatomicSite>
+                  <id>17</id>
+                  <name>Pancreas</name>
+                  <category>Gastrointestinal</category>
+               </AnatomicSite>
+            </MetastaticDiseaseSite>
+            <MetastaticDiseaseSite>
+               <id>72</id>
+               <otherSite>unknown</otherSite>
+               <AnatomicSite>
+                  <id>110</id>
+                  <name>Other, specify</name>
+                  <category>Other</category>
+               </AnatomicSite>
+            </MetastaticDiseaseSite>
+         </DiseaseHistory>
+      </DiseaseAttribution>
+      <AdverseEventCtcTerm other-required="false" med-dRA="false" positive-attribution-needed="true">
+         <ctc-term>
+            <id>4309</id>
+            <term>Vomiting</term>
+            <ctepTerm>Vomiting</ctepTerm>
+            <ctepCode>10047700</ctepCode>
+            <otherRequired>false</otherRequired>
+            <CtcCategory>
+               <id>407</id>
+               <name>Gastrointestinal disorders</name>
+            </CtcCategory>
+         </ctc-term>
+         <universal-term>Vomiting: Verbatim8</universal-term>
+         <term xsi:type="CtcTerm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <id>4309</id>
+            <term>Vomiting</term>
+            <ctepTerm>Vomiting</ctepTerm>
+            <ctepCode>10047700</ctepCode>
+            <otherRequired>false</otherRequired>
+            <CtcCategory>
+               <id>407</id>
+               <name>Gastrointestinal disorders</name>
+            </CtcCategory>
+         </term>
+         <full-name>Vomiting</full-name>
+      </AdverseEventCtcTerm>
+      <AdverseEventMeddraLowLevelTerm/>
+      <LowLevelTerm/>
+      <grade xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">3: Severe or medically significant but not immediately life-threatening; hospitalization or prolongation of hospitalization indicated; disabling; limiting self care ADL.</grade>
+      <hospitalization xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">2: No</hospitalization>
+      <eventApproximateTime>
+         <type>0</type>
+      </eventApproximateTime>
+      <Outcome>
+         <id>264</id>
+         <OutcomeType xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">OTHER_SERIOUS</OutcomeType>
+      </Outcome>
+   </AdverseEvent>
+   <Lab>
+      <id>50</id>
+      <labTerm>
+         <term>Ammonia</term>
+         <category>
+            <name>Chemistry</name>
+         </category>
+      </labTerm>
+      <units>mEq/L</units>
+      <baseline>
+         <value>10</value>
+         <date>2014-02-25T00:00:00.000-05:00</date>
+      </baseline>
+      <nadir>
+         <value>12</value>
+         <date>2014-02-25T00:00:00.000-05:00</date>
+      </nadir>
+      <recovery>
+         <value>12</value>
+         <date>2014-02-25T00:00:00.000-05:00</date>
+      </recovery>
+   </Lab>
+   <Lab>
+      <id>51</id>
+      <labTerm>
+         <term>Bacterial infection NOS</term>
+         <category>
+            <name>Microbiology</name>
+         </category>
+      </labTerm>
+      <baseline/>
+      <nadir/>
+      <recovery/>
+      <site>APPENDIX</site>
+      <infectiousAgent>Streptococcus</infectiousAgent>
+      <labDate>2013-02-01T00:00:00.000-05:00</labDate>
+   </Lab>
+   <SAEReportPriorTherapy>
+      <id>46</id>
+      <PriorTherapy>
+         <id>2</id>
+         <text>Antisense</text>
+         <meddraCode>90003002</meddraCode>
+      </PriorTherapy>
+      <other/>
+      <startDate/>
+      <endDate/>
+   </SAEReportPriorTherapy>
+   <Summary id="Study">
+      <value>(A071102) A Phase II/III Randomized Trial of Veliparib or Placebo in Combination with Adjuvant Temozolomide in Newly Diagnosed Glioblastoma with MGMT Promoter Hypermethylation</value>
+   </Summary>
+   <Summary id="Participant">
+      <value>S9RC1-A071102</value>
+   </Summary>
+   <Summary id="Report created at">
+      <value>2014-12-17 20:01:53.0</value>
+   </Summary>
+   <Summary id="Primary AE">
+      <value>Constipation: Verbatim8</value>
+   </Summary>
+   <Summary id="AE count">
+      <value>2</value>
+   </Summary>
+   <Summary id="Public identifier">
+      <value>MN008-MN008</value>
+   </Summary>
+   <Summary id="Ticket number"/>
+   <Summary id="Next report due"/>
+   <Summary id="Course">
+      <value>Other</value>
+   </Summary>
+   <TreatmentInformation>
+      <firstCourseDate>2014-01-06T00:00:00.000-05:00</firstCourseDate>
+      <TreatmentAssignment>
+         <code>TAC 1</code>
+         <description>Cycle = 28 days (maximum 6 cycles) ABT-888 (Veliparib)/Placebo: 40 mg PO BID on days 1-7 Temozolomide: 150 mg/m2 PO QD on days 1-5 (may escalate to 200 mg/m2 for cycles 2-6 if cycle 1 dose tolerated)</description>
+      </TreatmentAssignment>
+      <treatmentDescription>Cycle = 28 days (maximum 6 cycles) ABT-888 (Veliparib)/Placebo: 40 mg PO BID on days 1-7 Temozolomide: 150 mg/m2 PO QD on days 1-5 (may escalate to 200 mg/m2 for cycles 2-6 if cycle 1 dose tolerated)</treatmentDescription>
+      <totalCourses>11</totalCourses>
+      <investigationalAgentAdministered>true</investigationalAgentAdministered>
+      <AdverseEventCourse>
+         <number>11</number>
+         <date>2015-07-11T00:00:00.000-04:00</date>
+      </AdverseEventCourse>
+      <CourseAgent>
+         <id>75</id>
+         <lastAdministeredDate>2014-07-10T00:00:00.000-04:00</lastAdministeredDate>
+         <administrationDelayAmount>1</administrationDelayAmount>
+         <administrationDelayUnits xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">DAYS</administrationDelayUnits>
+         <Dose>
+            <amount>600</amount>
+            <units>BVP</units>
+         </Dose>
+         <StudyAgent>
+            <Agent>
+               <name>ABT-888 (Veliparib)</name>
+               <description>ABT-888 (Veliparib)</description>
+               <nscNumber>737664</nscNumber>
+            </Agent>
+            <INDType xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">OTHER</INDType>
+            <studyTherapyType xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">DRUG_ADMINISTRATION</studyTherapyType>
+         </StudyAgent>
+         <lotNumber>111101</lotNumber>
+      </CourseAgent>
+      <CourseAgent>
+         <id>76</id>
+         <lastAdministeredDate>2014-07-10T00:00:00.000-04:00</lastAdministeredDate>
+         <Dose>
+            <amount>600</amount>
+            <units>Ci</units>
+         </Dose>
+         <StudyAgent>
+            <Agent>
+               <name>Temozolomide</name>
+               <description>Temozolomide</description>
+               <nscNumber>362856</nscNumber>
+            </Agent>
+            <INDType xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">NA_COMMERCIAL</INDType>
+            <studyTherapyType xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">DRUG_ADMINISTRATION</studyTherapyType>
+         </StudyAgent>
+         <lotNumber>151111</lotNumber>
+      </CourseAgent>
+   </TreatmentInformation>
+   <SAEReportPreExistingCondition>
+      <id>36</id>
+      <PreExistingCondition>
+         <id>35</id>
+         <text>Convulsions</text>
+      </PreExistingCondition>
+   </SAEReportPreExistingCondition>
+   <OtherCause>
+      <text>Convulsions</text>
+   </OtherCause>
+   <AdditionalInformation>
+      <id>60</id>
+      <otherInformation>this is the doc list</otherInformation>
+      <autopsyReport>true</autopsyReport>
+      <consults>true</consults>
+      <dischargeSummary>true</dischargeSummary>
+      <flowCharts>true</flowCharts>
+      <labReports>true</labReports>
+      <obaForm>false</obaForm>
+      <other>false</other>
+      <pathologyReport>false</pathologyReport>
+      <progressNotes>true</progressNotes>
+      <radiologyReports>false</radiologyReports>
+      <referralLetters>false</referralLetters>
+      <irbReport>true</irbReport>
+   </AdditionalInformation>
+   <Report>
+      <id>90</id>
+      <assignedIdentifer>1153637</assignedIdentifer>
+      <caseNumber>895110835</caseNumber>
+      <adeersReportTypeIndicator>24-hr notification complete</adeersReportTypeIndicator>
+      <ReportDefinition>
+         <id>4</id>
+         <duration>5</duration>
+         <name>CTEP 5 Calendar Day SAE Report</name>
+         <label>CTEP Expedited Report</label>
+         <Group>
+            <code>RT_AdEERS</code>
+            <name>AdEERS</name>
+         </Group>
+         <timeScaleUnitType xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">DAY</timeScaleUnitType>
+         <ReportDeliveryDefinition>
+            <entityName>SUB</entityName>
+            <status>CREATED</status>
+         </ReportDeliveryDefinition>
+         <ReportDeliveryDefinition>
+            <entityName>PHY</entityName>
+            <status>CREATED</status>
+         </ReportDeliveryDefinition>
+         <ReportDeliveryDefinition>
+            <entityName>REP</entityName>
+            <status>CREATED</status>
+         </ReportDeliveryDefinition>
+         <ReportDeliveryDefinition>
+            <entityName>AdEERS Beta System</entityName>
+            <status>CREATED</status>
+         </ReportDeliveryDefinition>
+      </ReportDefinition>
+      <ReportDelivery>
+         <ReportDeliveryDefinition>
+            <entityName>SUB</entityName>
+            <status>CREATED</status>
+         </ReportDeliveryDefinition>
+         <DeliveryStatus xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">CREATED</DeliveryStatus>
+      </ReportDelivery>
+      <ReportDelivery>
+         <ReportDeliveryDefinition>
+            <entityName>PHY</entityName>
+            <status>CREATED</status>
+         </ReportDeliveryDefinition>
+         <DeliveryStatus xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">CREATED</DeliveryStatus>
+      </ReportDelivery>
+      <ReportDelivery>
+         <ReportDeliveryDefinition>
+            <entityName>REP</entityName>
+            <status>CREATED</status>
+         </ReportDeliveryDefinition>
+         <DeliveryStatus xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">CREATED</DeliveryStatus>
+      </ReportDelivery>
+      <ReportDelivery>
+         <ReportDeliveryDefinition>
+            <entityName>REP</entityName>
+            <status>CREATED</status>
+         </ReportDeliveryDefinition>
+         <DeliveryStatus xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">CREATED</DeliveryStatus>
+      </ReportDelivery>
+      <ReportDelivery>
+         <ReportDeliveryDefinition>
+            <entityName>AdEERS Beta System</entityName>
+            <status>CREATED</status>
+         </ReportDeliveryDefinition>
+         <DeliveryStatus xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">CREATED</DeliveryStatus>
+      </ReportDelivery>
+      <ReportVersion>
+         <reportVersionId>0</reportVersionId>
+         <ReportStatus xsi:type="java:java.lang.String" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">PENDING</ReportStatus>
+      </ReportVersion>
+      <emailRecipient>vasudev.chatti@semanticbits.com</emailRecipient>
+      <emailRecipient>physicianone3@email.com</emailRecipient>
+      <emailRecipient>vasudev.chatti@semanticbits.com</emailRecipient>
+      <emailRecipient>vasudevkarthik@gmail.com</emailRecipient>
+      <applicableField>otherCauses[].text</applicableField>
+      <applicableField>participantHistory.height</applicableField>
+      <applicableField>participantHistory.height.quantity</applicableField>
+      <applicableField>participantHistory.height.unit</applicableField>
+      <applicableField>treatmentInformation.courseAgents[].administrationDelayAmount</applicableField>
+      <applicableField>treatmentInformation.courseAgents[].agentAdjustment</applicableField>
+      <applicableField>physician.address.city</applicableField>
+      <applicableField>medicalDevices[].deviceType</applicableField>
+      <applicableField>adverseEvents[].endDate</applicableField>
+      <applicableField>reporter.firstName</applicableField>
+      <applicableField>additionalInformation.autopsyReport</applicableField>
+      <applicableField>radiationInterventions[].dosageUnit</applicableField>
+      <applicableField>adverseEvents[].participantAtRisk</applicableField>
+      <applicableField>treatmentInformation.courseAgents[]</applicableField>
+      <applicableField>responseDescription.primaryTreatmentApproximateTime.hourString</applicableField>
+      <applicableField>adverseEvents[].startDate</applicableField>
+      <applicableField>responseDescription.presentStatus</applicableField>
+      <applicableField>adverseEvents[].outcomes</applicableField>
+      <applicableField>radiationInterventions[].adjustment</applicableField>
+      <applicableField>reporter.contactMechanisms[e-mail]</applicableField>
+      <applicableField>diseaseHistory.metastaticDiseaseSites[]</applicableField>
+      <applicableField>treatmentInformation.courseAgents[].dose.units</applicableField>
+      <applicableField>treatmentInformation.courseAgents[].lastAdministeredDate</applicableField>
+      <applicableField>medicalDevices[].reprocessorAddress</applicableField>
+      <applicableField>responseDescription.recoveryDate</applicableField>
+      <applicableField>participantHistory.weight</applicableField>
+      <applicableField>diseaseHistory.diagnosisDate</applicableField>
+      <applicableField>responseDescription.studyDrugInterrupted</applicableField>
+      <applicableField>responseDescription.reducedDose</applicableField>
+      <applicableField>treatmentInformation.courseAgents[].formulation</applicableField>
+      <applicableField>medicalDevices[].reprocessorName</applicableField>
+      <applicableField>labs[].baseline.date</applicableField>
+      <applicableField>additionalInformation.flowCharts</applicableField>
+      <applicableField>additionalInformation.labReports</applicableField>
+      <applicableField>diseaseHistory.abstractStudyDisease</applicableField>
+      <applicableField>saeReportPriorTherapies[].endDate.year</applicableField>
+      <applicableField>saeReportPriorTherapies[].endDate.day</applicableField>
+      <applicableField>diseaseHistory.diagnosisDate.day</applicableField>
+      <applicableField>saeReportPriorTherapies[].endDate.month</applicableField>
+      <applicableField>concomitantMedications[].startDate.day</applicableField>
+      <applicableField>concomitantMedications[].endDate.year</applicableField>
+      <applicableField>additionalInformation.consults</applicableField>
+      <applicableField>medicalDevices[].serialNumber</applicableField>
+      <applicableField>medicalDevices[].deviceOperator</applicableField>
+      <applicableField>concomitantMedications[].stillTakingMedications</applicableField>
+      <applicableField>concomitantMedications[].startDate.month</applicableField>
+      <applicableField>concomitantMedications[].endDate.month</applicableField>
+      <applicableField>saeReportPriorTherapies[].priorTherapy</applicableField>
+      <applicableField>saeReportPriorTherapies[]</applicableField>
+      <applicableField>radiationInterventions[].fractionNumber</applicableField>
+      <applicableField>treatmentInformation.courseAgents[].dose</applicableField>
+      <applicableField>medicalDevices[].manufacturerCity</applicableField>
+      <applicableField>labs[].nadir.date</applicableField>
+      <applicableField>labs[].baseline.value</applicableField>
+      <applicableField>physician.contactMechanisms[phone]</applicableField>
+      <applicableField>reporter.middleName</applicableField>
+      <applicableField>surgeryInterventions[].interventionSite</applicableField>
+      <applicableField>surgeryInterventions[].interventionDate</applicableField>
+      <applicableField>medicalDevices[]</applicableField>
+      <applicableField>medicalDevices[].brandName</applicableField>
+      <applicableField>radiationInterventions[].daysElapsed</applicableField>
+      <applicableField>treatmentInformation.firstCourseDate</applicableField>
+      <applicableField>treatmentInformation.adverseEventCourse</applicableField>
+      <applicableField>additionalInformation.otherInformation</applicableField>
+      <applicableField>adverseEvents[].attributionSummary</applicableField>
+      <applicableField>medicalDevices[].lotNumber</applicableField>
+      <applicableField>medicalDevices[].deviceReprocessed</applicableField>
+      <applicableField>adverseEvents[].hospitalization</applicableField>
+      <applicableField>labs[].labTerm</applicableField>
+      <applicableField>adverseEvents[].eventLocation</applicableField>
+      <applicableField>additionalInformation.referralLetters</applicableField>
+      <applicableField>saeReportPriorTherapies[].startDate</applicableField>
+      <applicableField>treatmentInformation.courseAgents[].lotNumber</applicableField>
+      <applicableField>reporter.contactMechanisms[fax]</applicableField>
+      <applicableField>surgeryInterventions[]</applicableField>
+      <applicableField>treatmentInformation.courseAgents[].studyAgent</applicableField>
+      <applicableField>physician</applicableField>
+      <applicableField>labs[].baseline</applicableField>
+      <applicableField>responseDescription.reducedDate</applicableField>
+      <applicableField>treatmentInformation.courseAgents[].firstAdministeredDate</applicableField>
+      <applicableField>labs[].normalRange</applicableField>
+      <applicableField>treatmentInformation.courseAgents[].dose.amount</applicableField>
+      <applicableField>concomitantMedications[]</applicableField>
+      <applicableField>adverseEvents[].expected</applicableField>
+      <applicableField>participantHistory.weight.quantity</applicableField>
+      <applicableField>radiationInterventions[].lastTreatmentDate</applicableField>
+      <applicableField>treatmentInformation.totalCourses</applicableField>
+      <applicableField>labs[].labDate</applicableField>
+      <applicableField>additionalInformation.obaForm</applicableField>
+      <applicableField>medicalDevices[].returnedDate</applicableField>
+      <applicableField>physician.address.zip</applicableField>
+      <applicableField>radiationInterventions[]</applicableField>
+      <applicableField>radiationInterventions[].administration</applicableField>
+      <applicableField>radiationInterventions[].dosage</applicableField>
+      <applicableField>adverseEvents[].eventApproximateTime.hourString</applicableField>
+      <applicableField>saeReportPriorTherapies[].startDate.day</applicableField>
+      <applicableField>adverseEvents[].adverseEventCtcTerm</applicableField>
+      <applicableField>concomitantMedications[].agentName</applicableField>
+      <applicableField>reports[]</applicableField>
+      <applicableField>reports[].caseNumber</applicableField>
+      <applicableField>additionalInformation.pathologyReport</applicableField>
+      <applicableField>additionalInformation.progressNotes</applicableField>
+      <applicableField>additionalInformation.radiologyReports</applicableField>
+      <applicableField>labs[].recovery.value</applicableField>
+      <applicableField>reporter.address.street</applicableField>
+      <applicableField>dietaryInterventions[]</applicableField>
+      <applicableField>reporter.address.state</applicableField>
+      <applicableField>reporter.address</applicableField>
+      <applicableField>diseaseHistory</applicableField>
+      <applicableField>adverseEvents[].gradedDate</applicableField>
+      <applicableField>responseDescription.dateRemovedFromProtocol</applicableField>
+      <applicableField>reporter.address.city</applicableField>
+      <applicableField>diseaseHistory.codedPrimaryDiseaseSite</applicableField>
+      <applicableField>additionalInformation.irbReport</applicableField>
+      <applicableField>reporter.address.zip</applicableField>
+      <applicableField>physician.middleName</applicableField>
+      <applicableField>diseaseHistory.diagnosisDate.year</applicableField>
+      <applicableField>adverseEvents[].detailsForOther</applicableField>
+      <applicableField>medicalDevices[].otherDeviceOperator</applicableField>
+      <applicableField>medicalDevices[].implantedDate</applicableField>
+      <applicableField>medicalDevices[].explantedDate</applicableField>
+      <applicableField>adverseEvents[].adverseEventCtcTerm.term</applicableField>
+      <applicableField>diseaseHistory.diagnosisDate.month</applicableField>
+      <applicableField>saeReportPriorTherapies[].priorTherapyAgents[].agent</applicableField>
+      <applicableField>medicalDevices[].manufacturerName</applicableField>
+      <applicableField>medicalDevices[].manufacturerState</applicableField>
+      <applicableField>labs[].recovery</applicableField>
+      <applicableField>physician.title</applicableField>
+      <applicableField>medicalDevices[].catalogNumber</applicableField>
+      <applicableField>medicalDevices[].expirationDate</applicableField>
+      <applicableField>physician.address.street</applicableField>
+      <applicableField>concomitantMedications[].startDate</applicableField>
+      <applicableField>responseDescription.autopsyPerformed</applicableField>
+      <applicableField>responseDescription.causeOfDeath</applicableField>
+      <applicableField>saeReportPriorTherapies[].startDate.month</applicableField>
+      <applicableField>treatmentInformation</applicableField>
+      <applicableField>responseDescription.retreated</applicableField>
+      <applicableField>diseaseHistory.metastaticDiseaseSites[].codedSite</applicableField>
+      <applicableField>labs[]</applicableField>
+      <applicableField>medicalDevices[].otherNumber</applicableField>
+      <applicableField>concomitantMedications[].startDate.year</applicableField>
+      <applicableField>responseDescription.blindBroken</applicableField>
+      <applicableField>medicalDevices[].modelNumber</applicableField>
+      <applicableField>reporter.contactMechanisms[phone]</applicableField>
+      <applicableField>saeReportPriorTherapies[].endDate</applicableField>
+      <applicableField>saeReportPriorTherapies[].priorTherapyAgents[]</applicableField>
+      <applicableField>investigationalDeviceAdministered</applicableField>
+      <applicableField>participantHistory.weight.unit</applicableField>
+      <applicableField>saeReportPreExistingConditions[]</applicableField>
+      <applicableField>physician.address.state</applicableField>
+      <applicableField>labs[].recovery.date</applicableField>
+      <applicableField>treatmentInformation.investigationalAgentAdministered</applicableField>
+      <applicableField>additionalInformation</applicableField>
+      <applicableField>reporter</applicableField>
+      <applicableField>behavioralInterventions[]</applicableField>
+      <applicableField>concomitantMedications[].endDate</applicableField>
+      <applicableField>biologicalInterventions[]</applicableField>
+      <applicableField>saeReportPreExistingConditions[].preExistingCondition</applicableField>
+      <applicableField>reporter.title</applicableField>
+      <applicableField>treatmentInformation.courseAgents[].comments</applicableField>
+      <applicableField>labs[].nadir</applicableField>
+      <applicableField>responseDescription</applicableField>
+      <applicableField>labs[].nadir.value</applicableField>
+      <applicableField>physician.lastName</applicableField>
+      <applicableField>otherAEInterventions[]</applicableField>
+      <applicableField>geneticInterventions[]</applicableField>
+      <applicableField>additionalInformation.dischargeSummary</applicableField>
+      <applicableField>responseDescription.daysNotGiven</applicableField>
+      <applicableField>responseDescription.eventAbate</applicableField>
+      <applicableField>responseDescription.eventReappear</applicableField>
+      <applicableField>treatmentInformation.treatmentAssignment</applicableField>
+      <applicableField>treatmentInformation.adverseEventCourse.date</applicableField>
+      <applicableField>adverseEvents[]</applicableField>
+      <applicableField>participantHistory</applicableField>
+      <applicableField>medicalDevices[].commonName</applicableField>
+      <applicableField>concomitantMedications[].endDate.day</applicableField>
+      <applicableField>additionalInformation.other</applicableField>
+      <applicableField>saeReportPriorTherapies[].startDate.year</applicableField>
+      <applicableField>physician.contactMechanisms[e-mail]</applicableField>
+      <applicableField>participantHistory.baselinePerformanceStatus</applicableField>
+      <applicableField>labs[].units</applicableField>
+      <applicableField>adverseEvents[].grade</applicableField>
+      <applicableField>labs[].infectiousAgent</applicableField>
+      <applicableField>medicalDevices[].evaluationAvailability</applicableField>
+      <applicableField>labs[].site</applicableField>
+      <applicableField>otherCauses[]</applicableField>
+      <applicableField>treatmentInformation.adverseEventCourse.number</applicableField>
+      <applicableField>reporter.lastName</applicableField>
+      <applicableField>responseDescription.eventDescription</applicableField>
+      <applicableField>treatmentInformation.courseAgents[].administrationDelayUnits</applicableField>
+      <applicableField>physician.contactMechanisms[fax]</applicableField>
+      <applicableField>saeReportPriorTherapies[].other</applicableField>
+      <applicableField>physician.firstName</applicableField>
+      <applicableField>physician.address</applicableField>
+      <applicableField>reporter.contactMechanisms[alternate e-mail]</applicableField>
+      <submittedToFDA>No</submittedToFDA>
+      <Submitter>
+         <firstName>Alfred</firstName>
+         <lastName>Nobel</lastName>
+         <address/>
+         <ContactMechanism xsi:type="java:org.exolab.castor.mapping.MapItem" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <key xsi:type="java:java.lang.String">phone</key>
+            <value xsi:type="java:java.lang.String">703-787-9656</value>
+         </ContactMechanism>
+         <ContactMechanism xsi:type="java:org.exolab.castor.mapping.MapItem" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <key xsi:type="java:java.lang.String">e-mail</key>
+            <value xsi:type="java:java.lang.String">vasudev.chatti@semanticbits.com</value>
+         </ContactMechanism>
+         <ContactMechanism xsi:type="java:org.exolab.castor.mapping.MapItem" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <key xsi:type="java:java.lang.String">fax</key>
+            <value xsi:type="java:java.lang.String">703-787-9656</value>
+         </ContactMechanism>
+      </Submitter>
+   </Report>
+</AdverseEventReport>]]></con:request><con:assertion type="SOAP Response" id="fdd14c21-a9c3-409b-824c-de850cf8d179"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="Copy of Evaluate_and_Initiate-A071102" id="a9a3ec7f-6832-4d0b-98ef-443ac35161d6"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="Copy of Evaluate_and_Initiate-A071102" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://integ.semanticbits.com/caaers/services/isrs/SAEEvaluationService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="1">
+         <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>SYSTEM</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">system_admin</wsse:Password>
+            <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>
+            <wsu:Created>2014-01-10T21:31:08.6661550+00:00</wsu:Created>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <saer:EvaluateAndInitiate>
+         <saer:EvaluateAndInitiateInputMessage>
+            <saer:adverseEvents>
+               <saer:adverseEvent>
+                  <verbatim>Verbatim1010</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>10010774</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>4</grade>
+                  <hospitalization>YES</hospitalization>
+                  <dateFirstLearned>2015-07-27T17:06:01.0000000Z</dateFirstLearned>
+                  <outcome>
+                     <outComeEnumType>HOSPITALIZATION</outComeEnumType>
+                  </outcome>
+                  <externalId>reaction-88</externalId>
+                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
+               </saer:adverseEvent>
+               <saer:adverseEvent>
+                  <verbatim>Verbatim9</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>10047700</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>3</grade>
+                  <hospitalization>NO</hospitalization>
+                  <dateFirstLearned>2015-07-28T17:06:01.0000000Z</dateFirstLearned>
+                  <outcome>
+                     <outComeEnumType>OTHER_SERIOUS</outComeEnumType>
+                  </outcome>
+                  <externalId>reaction-89</externalId>
+                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
+               </saer:adverseEvent> 
+               <!--<saer:adverseEvent>
+                  <verbatim>Verbatim10</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>10013442</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>3</grade>
+                  <hospitalization>NO</hospitalization>
+                  <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
+                  <outcome>
+                     <outComeEnumType>OTHER_SERIOUS</outComeEnumType>
+                  </outcome>
+                  <externalId>reaction-90</externalId>
+                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
+               </saer:adverseEvent>
+
+                <saer:adverseEvent>
+                  <verbatim>Verbatim11</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>10002272</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>3</grade>
+                  <hospitalization>NO</hospitalization>
+                  <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
+                  <outcome>
+                     <outComeEnumType>OTHER_SERIOUS</outComeEnumType>
+                  </outcome>
+                  <externalId>reaction-91</externalId>
+                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
+               </saer:adverseEvent>-->
+            </saer:adverseEvents>
+            <saer:criteria>
+               <studySubjectIdentifier>S9RC1-A071102</studySubjectIdentifier>
+               <studyIdentifier>A071102</studyIdentifier>
+               <course>
+                  <startDateOfFirstCourse>2014-01-06</startDateOfFirstCourse>
+                  <startDateOfThisCourse>2015-07-27</startDateOfThisCourse>
+                  <cycleNumber>27</cycleNumber>
+                  <treatmentAssignmentCode>TAC 1</treatmentAssignmentCode>
+                  <otherTreatmentAssignmentDescription>N/A</otherTreatmentAssignmentDescription>
+               </course>
+            </saer:criteria>
+   <!-- <reportId>980783851</reportId>-->
+            <!--<withdrawReport>true</withdrawReport>-->
+            <reporter>
+               <aer:firstName>Reporter</aer:firstName>
+               <aer:lastName>one</aer:lastName>
+               <aer:middleName>middlename</aer:middleName>
+               <aer:street>Sunrise valley drive</aer:street>
+               <aer:city>Chicago</aer:city>
+               <aer:state>IL</aer:state>
+               <aer:zip>20170</aer:zip>
+               <aer:country>USA</aer:country>
+               <aer:contactMechanism>
+                  <aer:type>phone</aer:type>
+                  <aer:value>703-787-1234</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>e-mail</aer:type>
+                  <aer:value>vasudev.chatti@semanticbits.com</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>fax</aer:type>
+                  <aer:value>703-787-1222</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>alternateEmails</aer:type>
+                  <aer:value>vasudevkarthik@gmail.com</aer:value>
+               </aer:contactMechanism>
+            </reporter>
+         </saer:EvaluateAndInitiateInputMessage>
+      </saer:EvaluateAndInitiate>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="60c64c94-8162-421d-993a-1ace68403dc9" name="Contains"><con:configuration><token>&lt;reportId></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties><con:property><con:name>file</con:name><con:value>/Users/semanticbits/caaers/caAERS/software/soapProjects/Data-driven-test-data/Data for evaluateAndInitiate for A071102 - case_sensitivity.csv</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer><con:outgoing><con:name>caaers</con:name><con:entry type="Username" username="mayo-super-user" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing><con:outgoing><con:name>caaers-integ</con:name><con:entry type="Username" username="sb-admin" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing></con:wssContainer><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
