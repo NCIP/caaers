@@ -688,7 +688,10 @@ public class EvaluationServiceImpl implements EvaluationService {
         
         ApplicableReportDefinitionsDTO dto = new ApplicableReportDefinitionsDTO();
         for(ReportDefinition rd : reportDefinitions){
-    	  dto.addReportDefinition(rd);
+        	//CAAERS-5198 pick only enabled report definitions
+        	if(rd.getEnabled()){
+        		dto.addReportDefinition(rd);
+        	}
         }
         
        return dto;
